@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  String  @db.ObjectId
+}
+
+model User {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model DriveURI {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  url     String
+  Project Project[]
+}
+
+model Project {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  drive       DriveURI  @relation(fields: [driveURIId], references: [id])
+  name        String
+  acronym     String?
+  description String?
+  ecotaxa     Ecotaxa?  @relation(fields: [ecotaxaId], references: [id])
+  sample      Int       @default(0)
+  scan        Int       @default(0)
+  samples     Sample[]
+  metadata    Metadata  @relation(fields: [metadataId], references: [id])
+  ecotaxaId   String?   @db.ObjectId
+  metadataId  String    @db.ObjectId
+  updatedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  qcState     QCState   @relation(fields: [qCStateId], references: [id])
+  qCStateId   String    @db.ObjectId
+  driveURIId  String    @db.ObjectId
+}
+
+model QCState {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  validated     DateTime
+  state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
+  Project       Project[]
+  qCStateItemId String      @db.ObjectId
+}
+
+model QCStateItem {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String    @default("None")
+  QCState QCState[]
+}
+
+model Ecotaxa {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  project Int
+  Project Project[]
+}
+
+model Sample {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String?     @unique
+  subsample  SubSample[]
+  scans      Scan[]
+  metadata   Metadata    @relation(fields: [metadataId], references: [id])
+  Project    Project?    @relation(fields: [projectId], references: [id])
+  projectId  String?     @db.ObjectId
+  metadataId String      @db.ObjectId
+}
+
+model SubSample {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String?
+  scans      Scan[]
+  metadata   Metadata @relation(fields: [metadataId], references: [id])
+  Sample     Sample?  @relation(fields: [sampleId], references: [id])
+  sampleId   String?  @db.ObjectId
+  metadataId String   @db.ObjectId
+}
+
+model Metadata {
+  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+  project             MetadataProject?   @relation(fields: [metadataProjectId], references: [id])
+  sample              MetadataSample?    @relation(fields: [metadataSampleId], references: [id])
+  subsample           MetadataSubSample? @relation(fields: [metadataSubSampleId], references: [id])
+  Project             Project[]
+  Sample              Sample[]
+  SubSample           SubSample[]
+  metadataProjectId   String?            @db.ObjectId
+  metadataSampleId    String?            @db.ObjectId
+  metadataSubSampleId String?            @db.ObjectId
+}
+
+model MetadataProject {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  Metadata Metadata[]
+}
+
+model MetadataSample {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  Metadata Metadata[]
+}
+
+model MetadataSubSample {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  Metadata Metadata[]
+}
+
+model Scan {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  url         String
+  background  Boolean?
+  Sample      Sample?    @relation(fields: [sampleId], references: [id])
+  sampleId    String?    @db.ObjectId
+  SubSample   SubSample? @relation(fields: [subSampleId], references: [id])
+  subSampleId String?    @db.ObjectId
+}
