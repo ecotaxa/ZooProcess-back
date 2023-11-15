@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: sebastien.galvagno@imev-mer.fr
+  description: API to manage scan from Zooscan
+  title: ZooProcess API
+  version: v1
+servers:
+- url: http://zooprocess.imev-mer.fr:8081/v1
+tags:
+- description: User related operations
+  name: User
+- description: Manager related operations
+  name: Manager
+paths:
+
+  /projects:
+    get:
+      description: Return the project list
+      operationId: Projects.list
+      x-eov-operation-handler: Controllers/Projects
+      responses:
+        '200':
+          description: Returned the project list
+          content:
+            application/json:
+              schema:
+                title: Response get the list of projects
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+      tags:
+      - User
+
+
+components:
+  schemas:
+    Project:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          readOnly: true
+          type: number
+        name:
+          type: string
