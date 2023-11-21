@@ -13,20 +13,6 @@ module.exports.Drives = class {
         return drives
     }
 
-    //   async findAll({}){
-    //     return this.get() 
-    //     .then(res => {
-    //         console.log("rrrr",res) 
-    //         // this.prisma.$disconnect()
-    //         return res
-    //     })
-    //     .catch (async (e) => {
-    //         // this.prisma.$disconnect()
-    //         console.error(e)
-    //         throw(e)
-    //     })
-    // }
-
     async getDrive(driveid) {
         const drives = await this.prisma.drive.findMany({
             where:{
@@ -40,11 +26,9 @@ module.exports.Drives = class {
         return this.getDrive(params.id) 
         .then(res => {
             console.log("rrrr",res) 
-            // this.prisma.$disconnect()
             return res
         })
         .catch (async (e) => {
-            // this.prisma.$disconnect()
             console.error(e)
             throw(e)
         })
@@ -55,23 +39,5 @@ module.exports.Drives = class {
         const drive = this.prisma.drive.create({data:data})
         return drive
     }
-
-    // async create(body){
-  
-    //     console.log("Drives::create", body)
-  
-    //     return this.add(body)
-    //     .then(res => {
-    //         console.log("rrrr", res) 
-    //         // this.prisma.$disconnect()
-    //         return res
-    //     })
-    //     .catch(async(e) => {
-    //         // this.prisma.$disconnect()
-    //         console.error("Error:",e)
-    //         throw(e)
-    //         Service.rejectResponse(e,500)
-    //     })
-    // }
 
 }
