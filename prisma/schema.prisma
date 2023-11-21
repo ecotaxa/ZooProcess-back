@@ -26,38 +26,41 @@ model User {
   posts Post[]
 }
 
-model DriveURI {
+model Drive {
   id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
+  name    String    @unique
   url     String
   Project Project[]
 }
 
 model Project {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  drive       DriveURI  @relation(fields: [driveURIId], references: [id])
-  name        String
+  drive       Drive     @relation(fields: [driveURIId], references: [id])
+  name        String    @unique
   acronym     String?
   description String?
   ecotaxa     Ecotaxa?  @relation(fields: [ecotaxaId], references: [id])
   sample      Int       @default(0)
   scan        Int       @default(0)
   samples     Sample[]
-  metadata    Metadata  @relation(fields: [metadataId], references: [id])
+  // metadata    Metadata  @relation(fields: [metadataId], references: [id])
+  // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   ecotaxaId   String?   @db.ObjectId
-  metadataId  String    @db.ObjectId
-  updatedAt   DateTime?
+  // metadataId  String    @db.ObjectId
+  updatedAt   DateTime? //@updateAt
   createdAt   DateTime  @default(now())
-  qcState     QCState   @relation(fields: [qCStateId], references: [id])
-  qCStateId   String    @db.ObjectId
+  // qcState     QCState   @relation(fields: [qCStateId], references: [id])
+  // qCStateId   String    @db.ObjectId
   driveURIId  String    @db.ObjectId
+  // QCState     QCState?  @relation(fields: [qCStateId], references: [id])
+  // qCStateId   String?   @db.ObjectId
 }
 
 model QCState {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   validated     DateTime
   state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
-  Project       Project[]
+  // Project       Project[]
   qCStateItemId String      @db.ObjectId
 }
 
@@ -74,56 +77,61 @@ model Ecotaxa {
 }
 
 model Sample {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  name       String?     @unique
-  subsample  SubSample[]
-  scans      Scan[]
-  metadata   Metadata    @relation(fields: [metadataId], references: [id])
-  Project    Project?    @relation(fields: [projectId], references: [id])
-  projectId  String?     @db.ObjectId
-  metadataId String      @db.ObjectId
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?     @unique
+  subsample SubSample[]
+  scans     Scan[]
+  // metadata   Metadata    @relation(fields: [metadataId], references: [id])
+  Project   Project?    @relation(fields: [projectId], references: [id])
+  projectId String?     @db.ObjectId
+  // metadataId String      @db.ObjectId
 }
 
 model SubSample {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String?
-  scans      Scan[]
-  metadata   Metadata @relation(fields: [metadataId], references: [id])
-  Sample     Sample?  @relation(fields: [sampleId], references: [id])
-  sampleId   String?  @db.ObjectId
-  metadataId String   @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  scans    Scan[]
+  // metadata   Metadata @relation(fields: [metadataId], references: [id])
+  Sample   Sample? @relation(fields: [sampleId], references: [id])
+  sampleId String? @db.ObjectId
+  // metadataId String  @db.ObjectId
 }
 
+// model Metadata {
+//   id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+//   project             MetadataProject?   @relation(fields: [metadataProjectId], references: [id])
+//   sample              MetadataSample?    @relation(fields: [metadataSampleId], references: [id])
+//   subsample           MetadataSubSample? @relation(fields: [metadataSubSampleId], references: [id])
+//   Project             Project[]
+//   Sample              Sample[]
+//   SubSample           SubSample[]
+//   metadataProjectId   String?            @db.ObjectId
+//   metadataSampleId    String?            @db.ObjectId
+//   metadataSubSampleId String?            @db.ObjectId
+// }
 model Metadata {
-  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
-  project             MetadataProject?   @relation(fields: [metadataProjectId], references: [id])
-  sample              MetadataSample?    @relation(fields: [metadataSampleId], references: [id])
-  subsample           MetadataSubSample? @relation(fields: [metadataSubSampleId], references: [id])
-  Project             Project[]
-  Sample              Sample[]
-  SubSample           SubSample[]
-  metadataProjectId   String?            @db.ObjectId
-  metadataSampleId    String?            @db.ObjectId
-  metadataSubSampleId String?            @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  uri  String
+  type String
 }
 
-model MetadataProject {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+// model MetadataProject {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  Metadata Metadata[]
-}
+//   Metadata Metadata[]
+// }
 
-model MetadataSample {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+// model MetadataSample {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  Metadata Metadata[]
-}
+//   Metadata Metadata[]
+// }
 
-model MetadataSubSample {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+// model MetadataSubSample {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  Metadata Metadata[]
-}
+//   Metadata Metadata[]
+// }
 
 model Scan {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
