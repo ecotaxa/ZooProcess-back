@@ -11,7 +11,7 @@ module.exports = {
         })
         .catch(async(e) => {
             console.error("Error:",e );
-            return res.status(403).error(e);
+            return res.status(500).error(e);
         })
     },
 
@@ -20,7 +20,7 @@ module.exports = {
 
         return drives.add(req.body)
         .then(result => {
-            console.log("rrrr", res) 
+            console.log("OK", res) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
