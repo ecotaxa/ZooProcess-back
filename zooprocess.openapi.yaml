@@ -95,6 +95,8 @@ paths:
                 $ref: '#/components/schemas/Drive'          
         '405':
           description: Invalid input
+        '409':
+          description: Duplicate entry
 
 
 components:
