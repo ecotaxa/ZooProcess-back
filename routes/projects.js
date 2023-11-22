@@ -5,8 +5,6 @@ const projects = new Projects();
 
 module.exports = {
     list: async (req,res) => {
-        // console.log("Projects::create",req);
-        // res.json( await projects.findAll(req.query));
 
         return projects.findAll(req.query)
         .then(payload => {
@@ -20,10 +18,6 @@ module.exports = {
 
     create: async (req,res) => {
         console.log("create", req.body);
-        // res.json( await projects.create(req.body));
-
-        //TODO: make foder here
-        // if (ok) => add to DB
 
         return projects.add(req.body)
         .then(result => {
@@ -47,22 +41,19 @@ module.exports = {
         })
     },
 
+
     get: async (req,res) => {
-        // res.json(await projects.get(req.params))
 
-        console.log("Projects::get", +req.params.id);
+        console.log("Projects::get", req.params.projectId);
 
-        return this.get(+req.params.id)
-          .then(res => {
-              console.log("rrrr",res) 
-              // this.prisma.$disconnect()
-              return res
-           })
-          .catch(async(e) =>{
-              // this.prisma.$disconnect()
-              console.error(e)
-              throw(e)
-          }) 
+        return projects.get(req.params.projectId)
+        .then(project => {
+            return res.status(200).json(project)
+        })
+        .catch(async(e) =>{
+            console.error("Error:",e );
+            return res.status(500).error(e);
+        }) 
 
     },
 

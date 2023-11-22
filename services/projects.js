@@ -18,26 +18,7 @@ module.exports.Projects = class {
         return projects
     }
 
-    // findAll({ type, limit }) {
-
-    //     return this.get() 
-    //     .then(res => {
-    //         console.log("rrrr",res) 
-    //         // this.prisma.$disconnect()
-    //         return res
-    //     })
-    //     .catch (async (e) => {
-    //         // this.prisma.$disconnect()
-    //         console.error(e)
-    //         throw(e)
-    //     })
-    // }
-
     async add(project) {
-      // console.log("prisma",this.prisma)
-      // console.log("p.project",this.prisma.project)
-      // const proj = { qcState:'None' , ...project }
-      // const data = {...project}
 
       let driveid = undefined;
       if (project.driveid == null && project.drive){
@@ -46,114 +27,50 @@ module.exports.Projects = class {
           where:{
             name:project.drive.name
           }
-          // ,
-          // project:data
         });
         driveid = drive.id;
       } else {
         driveid = project.driveid;
       }
       
-      console.log("driveid: ", driveid);
+      // console.log("driveid: ", driveid);
 
-      let p = delete project['drive']
+      // let p = delete project['drive']
 
-      console.log("p:",p);
-
-      // p.drive = null
+      // console.log("p:",p);
 
       const data = {
-        // create:{
           ...project,
-          // ...p,
           driveId:driveid
-        // }      
       }
 
-      console.log("data: ", data);
+      // console.log("data: ", data);
 
-      // const proj = {
-      //   // data: {
-      //     name : project.name,
-      //     drive: { 
-      //       // name : "Zooscan",
-      //       connect: { 
-      //         //id : project.driveId 
-      //         name : project.drive
-      //       } 
-      //     }
-      //   // }
-      // }
-
-      // const proj2 = {
-      //   where: {
-      //     name: project.drive
-      //   },
-      //   data:{
-      //     Project:{
-      //       create:{
-      //         name: project.name
-      //       }
-      //     }    
-      //   }
-      // }
-
-      // return await this.prisma.project.create({data:proj})
       return await this.prisma.project.create({data})
-
-
-      // return await this.prisma.project.create({data:project})
     }
   
-    // async create(project){
-  
-    //     console.log("Projects::create", project)
-  
-    //     return this.add(project)
-    //     .then(res => {
-    //         console.log("rrrr",res) 
-    //         // this.prisma.$disconnect()
-    //         return res
-    //      })
-    //     .catch(async(e) =>{
-    //         // this.prisma.$disconnect()
-    //         console.error(e)
-    //         throw(e)
-    //     })
-    // }
+    
 
     async update(project){
-
+      console.log("TODO")
+      throw("TODO update")
     }
 
-    async get(id){
+    async get(projectId){
+      console.log("projectId:", projectId);
+
       const project = await this.prisma.project.findFirst({
         where:{
-          id: id
+          id: projectId
         },
         include:{
           drive: true,
           ecotaxa: true
         }
       })
+      return project
     }
 
-    // async get({id}){
-
-    //   console.log("Projects::get", id);
-
-    //   return this.getid(+id)
-    //     .then(res => {
-    //         console.log("rrrr",res) 
-    //         // this.prisma.$disconnect()
-    //         return res
-    //      })
-    //     .catch(async(e) =>{
-    //         // this.prisma.$disconnect()
-    //         console.error(e)
-    //         throw(e)
-    //     }) 
-    // }
 
     async updateid(id, data) {
       const project = await this.prisma.projects.update({
