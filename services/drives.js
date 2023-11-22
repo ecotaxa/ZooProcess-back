@@ -13,26 +13,26 @@ module.exports.Drives = class {
         return drives
     }
 
-    async getDrive(driveid) {
-        const drives = await this.prisma.drive.findMany({
+    async get(driveId) {
+        const drive = await this.prisma.drive.findMany({
             where:{
-                id:driveid
+                id:driveId
             }
         })
-        return drives
+        return drive
     }
 
-    async findDrive({params}){
-        return this.getDrive(params.id) 
-        .then(res => {
-            console.log("rrrr",res) 
-            return res
-        })
-        .catch (async (e) => {
-            console.error(e)
-            throw(e)
-        })
-    }
+    // async findDrive({params}){
+    //     return this.getDrive(params.id) 
+    //     .then(res => {
+    //         console.log("rrrr",res) 
+    //         return res
+    //     })
+    //     .catch (async (e) => {
+    //         console.error(e)
+    //         throw(e)
+    //     })
+    // }
 
 
     async add(data) {
