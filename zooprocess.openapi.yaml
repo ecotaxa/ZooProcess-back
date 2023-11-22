@@ -32,8 +32,6 @@ paths:
       - User
 
     post:
-      tags:
-        - User
       summary: Add a new project 
       description: Add a new project
       operationId: Projects.create
@@ -44,6 +42,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Project'
+      tags:
+        - User
 
       responses:
         '200':
@@ -54,6 +54,32 @@ paths:
                 $ref: '#/components/schemas/Project'          
         '405':
           description: Invalid input
+
+  /projects/{projectId}:
+    parameters:
+    - name: projectId
+      in: path
+      description: The project id
+      example: 42
+      explode: false
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    get:
+      description: Return information about the project
+      operationId: Projects.get
+
+      responses:
+        '200':
+          description: Returned information about the project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      tags:
+      - User
 
   /drives:
     get:
@@ -73,8 +99,6 @@ paths:
       - User
 
     post:
-      tags:
-        - User
       summary: Add a new drive 
       description: Add a new drive
       operationId: Drives.create
@@ -85,7 +109,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Drive'
-
       responses:
         '200':
           description: Successful operation
@@ -97,7 +120,8 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
-
+      tags:
+        - User
 
   /projects/{project}/samples:
     get:
@@ -167,6 +191,7 @@ paths:
 
 components:
   schemas:
+  
     Project:
       required:
         - id
