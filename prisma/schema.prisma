@@ -35,7 +35,6 @@ model Drive {
 
 model Project {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  drive       Drive     @relation(fields: [driveURIId], references: [id])
   name        String    @unique
   acronym     String?
   description String?
@@ -51,7 +50,8 @@ model Project {
   createdAt   DateTime  @default(now())
   // qcState     QCState   @relation(fields: [qCStateId], references: [id])
   // qCStateId   String    @db.ObjectId
-  driveURIId  String    @db.ObjectId
+  drive       Drive     @relation(fields: [driveId], references: [id])
+  driveId     String    @db.ObjectId
   // QCState     QCState?  @relation(fields: [qCStateId], references: [id])
   // qCStateId   String?   @db.ObjectId
 }
