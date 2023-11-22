@@ -99,6 +99,72 @@ paths:
           description: Duplicate entry
 
 
+  /projects/{project}/samples:
+    get:
+      description: Get the list of samples associated to the project
+      operationId: samples.list
+      parameters:
+      - description: The project id
+        example: 1
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  description: the sample name
+                  example: toto
+                  type: string
+                title: Response get the list of samples associated to the project
+                type: array
+          description: Returned the list of samples associated to the project
+      tags:
+      - User
+
+  /projects/{project}/samples/{sample}:
+    parameters:
+    - description: The project name
+      example: project
+      explode: false
+      in: path
+      name: project
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sample name
+      example: sample
+      explode: false
+      in: path
+      name: sample
+      required: true
+      schema:
+        type: string
+      style: simple
+    get:
+      description: Get a sample from project
+      operationId: samples.get
+
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/post_metadata_201_response'
+                type: array
+          description: Return the project sample required
+      tags:
+      - User
+
+
 components:
   schemas:
     Project:
@@ -127,3 +193,19 @@ components:
           type: string
 
 
+    post_metadata_201_response:
+      example:
+        comment: comment
+        type: type
+        value: value
+        key: key
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        type:
+          type: string
+        comment:
+          type: string
+      type: object
