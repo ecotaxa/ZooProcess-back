@@ -65,6 +65,7 @@ module.exports.Projects = class {
         },
         include:{
           drive: true,
+          samples: true,
           ecotaxa: true
         }
       })

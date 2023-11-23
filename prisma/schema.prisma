@@ -39,14 +39,14 @@ model Project {
   acronym     String?
   description String?
   ecotaxa     Ecotaxa?  @relation(fields: [ecotaxaId], references: [id])
-  sample      Int       @default(0)
-  scan        Int       @default(0)
+  // sample      Int       @default(0)
+  // scan        Int       @default(0)
   samples     Sample[]
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   ecotaxaId   String?   @db.ObjectId
   // metadataId  String    @db.ObjectId
-  updatedAt   DateTime? //@updateAt
+  updatedAt   DateTime? @updatedAt
   createdAt   DateTime  @default(now())
   // qcState     QCState   @relation(fields: [qCStateId], references: [id])
   // qCStateId   String    @db.ObjectId

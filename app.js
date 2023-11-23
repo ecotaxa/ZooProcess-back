@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const http = require('http');
+const cors = require('cors');
+
 const {
   middleware: openApiMiddleware,
   resolvers,
@@ -11,6 +13,14 @@ const port = 8081;
 const app = express();
 // const apiSpec = path.join(__dirname, 'api.yaml');
 const apiSpec = path.join(__dirname, 'zooprocess.openapi.yaml');
+
+
+var corsOption = {
+  origin: 'http://zooprocess.imev-mer.fr',
+  optionSuccessStatus: 200 // for legacy browser
+}
+// app.use (cors(corsOption))
+app.use(cors())
 
 // 1. Install bodyParsers for the request types your API will support
 app.use(express.urlencoded({ extended: false }));

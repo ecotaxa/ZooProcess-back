@@ -81,6 +81,30 @@ paths:
       tags:
       - User
 
+    post:
+      description: Add a new sample
+      operationId: Samples.create
+      requestBody:
+        description: Add a new sample to project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sample'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample'          
+
+        '400':
+          description: Invalid project id supplied
+        '404':
+          description: project id not found     
+      tags:
+        - User
+
   /drives:
     get:
       description: Return the drive list
@@ -191,6 +215,19 @@ paths:
 
 components:
   schemas:
+
+    Drive:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        url:
+          type: string
   
     Project:
       required:
@@ -203,20 +240,31 @@ components:
         name:
           type: string
 
-    Drive:
+    Sample:
+      type: object
       required:
         - id
-        - name
-
       properties:
         id:
           readOnly: true
           type: string
         name:
           type: string
-        url:
-          type: string
+        subsample:
+          type: array
+          items: 
+            $ref: '#/components/schemas/SubSample'
 
+    SubSample:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
 
     post_metadata_201_response:
       example:
