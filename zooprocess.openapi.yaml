@@ -60,7 +60,7 @@ paths:
     - name: projectId
       in: path
       description: The project id
-      example: 42
+      example: "42"
       explode: false
       required: true
       schema:
@@ -109,6 +109,8 @@ paths:
     get:
       description: Return the drive list
       operationId: Drives.list
+      # operation-handler: Drives
+      x-eov-operation-handle: routes/Drives
       responses:
         '200':
           description: Returned the project list
