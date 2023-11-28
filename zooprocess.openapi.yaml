@@ -29,7 +29,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Project'
       tags:
-      - User
+        - User
 
     post:
       summary: Add a new project 
@@ -155,7 +155,7 @@ paths:
       operationId: samples.list
       parameters:
       - description: The project id
-        example: 1
+        example: "1"
         explode: false
         in: path
         name: project
@@ -214,6 +214,72 @@ paths:
       tags:
       - User
 
+  /metadata:
+    get:
+      description: Get the metadata models
+      operationId: MetadataModel.list
+      responses:
+        '200':
+          description: Returned the metadata models
+          content:
+            application/json:
+              schema:
+                title: Response get the list of metadata models 
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetadataModel'
+      tags:
+      - User
+    post:
+      summary: Add a metadata model 
+      description: Add a new metadata model
+      operationId: MetadataModel.create
+      requestBody:
+        description: Create a new metadata model
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataModel'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataModel'          
+        '405':
+          description: Invalid input
+        '409':
+          description: Duplicate entry
+      tags:
+        - User
+
+  /metadata/{id}:
+    parameters:
+      - description: The metadata model id
+        example: "52"
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+
+    get:
+      description: Get the metadata model
+      operationId: MetadataModel.get
+
+      responses:
+        "200":
+          description: Return the metadata model
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/MetadataModel'
+      tags:
+      - User    
 
 components:
   schemas:
@@ -284,3 +350,20 @@ components:
         comment:
           type: string
       type: object
+
+    MetadataModel:
+      type: object
+      required:
+        - id
+        - name
+        - value
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        value:
+          type: string

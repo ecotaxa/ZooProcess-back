@@ -77,14 +77,17 @@ model Ecotaxa {
 }
 
 model Sample {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  name      String?     @unique
-  subsample SubSample[]
-  scans     Scan[]
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?       @unique
+  subsample      SubSample[]
+  scans          Scan[]
   // metadata   Metadata    @relation(fields: [metadataId], references: [id])
-  Project   Project?    @relation(fields: [projectId], references: [id])
-  projectId String?     @db.ObjectId
+  Project        Project?      @relation(fields: [projectId], references: [id])
+  projectId      String?       @db.ObjectId
   // metadataId String      @db.ObjectId
+  metadata       Metadata[]
+  metadataType   MetadataModel @relation(fields: [metadataTypeId], references: [id])
+  metadataTypeId String        @db.ObjectId
 }
 
 model SubSample {
@@ -109,10 +112,27 @@ model SubSample {
 //   metadataSampleId    String?            @db.ObjectId
 //   metadataSubSampleId String?            @db.ObjectId
 // }
+// model Metadata {
+//   id   String @id @default(auto()) @map("_id") @db.ObjectId
+//   uri  String
+//   type String
+// }
+
 model Metadata {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  uri  String
-  type String
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  type     String
+  value    String
+  Sample   Sample? @relation(fields: [sampleId], references: [id])
+  sampleId String? @db.ObjectId
+}
+
+model MetadataModel {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  value       String
+  Sample      Sample[]
 }
 
 // model MetadataProject {
