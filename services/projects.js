@@ -39,12 +39,22 @@ module.exports.Projects = class {
 
       // console.log("p:",p);
 
-      const data = {
-          ...project,
-          driveId:driveid
-      }
+      // const data = {
+      //     ...project,
+      //     driveId:driveid
+      // }
 
-      // console.log("data: ", data);
+      let data = {
+        name:project.name,
+        driveId:driveid
+      }
+      if (project.description){data['description'] = project.description;}
+      if (project.ecotaxaId){data['ecotaxaId'] = project.ecotaxa;}
+      if (project.acronym){data['acronym'] = project.acronym;}
+
+
+
+      //console.log("data: ", data);
 
       return await this.prisma.project.create({data})
     }
