@@ -74,3 +74,18 @@ module.exports = {
   list: (req, res) => res.json(/* ... */),
 };
 ```
+
+
+
+# Prisma 
+On model change, to get update we need to use several commands :
+``````
+npx prisma generate
+npx prisma db push
+```
+restart the application : npm run dev
+
+
+# Prisma error list
+
+https://www.prisma.io/docs/reference/api-reference/error-reference
