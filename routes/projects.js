@@ -12,7 +12,7 @@ module.exports = {
         })
         .catch(async(e) => {
             console.error("Error:",e );
-            return res.status(500).send(e);
+            return res.status(500).json({error:e});
         })
     },
 
@@ -52,7 +52,7 @@ module.exports = {
         })
         .catch(async(e) =>{
             console.error("Error:",e );
-            return res.status(500).error(e);
+            return res.status(500).json({error:e});
         }) 
 
     },
