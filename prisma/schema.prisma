@@ -86,8 +86,8 @@ model Sample {
   projectId      String?       @db.ObjectId
   // metadataId String      @db.ObjectId
   metadata       Metadata[]
-  metadataType   MetadataModel @relation(fields: [metadataTypeId], references: [id])
-  metadataTypeId String        @db.ObjectId
+  metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
+  metadataModelId String?        @db.ObjectId
 }
 
 model SubSample {
@@ -129,9 +129,9 @@ model Metadata {
 
 model MetadataModel {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  value       String
+  name        String?
+  description String?
+  value       String @unique
   Sample      Sample[]
 }
 

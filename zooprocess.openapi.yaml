@@ -79,31 +79,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/Project'
       tags:
-      - User
-
-    post:
-      description: Add a new sample
-      operationId: Samples.create
-      requestBody:
-        description: Add a new sample to project
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Sample'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sample'          
-
-        '400':
-          description: Invalid project id supplied
-        '404':
-          description: project id not found     
-      tags:
         - User
+
+    # post:
+    #   description: Add a new sample
+    #   operationId: Samples.create
+    #   requestBody:
+    #     description: Add a new sample to project
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/Sample'
+    #   responses:
+    #     '200':
+    #       description: successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Sample'          
+
+    #     '400':
+    #       description: Invalid project id supplied
+    #     '404':
+    #       description: project id not found     
+    #   tags:
+    #     - User
 
   /drives:
     get:
@@ -150,12 +150,9 @@ paths:
         - User
 
   /projects/{project}/samples:
-    get:
-      description: Get the list of samples associated to the project
-      operationId: samples.list
-      parameters:
+    parameters:
       - description: The project id
-        example: "1"
+        example: "655d3062983b92b6e29b3369"
         explode: false
         in: path
         name: project
@@ -163,6 +160,10 @@ paths:
         schema:
           type: string
         style: simple
+    get:
+      description: Get the list of samples associated to the project
+      operationId: samples.list
+
       responses:
         "200":
           content:
@@ -178,22 +179,47 @@ paths:
       tags:
       - User
 
-  /projects/{project}/samples/{sample}:
+    post:
+      summary: Add a sample 
+      description: Add a new sample 
+      operationId: Samples.create
+      requestBody:
+        description: Create a new sample
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sample'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample'          
+        '405':
+          description: Invalid input
+        '409':
+          description: Duplicate entry
+      tags:
+        - User
+
+  /projects/{projectId}/samples/{sampleId}:
     parameters:
-    - description: The project name
-      example: project
+    - description: The project id
+      example: 655d3062983b92b6e29b3369
       explode: false
       in: path
-      name: project
+      name: projectId
       required: true
       schema:
         type: string
       style: simple
-    - description: The sample name
-      example: sample
+    - description: The sample id
+      example: 655db3a95ef7f584269ff27b
       explode: false
       in: path
-      name: sample
+      name: sampleId
       required: true
       schema:
         type: string
@@ -214,6 +240,22 @@ paths:
       tags:
       - User
 
+    delete:
+      summary: Delete a sample
+      description: Delete a sample
+
+      operationId: Samples.delete
+      
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - User
+
   /metadata:
     get:
       description: Get the metadata models
@@ -230,6 +272,7 @@ paths:
                   $ref: '#/components/schemas/MetadataModel'
       tags:
       - User
+
     post:
       summary: Add a metadata model 
       description: Add a new metadata model
@@ -254,6 +297,7 @@ paths:
           description: Duplicate entry
       tags:
         - User
+
 
   /metadata/{id}:
     parameters:
