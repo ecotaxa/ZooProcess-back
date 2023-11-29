@@ -78,12 +78,12 @@ model Ecotaxa {
 
 model Sample {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?       @unique
+  name           String       @unique
   subsample      SubSample[]
   scans          Scan[]
   // metadata   Metadata    @relation(fields: [metadataId], references: [id])
-  Project        Project?      @relation(fields: [projectId], references: [id])
-  projectId      String?       @db.ObjectId
+  Project        Project      @relation(fields: [projectId], references: [id])
+  projectId      String       @db.ObjectId
   // metadataId String      @db.ObjectId
   metadata       Metadata[]
   metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
@@ -123,7 +123,7 @@ model Metadata {
   name     String
   type     String
   value    String
-  Sample   Sample? @relation(fields: [sampleId], references: [id])
+  sample   Sample? @relation(fields: [sampleId], references: [id])
   sampleId String? @db.ObjectId
 }
 
@@ -132,7 +132,7 @@ model MetadataModel {
   name        String?
   description String?
   value       String @unique
-  Sample      Sample[]
+  sample      Sample[]
 }
 
 // model MetadataProject {

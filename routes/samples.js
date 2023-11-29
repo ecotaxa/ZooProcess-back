@@ -33,9 +33,10 @@ module.exports = {
     },
 
     create: async (req,res) => {
-        console.log("create",req.body);
+        // console.log("create",req.body);
+        console.log("create",{projectId:req.params.project, sample:req.body});
 
-        return samples.add({projectId:req.params.projectId, sample:req.body})
+        return samples.add({projectId:req.params.project, sample:req.body})
         .then(result => {
             // console.log("OK", res) 
             console.log("OK", result);

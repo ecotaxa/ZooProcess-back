@@ -224,6 +224,7 @@ paths:
       schema:
         type: string
       style: simple
+
     get:
       description: Get a sample from project
       operationId: samples.get
@@ -233,9 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/post_metadata_201_response'
-                type: array
+                $ref: '#/components/schemas/Sample'
           description: Return the project sample required
       tags:
       - User
@@ -356,12 +355,13 @@ components:
       type: object
       required:
         - id
+        - name
       properties:
         id:
           readOnly: true
           type: string
         name:
-          type: string
+          type: string # ['null', string]
         subsample:
           type: array
           items: 

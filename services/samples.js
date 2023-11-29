@@ -22,7 +22,7 @@ module.exports.Samples = class {
         const sample = await this.prisma.sample.findFirst({
             where:{
                 id:sampleId,
-                projectId:projectId
+                //projectId:projectId
             },
             include:{
                 metadata:true,
@@ -36,18 +36,19 @@ module.exports.Samples = class {
 
     async add({projectId, sample}) {
 
-        console.log("add sample: ", sample);
+        console.log("add sample: ", {projectId, sample});
 
-        const project = await this.prisma.project.findFirst({
-            where:{
-                id:projectId
-            }
-        })
+        // const project = await this.prisma.project.findFirst({
+        //     where:{
+        //         id:projectId
+        //     }
+        // })
         // if ( project == null ) { throw()}
         // const data = {
         //     ...sample,
         //     projectId:project.id
         // }
+        // console.log("Project: ", project )
 
         const data = {
             // name:sample.name,
@@ -58,6 +59,7 @@ module.exports.Samples = class {
         if (sample.name){data['name']=sample.name}
         if (sample.metadataModelId){data['metadataModelId']=sample.metadataModelId}
 
+        console.log("Create: ", data);
 
         return await this.prisma.sample.create({data})
       }
