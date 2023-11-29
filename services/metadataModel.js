@@ -7,8 +7,18 @@ module.exports.MetadataModel = class {
         this.prisma = new PrismaClient()
     }
 
-    async findAll(){
-        return await this.prisma.metadataModel.findMany({})
+    async findAll(sample){
+
+        let query = {}
+        if (sample == true){
+            query = {
+                include:{
+                    sample: true
+                }
+            }
+        }
+
+        return await this.prisma.metadataModel.findMany(query)
     }
 
     async add(metadatatype) {

@@ -8,7 +8,10 @@ module.exports = {
 
     list: async (req,res) => {
 
-        return metadataModel.findAll(req.query)
+        console.log("create Body", req.body);
+        console.log("create Req", req.query);
+
+        return metadataModel.findAll(req.query.sample)
         .then(payload => {
             return res.status(200).json(payload);
         })

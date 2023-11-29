@@ -257,6 +257,12 @@ paths:
 
   /metadata:
     get:
+      parameters:
+        - in: query
+          name: sample
+          schema:
+            type: boolean
+
       description: Get the metadata models
       operationId: MetadataModel.list
       responses:
@@ -270,7 +276,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/MetadataModel'
       tags:
-      - User
+        - User
 
     post:
       summary: Add a metadata model 
