@@ -64,14 +64,14 @@ module.exports.Samples = class {
     
     async deleteSample({projectId, sampleId}) {
 
+        console.log("deleteSample: ",{projectId, sampleId});
+
         return this.prisma.sample.delete({
             where:{
                 id:sampleId,
-                projectId:projectId
+                //projectId:projectId
             }
         });
     }
-
-
 
 }
