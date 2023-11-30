@@ -166,16 +166,14 @@ paths:
 
       responses:
         "200":
+          description: Returned the list of samples associated to the project
           content:
             application/json:
               schema:
-                items:
-                  description: the sample name
-                  example: toto
-                  type: string
-                title: Response get the list of samples associated to the project
+                title: Response get an array of sample
                 type: array
-          description: Returned the list of samples associated to the project
+                items:
+                  $ref: '#/components/schemas/Sample'
       tags:
       - User
 

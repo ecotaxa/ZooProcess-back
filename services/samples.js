@@ -33,6 +33,22 @@ module.exports.Samples = class {
         return sample
     }
 
+    metadata2Array(metadata){
+
+        const metadataArray = Object.keys(metadata).map( (elem) => {
+
+            let data = {
+                name:elem,
+                value:String(metadata[elem]),
+                type:typeof(metadata[elem])
+            }
+
+            return data;
+        });
+
+        console.log('metadataArray:', metadataArray);
+        return metadataArray
+    }
 
     async add({projectId, sample}) {
 
@@ -50,10 +66,17 @@ module.exports.Samples = class {
         // }
         // console.log("Project: ", project )
 
+        const metadataArray = this.metadata2Array(sample.data)
+
         const data = {
             // name:sample.name,
             projectId:projectId,
-            metadata:sample.data
+            metadata:{
+                // create: metadataArray // simplement ou en desctructurer ci-dessous
+                create: [
+                        ...metadataArray
+                    ]   
+            }
         }
 
         if (sample.name){data['name']=sample.name}
