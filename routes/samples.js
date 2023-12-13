@@ -10,7 +10,7 @@ module.exports = {
         console.log("list req.query:", req.query);
         console.log("list req.params:", req.params);
 
-        return samples.findAll(req.params.projectId)
+        return samples.findAll(req.params.project)
         .then(payload => {
             console.log("samples list: ", payload)
             return res.status(200).json(payload);
@@ -66,7 +66,7 @@ module.exports = {
         // console.log("res: ",res);
         // console.log("res.status: ",res.status);
 
-        console.log("delete: ",{projectId:req.params.projectId, sampleId:req.params.sampleId});
+        console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId});
 
         return samples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {

@@ -7,7 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 model Post {
@@ -34,26 +35,43 @@ model Drive {
 }
 
 model Project {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String    @unique
-  acronym     String?
-  description String?
-  ecotaxa     Ecotaxa?  @relation(fields: [ecotaxaId], references: [id])
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  name            String      @unique
+  acronym         String?
+  description     String?
+  ecotaxa         Ecotaxa?    @relation(fields: [ecotaxaId], references: [id])
   // sample      Int       @default(0)
   // scan        Int       @default(0)
-  samples     Sample[]
+  samples         Sample[]
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
-  ecotaxaId   String?   @db.ObjectId
+  ecotaxaId       String?     @db.ObjectId
   // metadataId  String    @db.ObjectId
-  updatedAt   DateTime? @updatedAt
-  createdAt   DateTime  @default(now())
+  updatedAt       DateTime?   @updatedAt
+  createdAt       DateTime    @default(now())
   // qcState     QCState   @relation(fields: [qCStateId], references: [id])
   // qCStateId   String    @db.ObjectId
-  drive       Drive     @relation(fields: [driveId], references: [id])
-  driveId     String    @db.ObjectId
+  drive           Drive       @relation(fields: [driveId], references: [id])
+  driveId         String      @db.ObjectId
   // QCState     QCState?  @relation(fields: [qCStateId], references: [id])
   // qCStateId   String?   @db.ObjectId
+  // SampleView   SampleView[]
+  instrument      Instrument? @relation(fields: [instrumentId], references: [id])
+  instrumentId    String?     @db.ObjectId
+  scanningOptions String?
+}
+
+model Instrument {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  sn      String // Serial Number
+  // options ScanningOption
+  Project Project[]
+}
+
+model ScanningOption {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  density Int
 }
 
 model QCState {
@@ -76,28 +94,46 @@ model Ecotaxa {
   Project Project[]
 }
 
+// view SampleView {
+//   id              String         @id @default(auto()) @map("_id") @db.ObjectId
+//   name            String
+//   subsample       SubSample[]
+//   Project         Project        @relation(fields: [projectId], references: [id])
+//   projectId       String         @db.ObjectId
+//   metadata        Metadata[]
+//   metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
+//   metadataModelId String?        @db.ObjectId
+//   sampleCount     Int
+//   createdAt       DateTime
+//   updatedAt       DateTime
+// }
+
 model Sample {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  name           String       @unique
-  subsample      SubSample[]
-  scans          Scan[]
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  name            String         @unique
+  subsample       SubSample[]
+  // scans          Scan[]
   // metadata   Metadata    @relation(fields: [metadataId], references: [id])
-  Project        Project      @relation(fields: [projectId], references: [id])
-  projectId      String       @db.ObjectId
+  Project         Project        @relation(fields: [projectId], references: [id])
+  projectId       String         @db.ObjectId
   // metadataId String      @db.ObjectId
-  metadata       Metadata[]
+  metadata        Metadata[]
   metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
   metadataModelId String?        @db.ObjectId
 }
 
 model SubSample {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  scans    Scan[]
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  scans     Scan[]
+  updatedAt DateTime? @updatedAt
+  createdAt DateTime  @default(now())
   // metadata   Metadata @relation(fields: [metadataId], references: [id])
-  Sample   Sample? @relation(fields: [sampleId], references: [id])
-  sampleId String? @db.ObjectId
+  Sample    Sample?   @relation(fields: [sampleId], references: [id])
+  sampleId  String?   @db.ObjectId
   // metadataId String  @db.ObjectId
+  // SampleView   SampleView? @relation(fields: [sampleViewId], references: [id])
+  // sampleViewId String?     @db.ObjectId
 }
 
 // model Metadata {
@@ -125,14 +161,17 @@ model Metadata {
   value    String
   sample   Sample? @relation(fields: [sampleId], references: [id])
   sampleId String? @db.ObjectId
+  // SampleView   SampleView? @relation(fields: [sampleViewId], references: [id])
+  // sampleViewId String?     @db.ObjectId
 }
 
 model MetadataModel {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String?
   description String?
-  value       String @unique
+  value       String   @unique
   sample      Sample[]
+  // SampleView  SampleView[]
 }
 
 // model MetadataProject {
@@ -157,8 +196,8 @@ model Scan {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   url         String
   background  Boolean?
-  Sample      Sample?    @relation(fields: [sampleId], references: [id])
-  sampleId    String?    @db.ObjectId
+  // Sample      Sample?    @relation(fields: [sampleId], references: [id])
+  // sampleId    String?    @db.ObjectId
   SubSample   SubSample? @relation(fields: [subSampleId], references: [id])
   subSampleId String?    @db.ObjectId
 }

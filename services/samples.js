@@ -3,19 +3,61 @@ const { PrismaClient } = require("@prisma/client")
 module.exports.Samples = class {
 
     constructor(){
-        this.prisma = new PrismaClient()
+
+        this.prisma = new PrismaClient({
+            log: ['query'],
+          })
+
+        // this.prisma = new PrismaClient()
     }
 
     async findAll(projectId) {
+        // SampleView
+
+        console.log("Samples findAll projectId= ", projectId);
+
         const samples = await this.prisma.sample.findMany({
+        // const samples = await this.prisma.sampleview.findMany({
             where:{
                 projectId:projectId
+            },
+            include:{
+                metadata:true,
+                metadataModel:true,
+                subsample:true
             }
         })
 
-        console.log("Sample:", samples)
+        // console.log("Sample:", samples)
 
-        return samples
+        const nsamples = samples.map((sample) => {
+
+            // console.log("MAP sample: ", sample);
+
+            const nbFractions = sample.subsample.length;
+            let nbScans = 0
+            if ( nbFractions > 0 ) {
+                nbScans = sample.subsample
+                .flatmap((subsample) => subsample.scans.length )
+                .reduce((a, b)=> a + b, 0);
+            }
+
+            const ns = {
+                ...sample,
+                nbFractions,
+                nbScans
+            }
+            return ns;
+        })
+
+        // const nsamples = {
+        //     ...samples,
+        //     count:3
+        // }
+
+        // console.log("nsamples: ", nsamples);
+
+        return nsamples
     }
 
     async get({projectId, sampleId}) {
@@ -89,7 +131,7 @@ module.exports.Samples = class {
     
     async deleteSample({projectId, sampleId}) {
 
-        console.log("deleteSample: ",{projectId, sampleId});
+        console.log("deleteSample: ", {projectId, sampleId});
 
         return this.prisma.sample.delete({
             where:{

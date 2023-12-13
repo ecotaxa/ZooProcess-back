@@ -81,6 +81,21 @@ paths:
       tags:
         - User
 
+    put:
+      description: Update information about the project
+      operationId: Projects.update
+
+      responses:
+        '200':
+          description: Returned information about the project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+      tags:
+        - User
+
+
     # post:
     #   description: Add a new sample
     #   operationId: Samples.create
@@ -370,6 +385,9 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/SubSample'
+        # count:
+        #   type: integer
+        #   readOnly: true
 
     SubSample:
       type: object
@@ -382,22 +400,7 @@ components:
         name:
           type: string
 
-    post_metadata_201_response:
-      example:
-        comment: comment
-        type: type
-        value: value
-        key: key
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-        type:
-          type: string
-        comment:
-          type: string
-      type: object
+    
 
     MetadataModel:
       type: object

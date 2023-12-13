@@ -58,7 +58,21 @@ module.exports = {
     },
 
     update: async (req, res) => {
-        res.json(await projects.put(req))
+        // res.json(await projects.update(req.body, req.params.projectId))
+
+        console.log("Projects::update");
+        console.log("id: ", req.params.projectId);
+        console.log("body: ", req.body);
+
+        return projects.update({body:req.body, projectId:req.params.projectId})
+        .then(project => {
+            return res.status(200).json(project)
+        })
+        .catch(async(e) =>{
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        }) 
+
     }
 
  }
