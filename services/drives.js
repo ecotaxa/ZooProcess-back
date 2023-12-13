@@ -1,10 +1,16 @@
 
-const {PrismaClient} = require('@prisma/client')
+// const {PrismaClient} = require('@prisma/client')
+// const { prisma } = require('@/services/client')
+const { Prisma } = require('./client')
+
+// const prisma = new PrismaClient();
 
 module.exports.Drives = class {
 
     constructor() {
-        this.prisma = new PrismaClient()
+        // this.prisma = new PrismaClient()
+        this.prisma = new Prisma().client;
+        // this.prisma = prisma;
       } 
 
       async findAll() {
