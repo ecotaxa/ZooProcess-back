@@ -10,7 +10,9 @@ module.exports.prisma = () => {
 module.exports.Prisma = class {
 
     constructor(){
-        this.client = new PrismaClient();
+        this.client = new PrismaClient({
+            log: ['query'],
+        });
     }
 
 

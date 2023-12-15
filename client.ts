@@ -1,9 +1,11 @@
 // import { PrismaClient } from '@prisma/client'
-const {PrismaClient} = require('@prisma/client')
+// const {PrismaClient} = require('@prisma/client')
 
-exports.prisma = () => {
-    return new PrismaClient()
-}
+// exports.prisma = () => {
+//     return new PrismaClient()
+// }
 
 // export default prisma
+
+// impossible à importer ailleurs
 

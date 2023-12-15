@@ -1,10 +1,12 @@
 
-const {PrismaClient} = require('@prisma/client')
+// const {PrismaClient} = require('@prisma/client');
+const { Prisma } = require('./client');
 
 module.exports.Projects = class {
 
     constructor() {
-      this.prisma = new PrismaClient()
+      // this.prisma = new PrismaClient()
+      this.prisma = new Prisma().client;
     }
 
     async findAll() {
