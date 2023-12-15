@@ -45,7 +45,7 @@ module.exports = {
         .catch(async(e) => {
             console.error("Error:",e );
 
-            if (e.name == "PrismaClientKnownRequestError"){
+            if (e.name == Prisma.PrismaClientKnownRequestError){
                 if (e.code == "P2002"){
                     const txt = "Sample with name '"+ req.body.name +"' already exist";
                     const message = { error:txt };
