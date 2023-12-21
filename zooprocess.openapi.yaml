@@ -54,6 +54,8 @@ paths:
                 $ref: '#/components/schemas/Project'          
         '405':
           description: Invalid input
+        '409':
+          description: Duplicate entry
 
   /projects/{projectId}:
     parameters:
