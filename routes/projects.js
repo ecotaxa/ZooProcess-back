@@ -25,19 +25,21 @@ module.exports = {
             return res.status(200).json(result)
         })
         .catch(async(e) => {
-            console.error("Error:",e )
+            console.error("Error:", e )
 
             if (e.name == "PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
                     const txt = "Project with name '"+ req.body.name +"' already exist";
-                    const message = { error:txt };
-                    return res.status(500).json({error:message});
+                    const message = { message:txt };
+                    console.log("Error 409: ",{error:message})
+                    return res.status(409).send(txt) //.json({error:message});
                 }
                 else {
                     return res.status(500).json({error:e})
                 }
+            } else {
+                return res.status(500).json({error:e})
             }
-            return res.status(500).json({error:e})
         })
     },
 
