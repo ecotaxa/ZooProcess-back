@@ -20,11 +20,9 @@ npm start
 
 ```shell
 ## call ping
-curl http://localhost:3000/v1/ping
+curl http://localhost:3000/v1/projects
 
-## call pets
-## the call below should return 400 since it requires additional parameters
-curl http://localhost:3000/v1/pets
+
 ```
 
 ## [Example Express API Server: with custom operation resolver](https://github.com/cdimascio/express-openapi-validator/tree/master/examples/5-custom-operation-resolver)
@@ -58,19 +56,19 @@ new OpenApiValidator({
     }
 });
 ```
-- Next, use `operationId` to specify the id of opeartion handler to invoke.
+- Next, use `operationId` to specify the id of operation handler to invoke.
 ```yaml
-/pets:
+/projects:
   get:
-    # This means our resolver will look for a file named "pets.js" at our 
+    # This means our resolver will look for a file named "projects.js" at our 
     # configured base path and will return an export named "list" from 
     # that module as the Express RequestHandler.
-    operationId: pets.list
+    operationId: project.list
 ```
-- Finally, create the express handler module e.g. `routes/pets.js`
+- Finally, create the express handler module e.g. `routes/projects.js`
 ```javascript
 module.exports = {
-  // the express handler implementation for the pets collection
+  // the express handler implementation for the projects collection
   list: (req, res) => res.json(/* ... */),
 };
 ```
