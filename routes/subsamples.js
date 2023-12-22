@@ -1,7 +1,7 @@
 const { Prisma } = require("@prisma/client");
-const { Samples } = require("../services/samples");
+const { SubSamples } = require("../services/subsamples");
 
-const samples = new Samples();
+const subsamples = new SubSamples();
 
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
         console.log("list req.query:", req.query);
         console.log("list req.params:", req.params);
 
-        return samples.findAll(req.params.project)
+        return subsamples.findAll({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
             console.log("samples list: ", payload)
             return res.status(200).json(payload);
@@ -22,7 +22,7 @@ module.exports = {
     },
     
     get: async (req,res) => {
-        return samples.get({projectId:req.params.projectId, sampleId:req.params.sampleId})
+        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
             return res.status(200).json(payload);
         })
@@ -36,7 +36,7 @@ module.exports = {
         // console.log("create",req.body);
         console.log("create",{projectId:req.params.project, sample:req.body});
 
-        return samples.add({projectId:req.params.project, sample:req.body})
+        return subsamples.add({projectId:req.params.project, sample:req.body})
         .then(result => {
             // console.log("OK", res) 
             console.log("OK", result);
@@ -68,7 +68,7 @@ module.exports = {
 
         console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId});
 
-        return samples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
+        return subsamples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
             return res.status(200).json(payload);
         })

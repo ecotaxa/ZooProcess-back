@@ -270,6 +270,46 @@ paths:
       tags:
         - User
 
+  /projects/{projectId}/samples/{sampleId}/subsamples:
+    parameters:
+    - description: The project id
+      example: 655d3062983b92b6e29b3369
+      explode: false
+      in: path
+      name: projectId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: sampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    get:
+      description: Get the list of subsamples associated to the sample
+      operationId: subsamples.list
+
+      responses:
+        "200":
+          description: Returned the list of subsamples associated to the sample
+          content:
+            application/json:
+              schema:
+                title: Response get an array of subsample
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubSample'
+      tags:
+      - User
+
+
+
   /metadata:
     get:
       parameters:
