@@ -45,11 +45,13 @@ module.exports = {
         .catch(async(e) => {
             console.error("Error:",e );
 
-            if (e.name == Prisma.PrismaClientKnownRequestError){
+            // "PrismaClientKnownRequestError"){ 
+            if (e.name == Prisma.PrismaClientKnownRequestError.name ){
                 if (e.code == "P2002"){
                     const txt = "Sample with name '"+ req.body.name +"' already exist";
-                    const message = { error:txt };
-                    return res.status(500).json({error:message});
+                    const message = { message:txt };
+                    console.log("Error 409: ",{error:message})
+                    return res.status(409).send(txt);
                 }
                 else {
                     return res.status(500).json({error:e});
