@@ -21,7 +21,7 @@ module.exports = {
 
         return projects.add(req.body)
         .then(result => {
-            console.log("OK", res) 
+            console.log("OK", result) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
@@ -42,7 +42,6 @@ module.exports = {
             }
         })
     },
-
 
     get: async (req,res) => {
 
