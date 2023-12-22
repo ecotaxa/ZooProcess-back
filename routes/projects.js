@@ -1,5 +1,5 @@
 const { Projects } = require("../services/projects");
-
+const { Prisma } = require("@prisma/client");
 
 const projects = new Projects();
 
@@ -27,7 +27,7 @@ module.exports = {
         .catch(async(e) => {
             console.error("Error:", e )
 
-            if (e.name == "PrismaClientKnownRequestError"){
+            if (e.name == Prisma.PrismaClientKnownRequestError.name ){ //"PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
                     const txt = "Project with name '"+ req.body.name +"' already exist";
                     const message = { message:txt };
