@@ -1,5 +1,6 @@
 const { Prisma } = require("@prisma/client");
 const { SubSamples } = require("../services/subsamples");
+const { MetadataModel } = require("../services/metadataModel");
 
 const subsamples = new SubSamples();
 
@@ -12,7 +13,7 @@ module.exports = {
 
         return subsamples.findAll({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
-            console.log("samples list: ", payload)
+            console.log("subsamples list: ", payload)
             return res.status(200).json(payload);
         })
         .catch(async(e) => {
@@ -22,7 +23,7 @@ module.exports = {
     },
     
     get: async (req,res) => {
-        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId})
+        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId: req.param.subSampleId})
         .then(payload => {
             return res.status(200).json(payload);
         })
@@ -34,9 +35,9 @@ module.exports = {
 
     create: async (req,res) => {
         // console.log("create",req.body);
-        console.log("create",{projectId:req.params.project, sample:req.body});
+        console.log("create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
 
-        return subsamples.add({projectId:req.params.project, sample:req.body})
+        return subsamples.add({projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body})
         .then(result => {
             // console.log("OK", res) 
             console.log("OK", result);
@@ -45,9 +46,9 @@ module.exports = {
         .catch(async(e) => {
             console.error("Error:",e );
 
-            if (e.name == Prisma.PrismaClientKnownRequestError){
+            if (e.name == Prisma.PrismaClientKnownRequestError.name){
                 if (e.code == "P2002"){
-                    const txt = "Sample with name '"+ req.body.name +"' already exist";
+                    const txt = "SubSample with name '"+ req.body.name +"' already exist";
                     const message = { error:txt };
                     return res.status(500).json({error:message});
                 }
@@ -66,9 +67,17 @@ module.exports = {
         // console.log("res: ",res);
         // console.log("res.status: ",res.status);
 
-        console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId});
+        console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId:req.params.subSampleId});
 
-        return subsamples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
+// start transaction
+
+        const subsample = subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId:req.params.subSampleId})
+
+        const metadataModel = new MetadataModel();
+        metadataModel.deleteMetadata({metadataId: subsample.metadataId})
+
+
+        return subsamples.deleteSubSample({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId:req.params.subSampleId})
         .then(payload => {
             return res.status(200).json(payload);
         })
@@ -86,7 +95,11 @@ module.exports = {
                 console.log(error.message);
                 return res.status(500).json({error:error});
             }
-        });
+        })
+        .finally( () => {
+            // end transaction
+        })
+        ;
     }
 
 }

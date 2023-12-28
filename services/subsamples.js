@@ -19,7 +19,7 @@ module.exports.SubSamples = class {
         console.log("SubSamples findAll projectId= ", projectId);
         console.log("SubSamples findAll sampleId= ", sampleId);
 
-        const samples = await this.prisma.subsample.findMany({
+        const samples = await this.prisma.subSample.findMany({
         // const samples = await this.prisma.sampleview.findMany({
             // where:{
             //     sampleId:sampleId
@@ -65,7 +65,7 @@ module.exports.SubSamples = class {
     }
 
     async get({/*projectId, sampleId,*/ subsampleId}) {
-        const sample = await this.prisma.subsample.findFirst({
+        const sample = await this.prisma.subSample.findFirst({
             where:{
                 id:subsampleId,
                 //projectId:projectId
@@ -80,16 +80,54 @@ module.exports.SubSamples = class {
     }
 
     
+    metadata2Array(metadata){
 
-    async add({projectId, subsample}) {
+        const metadataArray = Object.keys(metadata).map( (elem) => {
 
-        console.log("add subsample: ", {sampleId, subsample});
+            let data = {
+                name:elem,
+                value:String(metadata[elem]),
+                type:typeof(metadata[elem])
+            }
+
+            return data;
+        });
+
+        console.log('metadataArray:', metadataArray);
+        return metadataArray
+    }
+
+    async add({projectId, sampleId, subsample}) {
+
+        console.log("add subsample: ", {projectId, sampleId, subsample});
 
         const metadataArray = this.metadata2Array(subsample.data)
 
+
+    //     let sampleid = undefined;
+    //   if (project.driveid == null && project.drive){
+    //     const drive = await this.prisma.drive.findFirstOrThrow(
+    //     {
+    //       where:{
+    //         name:project.drive.name
+    //       }
+    //     });
+    //     driveid = drive.id;
+    //   } else {
+    //     driveid = project.driveid;
+    //   }
+
+
+
         const data = {
             // name:sample.name,
+            // sample:{
+            //     connect: {
+            //         sampleId
+            //     }
+            // },
             sampleId:sampleId,
+            userId:subsample.user_id,
             metadata:{
                 // create: metadataArray // simplement ou en desctructurer ci-dessous
                 create: [
@@ -103,16 +141,16 @@ module.exports.SubSamples = class {
 
         console.log("Create: ", data);
 
-        return await this.prisma.subsample.create({data})
+        return await this.prisma.subSample.create({data})
       }
     
-    async deleteSample({projectId, sampleId, subsampleId}) {
+    async deleteSubSample({projectId, sampleId, subSampleId}) {
 
-        console.log("deleteSubSample: ", {projectId, sampleId, subsampleId});
+        console.log("deleteSubSample: ", {projectId, sampleId, subSampleId});
 
-        return this.prisma.subsample.delete({
+        return await this.prisma.subSample.delete({
             where:{
-                id:subsampleId,
+                id:subSampleId,
                 //projectId:projectId
             }
         });
