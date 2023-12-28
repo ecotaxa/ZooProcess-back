@@ -127,37 +127,39 @@ model Sample {
 model SubSample {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  scan      Scan     @relation(fields: [scanId], references: [id])
-  scanId    String   @db.ObjectId
+  scan      Scan?    @relation(fields: [scanId], references: [id])
+  scanId    String?  @db.ObjectId
   // updatedAt DateTime? @updatedAt
   createdAt DateTime @default(now())
   // metadata   Metadata @relation(fields: [metadataId], references: [id])
-  Sample    Sample   @relation(fields: [sampleId], references: [id])
+  // sample    Sample   @relation(fields: [sampleId], references: [id])
   sampleId  String   @db.ObjectId
   // metadataId String  @db.ObjectId
   // SampleView   SampleView? @relation(fields: [sampleViewId], references: [id])
   // sampleViewId String?     @db.ObjectId
 
-  operator User   @relation(fields: [userId], references: [id])
-  userId   String @db.ObjectId
+  // operator User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
 
   qc        QCState? @relation(fields: [qCStateId], references: [id])
   qCStateId String?  @db.ObjectId
 
-  fraction    String
-  fractionMin Int
-  fractionMax Int
-  fractionNb  Int
+  // fraction    String
+  // fractionMin Int
+  // fractionMax Int
+  // fractionNb  Int
 
-  minmesh          Int
-  minmeshsubmethod Int
-  submethod        String
+  // minmesh          Int
+  // minmeshsubmethod Int
+  // submethod        String
 
-  description String
+  // description String
 
   metadata        Metadata[]
   metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
   metadataModelId String?        @db.ObjectId
+  Sample          Sample         @relation(fields: [sampleId], references: [id])
+  User            User           @relation(fields: [userId], references: [id])
 }
 
 // model Metadata {
