@@ -15,9 +15,24 @@ module.exports.Projects = class {
           include:{
             drive: true,
             ecotaxa: true,
-            samples: true
+            samples: true,
+          //   _count:{
+          //     select:{
+          //       samples:true
+          //       // samples:{
+          //       //   where:{
+          //       //     projectId
+          //       //   }
+          //       // }
+          //     }
+          //   },
+          //   _count:{
+          //     select:{
+          //       scan:true
+          //   }
           }
-        })
+        }
+        )
         return projects
     }
 
@@ -72,8 +87,6 @@ module.exports.Projects = class {
       if (project.description){data['description'] = project.description;}
       if (project.ecotaxaId){data['ecotaxaId'] = project.ecotaxa;}
       if (project.acronym){data['acronym'] = project.acronym;}
-
-
 
       console.log("data: ", data);
 
