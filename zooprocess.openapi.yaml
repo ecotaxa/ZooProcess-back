@@ -308,6 +308,71 @@ paths:
       tags:
       - User
 
+    post:
+      description: Get the list of subsamples associated to the sample
+      operationId: subsamples.create
+
+      responses:
+        "200":
+          description: Returned the list of subsamples associated to the sample
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubSample'
+        '405':
+          description: Invalid input
+        '409':
+          description: Duplicate entry
+      tags:
+      - User
+
+  /projects/{projectId}/samples/{sampleId}/subsamples/{subSampleId}:
+    parameters:
+    - description: The project id
+      example: 655d3062983b92b6e29b3369
+      explode: false
+      in: path
+      name: projectId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: sampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sub sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: subSampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    delete:
+      summary: Delete a subsample
+      description: Delete a subsample
+
+      operationId: subsamples.delete
+      
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - User
+
+
 
 
   /metadata:
@@ -381,9 +446,44 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/MetadataModel'
+                $ref: '#/components/schemas/MetadataModel'
       tags:
       - User    
+
+  /users:
+    post:
+      description: Add a new User
+      operationId: Users.create
+      responses:
+        "200":
+          description: Return the new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '405':
+          description: Invalid input  
+        '409':
+          description: Duplicate entry
+      tags:
+      - User
+
+    get:
+      description: Get the user list
+      operationId: Users.list
+
+      responses:
+        "200":
+          description: Return the user list
+          content:
+            application/json:
+              schema:
+                title: Response get the list of users 
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      tags:
+      - User  
 
 components:
   schemas:
@@ -443,6 +543,22 @@ components:
           type: string
 
     
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+      
+
 
     MetadataModel:
       type: object
