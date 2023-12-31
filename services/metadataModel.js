@@ -38,4 +38,35 @@ module.exports.MetadataModel = class {
         })
     }
 
+    async deleteMetadataModel(metadatamodelid){
+
+        console.log("deleteMetadata: ", metadatamodelid);
+
+        const sample = await this.prisma.metadataModel.findUnique({
+            where: {
+                id:metadatamodelid
+            },
+            include: {
+                sample: true,
+                SubSample: true
+            }
+        })
+
+        if ( sample ){
+            console.log("count sample: ", sample.sample.length)
+            console.log("count sample: ", sample.SubSample.length)
+    
+            if ( sample.sample.length || sample.SubSample.length ){
+                throw ("Not Empty")
+            }
+        }
+
+        return await this.prisma.metadataModel.delete({
+            where:{
+                id:metadatamodelid,
+            }
+        });
+
+    }
+
 }

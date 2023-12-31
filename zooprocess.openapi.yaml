@@ -448,7 +448,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/MetadataModel'
       tags:
-      - User    
+        - User  
+
+    delete:
+      summary: Delete a metadata model
+      description: Delete a metadata model, only if no sammple or subsample associated to it
+      operationId: MetadataModel.delete
+
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '409':
+          description: Sample or SubSample are associated
+      tags:
+        - User 
 
   /users:
     post:
@@ -466,7 +483,7 @@ paths:
         '409':
           description: Duplicate entry
       tags:
-      - User
+        - User
 
     get:
       description: Get the user list
@@ -483,7 +500,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
       tags:
-      - User  
+        - User  
 
 components:
   schemas:

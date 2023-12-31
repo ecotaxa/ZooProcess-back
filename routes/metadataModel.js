@@ -1,4 +1,5 @@
 const { MetadataModel } = require("../services/metadataModel");
+const { Prisma } = require("@prisma/client");
 
 
 const metadataModel = new MetadataModel();
@@ -48,7 +49,7 @@ module.exports = {
 
             if (e.name == "PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
-                    const txt = "Project with name '"+ req.body.name +"' already exist";
+                    const txt = "Metadata with name '"+ req.body.name +"' already exist";
                     const message = { error:txt };
                     return res.status(500).json({error:message});
                 }
@@ -57,6 +58,34 @@ module.exports = {
                 }
             }
             return res.status(500).json({error:e})
+        })
+    },
+
+    delete: async (req, res) => {
+        console.log("delete ", req.params.id);
+
+        return metadataModel.deleteMetadataModel(req.params.id)
+        .then(result => {
+            console.log("OK", res);
+            console.log("blabla",result)
+            return res.status(200).send("OK"); //.json(result)
+        })
+        .catch(async(error) => {
+            console.log(error);
+
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === 'P2025') {
+                  console.log("ERROR: ",error.meta.cause);
+                  return res.status(204).send("OK");
+                }
+            }
+
+            if (error == "Not Empty"){
+                const txt = "Metadata '"+ req.body.name +"'cannot be delete, sample and/or subsample are associated to it";
+                const message = { error:txt };
+                return res.status(409).json({error:error})
+            }
+            return res.status(500).json({error:error})
         })
     }
 
