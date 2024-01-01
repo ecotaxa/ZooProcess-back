@@ -91,6 +91,8 @@ https://www.prisma.io/docs/reference/api-reference/error-reference
 
 # Mongo
 
+mongosh --host zooprocess.imev-mer.fr --username root --password example
+
 use ZooProcess
 
 
