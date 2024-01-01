@@ -72,18 +72,14 @@ module.exports = {
 
         return samples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
-            return res.status(200).json(payload);
+            return res.status(200).send("OK"); //json(payload);
         })
         .catch(async(error) => {
             // console.error("Error:",error );
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 if (error.code === 'P2025') {
-                //   console.log("ERROR: ",error);
-                  console.log("ERROR: ",error.meta.cause);
-                //   return res.status(500).send(error.meta.cause);
-                //   return res.status(500).json({message:error.meta.cause});
-                //   return res.status(500).send({error:error.meta.cause});
-                  return res.status(200).send("OK");
+                  console.log("ERROR: ", error.meta.cause);
+                  return res.status(204).send("OK");
                 }
                 console.log(error.message);
                 return res.status(500).json({error:error});

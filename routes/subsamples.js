@@ -85,12 +85,8 @@ module.exports = {
             // console.error("Error:",error );
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 if (error.code === 'P2025') {
-                //   console.log("ERROR: ",error);
                   console.log("ERROR: ",error.meta.cause);
-                //   return res.status(500).send(error.meta.cause);
-                //   return res.status(500).json({message:error.meta.cause});
-                //   return res.status(500).send({error:error.meta.cause});
-                  return res.status(200).send("OK");
+                  return res.status(204).send("OK");
                 }
                 console.log(error.message);
                 return res.status(500).json({error:error});

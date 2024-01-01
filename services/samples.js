@@ -1,5 +1,6 @@
 // const { PrismaClient } = require("@prisma/client");
 const { Prisma } = require("./client");
+// var flatMap = require('array.prototype.flatmap');
 
 module.exports.Samples = class {
 
@@ -38,12 +39,17 @@ module.exports.Samples = class {
 
             const nbFractions = sample.subsample.length;
             let nbScans = 0
+            // if ( nbFractions > 0 ) {
+            //     nbScans = sample.subsample
+            //     .flatMap((subsample) => subsample.scans.length )
+            //     .reduce((a, b)=> a + b, 0);
+            // }
+
             if ( nbFractions > 0 ) {
                 nbScans = sample.subsample
-                .flatmap((subsample) => subsample.scans.length )
-                .reduce((a, b)=> a + b, 0);
-            }
-
+                .flatMap((subsample) => { if (subsample.scans !== undefined ) return 1; return 0;})
+                .reduce((a, b)=> a + b, 0);            }
+         
             const ns = {
                 ...sample,
                 nbFractions,
@@ -135,12 +141,37 @@ module.exports.Samples = class {
 
         console.log("deleteSample: ", {projectId, sampleId});
 
-        return this.prisma.sample.delete({
+        // need to delete scan before
+
+        const deleteSubSample = this.prisma.metadata.deleteMany({
+            where:{
+                sampleId
+            }
+        })
+
+        const deleteSample = this.prisma.sample.delete({
             where:{
                 id:sampleId,
                 //projectId:projectId
             }
-        });
+        })
+
+        return await prisma.$transaction(
+            [
+                deleteSubSample,
+                deleteSample
+            ],
+            // {
+            //   isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
+            // }
+        )
+
+        // return this.prisma.sample.delete({
+        //     where:{
+        //         id:sampleId,
+        //         //projectId:projectId
+        //     }
+        // });
     }
 
 }
