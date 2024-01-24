@@ -4,11 +4,15 @@ const { Prisma } = require("@prisma/client");
 const users = new Users();
 
 module.exports = {
-    list: async (req,res) => {
+    list: async (req, res) => {
+
+        console.log("Route User::get", req);
+        console.log("Route User::get params", req.params);
+
 
         return users.findAll(req.query)
-        .then(payload => {
-            return res.status(200).json(payload);
+        .then(users => {
+            return res.status(200).json(users);
         })
         .catch(async(e) => {
             console.error("Error:",e );
@@ -16,13 +20,13 @@ module.exports = {
         })
     },
 
-    create: async (req,res) => {
-        console.log("create", req.body);
+    create: async (req, res) => {
+        console.log("Route User create", req.body);
 
         return users.add(req.body)
-        .then(result => {
-            console.log("OK", result) 
-            return res.status(200).json(result)
+        .then(user => {
+            console.log("OK", user) 
+            return res.status(200).json(user)
         })
         .catch(async(e) => {
             console.error("Error:", e )
@@ -43,13 +47,13 @@ module.exports = {
         })
     },
 
-    get: async (req,res) => {
+    get: async (req, res) => {
 
-        console.log("Projects::get", req.params.projectId);
+        console.log("Route User::get", req.params);
 
-        return users.get(req.params.projectId)
-        .then(project => {
-            return res.status(200).json(project)
+        return users.get(req.params.userId)
+        .then(user => {
+            return res.status(200).json(user)
         })
         .catch(async(e) =>{
             console.error("Error:",e );
@@ -61,13 +65,16 @@ module.exports = {
     update: async (req, res) => {
         // res.json(await projects.update(req.body, req.params.projectId))
 
-        console.log("Projects::update");
-        console.log("id: ", req.params.projectId);
+        console.log("Route User::update");
+        console.log("id: ", req.params.id);
         console.log("body: ", req.body);
 
-        return users.update({body:req.body, projectId:req.params.projectId})
-        .then(project => {
-            return res.status(200).json(project)
+        return users.update({body:req.body, userId:req.params.id})
+        .then(user => {
+
+            console.log("user updated: ", user)
+
+            return res.status(200).json(user)
         })
         .catch(async(e) =>{
             console.error("Error:",e );

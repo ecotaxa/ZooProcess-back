@@ -12,7 +12,35 @@ tags:
   name: User
 - description: Manager related operations
   name: Manager
+- description: authentication
+  name: Authentication
 paths:
+
+
+
+  /login:
+    post:
+      summary: Login
+      description: "**Login barrier,**\n\nIf successful, the login will returns a **JWT** which will have to be used\nin bearer authentication scheme for subsequent calls."
+      operationId: Login.login
+      requestBody:
+        description: user credential
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginReq'
+      responses:
+        '200':
+          description: Login barrier, If successful, the login will returns a JWT which will have to be used in bearer authentication scheme for subsequent calls.
+          content:
+            application/json:
+              schema:
+                title: Response get the list of projects
+                type: string
+      tags:
+        - Authentication  
+
 
   /projects:
     get:
@@ -28,8 +56,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       summary: Add a new project 
@@ -42,9 +74,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Project'
-      tags:
-        - User
-
       responses:
         '200':
           description: Successful operation
@@ -56,6 +85,12 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
 
   /projects/{projectId}:
     parameters:
@@ -80,8 +115,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     put:
       description: Update information about the project
@@ -94,8 +133,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
 
     # post:
@@ -138,8 +181,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Drive'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       summary: Add a new drive 
@@ -163,8 +210,12 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /projects/{project}/samples:
     parameters:
@@ -191,8 +242,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Sample'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       summary: Add a sample 
@@ -216,8 +271,12 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /projects/{projectId}/samples/{sampleId}:
     parameters:
@@ -251,8 +310,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Sample'
           description: Return the project sample required
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      security:
+        - BearerAuth: [ ]
 
     delete:
       summary: Delete a sample
@@ -267,8 +330,12 @@ paths:
             application/json:
               schema:
                 type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /projects/{projectId}/samples/{sampleId}/subsamples:
     parameters:
@@ -305,8 +372,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SubSample'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       description: Get the list of subsamples associated to the sample
@@ -323,8 +394,12 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      security:
+        - BearerAuth: [ ]
 
   /projects/{projectId}/samples/{sampleId}/subsamples/{subSampleId}:
     parameters:
@@ -369,8 +444,12 @@ paths:
             application/json:
               schema:
                 type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
 
 
@@ -420,9 +499,12 @@ paths:
           description: Invalid input
         '409':
           description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
-
+      security:
+        - BearerAuth: [ ]
 
   /metadata/{id}:
     parameters:
@@ -447,9 +529,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetadataModel'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User  
-
+      security:
+        - BearerAuth: [ ]
+        
     delete:
       summary: Delete a metadata model
       description: Delete a metadata model, only if no sammple or subsample associated to it
@@ -464,9 +550,13 @@ paths:
                 type: string
         '409':
           description: Sample or SubSample are associated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
-        - User 
-
+        - Manager 
+      security:
+        - BearerAuth: [ ]
+        
   /users:
     post:
       description: Add a new User
@@ -480,8 +570,8 @@ paths:
                 $ref: '#/components/schemas/User'
         '405':
           description: Invalid input  
-        '409':
-          description: Duplicate entry
+        # '409':
+          # description: Duplicate entry
       tags:
         - User
 
@@ -499,10 +589,94 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
       tags:
-        - User  
+        - Manager  
+      security:
+        - BearerAuth: [ ]
+
+    # put:
+    # delete:
+  /users/{id}:
+    parameters:
+      - description: The user id
+        example: "52"
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+
+    patch:
+      description: Update the user data
+      operationId: Users.update
+
+      responses:
+        "200":
+          description: Return the user list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+        # - Manager  
+      # security:
+        # - BearerAuth: [ ]
+
+    get:
+      description: Get the user info
+      operationId: Users.get
+
+      responses:
+        "200":
+          description: Return the user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+
+  # /users/me:
+  #   get:
+  #     summary: Show Current User
+  #     description: Returns **currently authenticated user's** (i.e. you) information, permissions and last used projects.
+  #     operationId: Users.get
+  #     responses:
+  #       '200':
+  #         description: Successful Response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/User"
+  #       '401':
+  #         $ref: '#/components/responses/UnauthorizedError'
+  #     tags:
+  #       - User
+  #     security:
+  #       - BearerAuth: [ ]
+
+
 
 components:
+
+  securitySchemes:
+    BearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+
   schemas:
 
     Drive:
@@ -593,3 +767,26 @@ components:
           type: string
         value:
           type: string
+
+
+    LoginReq:
+        type: object
+        title: Login request Model
+        required:
+          - password
+          - email
+        properties:
+          password:
+            title: User's password
+            type: string
+            description: User password.
+            example: test!
+          username:
+            title: User's email
+            type: string
+            description: User email used during registration.
+            example: ecotaxa.api.user@gmail.com
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid

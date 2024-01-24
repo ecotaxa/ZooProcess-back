@@ -57,6 +57,23 @@ module.exports.Users = class {
       return user 
     }
 
+    // async update({body, userId}) {
+
+    //   console.log("user:update:");
+    //   console.log("id: ", userId);
+    //   console.log("body: ", body);
+    //   if ( body == undefined ){ throw("no data to update"); }
+    //   if ( userId == undefined ){ throw("user id undefined"); }
+
+    //   const user = await this.prisma.user.update({
+    //     where:{
+    //       id : userId
+    //     },
+    //     data: data
+    //   })
+    //   return user 
+    // }
+
     async update({body, userId}) {
 
       console.log("user:update:");
@@ -65,47 +82,34 @@ module.exports.Users = class {
       if ( body == undefined ){ throw("no data to update"); }
       if ( userId == undefined ){ throw("user id undefined"); }
 
+      const data = await this.prisma.user.findUnique({
+        where:{
+          id: userId
+        }
+      })
+
+      if ( data == undefined ){
+        throw('No user')
+      }
+
+      console.log ("data: ", data)
+
+      let newData = {
+        ...data,
+        ...body
+      }
+      delete newData['id']
+
+      console.log("newData: ", newData)
+
       const user = await this.prisma.user.update({
         where:{
           id : userId
         },
-        data: data
+        data: newData
       })
       return user 
     }
-
-
-    // async updateids(ids, data){
-
-    //   const projects = await this.prisma.project.updateMay({
-    //     where:{
-    //       id:{
-    //         in:ids
-    //       }
-    //     },
-    //     data: data
-    //   })
-    //   return projects
-    // }
-
-    // async updates({body, params}) {
-
-    //   console.log("projects:update:",body,params);
-    //   const ids = params.ids.split(',').map(id => +id);
-
-    //   return this.updateids(ids, body)
-    //     .then(res => {
-    //         console.log("rrrr",res);
-    //         // this.prisma.$disconnect()
-    //         return res;
-    //      })
-    //     .catch(async(e) =>{
-    //         // this.prisma.$disconnect()
-    //         console.error(e);
-    //         throw(e);
-    //     }) 
-    // }
-
 
     async deleteid(id){
       const user = await this.prisma.user.delete({
@@ -132,22 +136,6 @@ module.exports.Users = class {
       })
       return samples
     }
-
-    // async qcDone(project){
-    //   const samples = await this.prisma.project.findAll({
-    //     include:{
-    //       where:{
-    //         QCState:"Done"
-    //       }
-    //     }
-    //   })
-    //   return samples
-    // }
-
-    // async findqcnotdone(){
-    //   const samples = await this.prisma.samples.findAll({userid:id, project:projectid , qcState:"None"})
-    //   return samples
-    // }
 
 
 }
