@@ -3,6 +3,7 @@ const path = require('path');
 const logger = require('morgan');
 const http = require('http');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const {
   middleware: openApiMiddleware,
@@ -14,6 +15,50 @@ const app = express();
 // const apiSpec = path.join(__dirname, 'api.yaml');
 const apiSpec = path.join(__dirname, 'zooprocess.openapi.yaml');
 
+function verifyToken (req, res, next){
+
+  console.log("verifyToken middleware")
+
+  const bearerHeader = req.headers [ "authorization" ];
+  if (typeof bearerHeader !== 'undefined' ) {
+    const bearer = bearerHeader .split(' ');
+    const bearerToken = bearer[1];
+
+    console.log("Bearer found : ", bearerToken);
+
+    req.token = bearerToken;
+    next ();
+  }else{
+    // res. sendstatus
+    console.log("No Bearer")
+    next();
+  }
+}
+
+function extractJWT(req, res, next){
+
+  if ( req.token ){
+    console.log("have token " , typeof(req.token))
+    jwt.verify (req.token, 'secret', (err, authData) => {
+      if (err) {
+        console.log("Error Token", err)
+        res.sendStatus (403);
+      } else {
+        //res.json({
+        //  message: "Welcome to Profile",
+        //    userData: authData
+        //})
+        console.log("JWT: ", authData)
+        req.jwt = authData;
+      }
+    })
+    next();
+  }
+  else {
+    console.log("no token")
+    next();
+  }
+}
 
 var corsOption = {
   origin: 'http://zooprocess.imev-mer.fr',
@@ -30,6 +75,9 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use('/spec', express.static(apiSpec));
+
+app.use(verifyToken)
+app.use(extractJWT)
 
 //  2. Install the OpenApiValidator middleware
 app.use(
