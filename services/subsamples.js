@@ -104,18 +104,18 @@ module.exports.SubSamples = class {
         const metadataArray = this.metadata2Array(subsample.data)
 
 
-    //     let sampleid = undefined;
-    //   if (project.driveid == null && project.drive){
-    //     const drive = await this.prisma.drive.findFirstOrThrow(
-    //     {
-    //       where:{
-    //         name:project.drive.name
-    //       }
-    //     });
-    //     driveid = drive.id;
-    //   } else {
-    //     driveid = project.driveid;
-    //   }
+        let userId = undefined;
+      if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator){
+        const user = await this.prisma.user.findFirstOrThrow(
+        {
+          where:{
+            name: subsample.data.scanning_operator
+          }
+        });
+        userId = user.id;
+      } else {
+        userId = subsample.user_id;
+      }
 
 
 
@@ -126,8 +126,8 @@ module.exports.SubSamples = class {
             //         sampleId
             //     }
             // },
-            sampleId:sampleId,
-            userId:subsample.user_id,
+            sampleId,
+            userId,
             metadata:{
                 // create: metadataArray // simplement ou en desctructurer ci-dessous
                 create: [
@@ -135,6 +135,8 @@ module.exports.SubSamples = class {
                     ]   
             }
         }
+
+        console.log("SubSamples add data: ", data)
 
         if (subsample.name){data['name']=subsample.name}
         if (subsample.metadataModelId){data['metadataModelId']=subsample.metadataModelId}

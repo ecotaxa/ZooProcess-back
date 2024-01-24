@@ -35,7 +35,7 @@ module.exports = {
 
     create: async (req,res) => {
         // console.log("create",req.body);
-        console.log("create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
+        console.log("Subsample create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
 
         return subsamples.add({projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body})
         .then(result => {
