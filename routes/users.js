@@ -62,6 +62,22 @@ module.exports = {
 
     },
 
+    me: async (req, res) => {
+
+        console.log("Route User::get", req.params);
+
+        const id = req?.params?.jwt?.id
+
+        return users.get(id)
+        .then(user => {
+            return res.status(200).json(user)
+        })
+        .catch(async(e) =>{
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        }) 
+    },
+
     update: async (req, res) => {
         // res.json(await projects.update(req.body, req.params.projectId))
 

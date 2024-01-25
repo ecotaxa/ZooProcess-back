@@ -643,29 +643,29 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
-        - User
+        - Manager
       security:
         - BearerAuth: [ ]
 
 
-  # /users/me:
-  #   get:
-  #     summary: Show Current User
-  #     description: Returns **currently authenticated user's** (i.e. you) information, permissions and last used projects.
-  #     operationId: Users.get
-  #     responses:
-  #       '200':
-  #         description: Successful Response
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/User"
-  #       '401':
-  #         $ref: '#/components/responses/UnauthorizedError'
-  #     tags:
-  #       - User
-  #     security:
-  #       - BearerAuth: [ ]
+  /users/me:
+    get:
+      summary: Show Current User
+      description: Returns **currently authenticated user's** (i.e. you) information, permissions and last used projects.
+      operationId: Users.me
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
 
 
 
