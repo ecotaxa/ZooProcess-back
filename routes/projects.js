@@ -1,10 +1,15 @@
 const { Projects } = require("../services/projects");
 const { Prisma } = require("@prisma/client");
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 const projects = new Projects();
 
 module.exports = {
     list: async (req,res) => {
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return projects.findAll(req.query)
         .then(payload => {
@@ -18,6 +23,10 @@ module.exports = {
 
     create: async (req,res) => {
         console.log("create", req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return projects.add(req.body)
         .then(result => {
@@ -47,6 +56,10 @@ module.exports = {
 
         console.log("Projects::get", req.params.projectId);
 
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         return projects.get(req.params.projectId)
         .then(project => {
             return res.status(200).json(project)
@@ -64,6 +77,10 @@ module.exports = {
         console.log("Projects::update");
         console.log("id: ", req.params.projectId);
         console.log("body: ", req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return projects.update({body:req.body, projectId:req.params.projectId})
         .then(project => {

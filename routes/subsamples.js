@@ -1,6 +1,7 @@
 const { Prisma } = require("@prisma/client");
 const { SubSamples } = require("../services/subsamples");
 const { MetadataModel } = require("../services/metadataModel");
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 const subsamples = new SubSamples();
 
@@ -10,6 +11,10 @@ module.exports = {
     list: async (req,res) => {
         console.log("list req.query:", req.query);
         console.log("list req.params:", req.params);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return subsamples.findAll({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
@@ -23,6 +28,11 @@ module.exports = {
     },
     
     get: async (req,res) => {
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId: req.param.subSampleId})
         .then(payload => {
             return res.status(200).json(payload);
@@ -34,6 +44,11 @@ module.exports = {
     },
 
     create: async (req,res) => {
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         // console.log("create",req.body);
         console.log("Subsample create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
 
@@ -68,6 +83,10 @@ module.exports = {
         // console.log("res.status: ",res.status);
 
         console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId:req.params.subSampleId});
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
 // start transaction
 

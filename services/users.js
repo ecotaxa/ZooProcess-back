@@ -31,7 +31,7 @@ module.exports.Users = class {
 
 
     async get(userId){
-      console.log("projectId:", userId);
+      console.log("userId:", userId);
 
       const user = await this.prisma.user.findFirst({
         where:{

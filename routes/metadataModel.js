@@ -1,5 +1,6 @@
 const { MetadataModel } = require("../services/metadataModel");
 const { Prisma } = require("@prisma/client");
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 
 const metadataModel = new MetadataModel();
@@ -11,6 +12,10 @@ module.exports = {
 
         console.log("create Body", req.body);
         console.log("create Req", req.query);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return metadataModel.findAll(req.query.sample)
         .then(payload => {
@@ -26,6 +31,10 @@ module.exports = {
 
         console.log("MetadaType::get", req.params.id);
 
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         return metadataModel.get(req.params.id)
         .then(model => {
             return res.status(200).json(model)
@@ -38,6 +47,10 @@ module.exports = {
 
     create: async (req,res) => {
         console.log("create", req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return metadataModel.add(req.body)
         .then(result => {
@@ -63,6 +76,10 @@ module.exports = {
 
     delete: async (req, res) => {
         console.log("delete ", req.params.id);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return metadataModel.deleteMetadataModel(req.params.id)
         .then(result => {

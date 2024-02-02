@@ -1,5 +1,6 @@
 const { Prisma } = require("@prisma/client");
 const { Samples } = require("../services/samples");
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 const samples = new Samples();
 
@@ -9,6 +10,10 @@ module.exports = {
     list: async (req,res) => {
         console.log("list req.query:", req.query);
         console.log("list req.params:", req.params);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return samples.findAll(req.params.project)
         .then(payload => {
@@ -22,6 +27,11 @@ module.exports = {
     },
     
     get: async (req,res) => {
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         return samples.get({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {
             return res.status(200).json(payload);
@@ -35,6 +45,10 @@ module.exports = {
     create: async (req,res) => {
         // console.log("create",req.body);
         console.log("create",{projectId:req.params.project, sample:req.body});
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return samples.add({projectId:req.params.project, sample:req.body})
         .then(result => {
@@ -69,6 +83,10 @@ module.exports = {
         // console.log("res.status: ",res.status);
 
         console.log("delete: ", {projectId:req.params.projectId, sampleId:req.params.sampleId});
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return samples.deleteSample({projectId:req.params.projectId, sampleId:req.params.sampleId})
         .then(payload => {

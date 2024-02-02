@@ -1,10 +1,25 @@
 const { Users } = require("../services/users");
 const { Prisma } = require("@prisma/client");
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 const users = new Users();
 
 module.exports = {
     list: async (req, res) => {
+
+        // const allowedRoles = req.openapi.schema.tags;
+        // console.log("TAGS", allowedRoles);
+        
+        // if(allowedRoles.includes(role)){
+
+        // // if ( req.jwt.role != "Manager"){
+        //     console.error("user is Not Admin" );
+        //     return res.status(401).send("You are not authorized to access this resource")
+        // }
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         console.log("Route User::get", req);
         console.log("Route User::get params", req.params);
@@ -22,6 +37,10 @@ module.exports = {
 
     create: async (req, res) => {
         console.log("Route User create", req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return users.add(req.body)
         .then(user => {
@@ -48,8 +67,11 @@ module.exports = {
     },
 
     get: async (req, res) => {
-
         console.log("Route User::get", req.params);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return users.get(req.params.userId)
         .then(user => {
@@ -63,8 +85,11 @@ module.exports = {
     },
 
     me: async (req, res) => {
-
         console.log("Route User::get", req.params);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         const id = req?.params?.jwt?.id
 
@@ -85,6 +110,10 @@ module.exports = {
         console.log("id: ", req.params.id);
         console.log("body: ", req.body);
 
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        
         return users.update({body:req.body, userId:req.params.id})
         .then(user => {
 

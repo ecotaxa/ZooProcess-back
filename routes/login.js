@@ -1,5 +1,4 @@
 const { Login } = require("../services/login")
-
 const jwt  = require("jsonwebtoken")
 
 const login = new Login();

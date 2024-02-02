@@ -1,10 +1,16 @@
 const { Drives } = require("../services/drives")
+const { isRoleAllowed } = require("../routes/validate_tags");
 
 const drives = new Drives();
 
 module.exports = {
 
     list: async (req,res) => {
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
         return drives.findAll(req.query)
         .then(payload => {
             return res.status(200).json(payload);
@@ -17,6 +23,10 @@ module.exports = {
 
     create: async (req,res) => {
         console.log("create",req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
 
         return drives.add(req.body)
         .then(result => {
