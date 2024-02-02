@@ -20,6 +20,11 @@ generator client {
 //   authorId  String  @db.ObjectId
 // }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   email         String      @unique
@@ -29,6 +34,7 @@ model User {
   password      String?
   // accounts  Account[]
   // posts     Post[]
+  role          UserRole    @default(USER)
   SubSample     SubSample[]
 }
 
@@ -99,16 +105,21 @@ model ScanningOption {
 model QCState {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   validated     DateTime
-  state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
+  // state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
+  state         QCStatus    @default(PENDING)
   // Project       Project[]
   qCStateItemId String      @db.ObjectId
   SubSample     SubSample[]
 }
 
-model QCStateItem {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String    @default("None")
-  QCState QCState[]
+// model QCStateItem {
+//   id      String    @id @default(auto()) @map("_id") @db.ObjectId
+//   name    String    @default("None")
+//   QCState QCState[]
+// }
+
+enum QCStatus {
+  PENDING
 }
 
 model Ecotaxa {
