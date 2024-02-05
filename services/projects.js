@@ -1,96 +1,43 @@
 
 // const {PrismaClient} = require('@prisma/client');
-const { Prisma } = require('./client');
+// const { Prisma } = require('./client');
+const { Projects } = require("./prisma/projects");
+
+const fs = require('fs');
+const path = require('path')
 
 module.exports.Projects = class {
 
     constructor() {
       // this.prisma = new PrismaClient()
-      this.prisma = new Prisma().client;
+      // this.prisma = new Prisma().client;
+      this.projects = new Projects()
     }
 
     async findAll() {
-        const projects = await this.prisma.project.findMany(
-          {
-          include:{
-            drive: true,
-            ecotaxa: true,
-            samples: true,
-          //   _count:{
-          //     select:{
-          //       samples:true
-          //       // samples:{
-          //       //   where:{
-          //       //     projectId
-          //       //   }
-          //       // }
-          //     }
-          //   },
-          //   _count:{
-          //     select:{
-          //       scan:true
-          //   }
-          }
-        }
-        )
-        return projects
+        return this.projects.findAll()
     }
 
 
     async getDriveID(project){
-      let driveid = undefined;
-      if (project.driveid == null && project.drive){
-        const drive = await this.prisma.drive.findFirstOrThrow(
-        {
-          where:{
-            name:project.drive.name
-          }
-        });
-        driveid = drive.id;
-      } else {
-        driveid = project.driveid;
-      }
-      return driveid;
+      return this.projects.getDriveID(project)
     }
 
+    // add a new project
+    // create folder 
+    // and db entry
     async add(project) {
 
-      let driveid = undefined;
-      if (project.driveid == null && project.drive){
-        const drive = await this.prisma.drive.findFirstOrThrow(
-        {
-          where:{
-            name:project.drive.name
-          }
-        });
-        driveid = drive.id;
-      } else {
-        driveid = project.driveid;
+      project.driveid = await this.getDriveID(project)
+
+      if ( project.drive && project.drive.name) {
+        const folderName = path.join(process.env.DRIVES_PATH, project.drive.name , project.name)
+        if (!fs.existsSync(folderName)) 
+            fs.mkdirSync(folderName,'0777', true)
       }
-      // const driveid = await this.getDriveID(project);
 
-      // console.log("driveid: ", driveid);
 
-      // let p = delete project['drive']
-
-      // console.log("p:",p);
-
-      // const data = {
-      //     ...project,
-      //     driveId:driveid
-      // }
-
-      let data = {
-        name:project.name,
-        driveId:driveid
-      }
-      if (project.description){data['description'] = project.description;}
-      if (project.ecotaxaId){data['ecotaxaId'] = project.ecotaxa;}
-      if (project.acronym){data['acronym'] = project.acronym;}
-
-      console.log("data: ", data);
-
-      return await this.prisma.project.create({data})
+      return this.projects.add(project)
     }
   
     
@@ -109,209 +56,56 @@ module.exports.Projects = class {
     // }
 
     async get(projectId){
-      console.log("projectId:", projectId);
-
-      const project = await this.prisma.project.findFirst({
-        where:{
-          id: projectId
-        },
-        include:{
-          drive: true,
-          samples: true,
-          ecotaxa: true
-        }
-      })
-      return project
+      return this.projects.get(projectId)
     }
 
 
     async updateid(id, data) {
-      const project = await this.prisma.project.update({
-        where:{
-          id : id
-        },
-        data: data
-      })
-      return project 
+      return this.projects.updateid(id, data)
     }
 
     async update({body, projectId}) {
-
-      console.log("projects:update:");
-      console.log("id: ", projectId);
-      console.log("body: ", body);
-      if ( body == undefined ){ throw("no data to update"); }
-      if ( projectId == undefined ){ throw("project id undefined"); }
-
-      // const {id} = projectId;
-
-      // // return this.updateid(+id, body)
-      // return this.updateid(projectId, body)
-      //   .then(res => {
-      //       console.log("rrrr",res);
-      //       // this.prisma.$disconnect()
-      //       return res;
-      //    })
-      //   .catch(async(e) =>{
-      //       // this.prisma.$disconnect()
-      //       console.error(e);
-      //       throw(e);
-      //   }) 
-
-      const driveid = await this.getDriveID(body);
-
-      console.log("driveid: ",driveid);
-
-      //let projectbody = body;
-      //delete projectbody.drive
-      //console.log("projectbody: ",projectbody);
-      
-      let d = new Date();
-      // let u = Date.UTC();
-
-      // console.log("date: ",Date.now().toLocaleTimeString());
-      // console.log("date: ",u.toLocaleString());
-
-      let data = {
-        //id: body.id,
-        name: body.name,
-        description: body.description,
-        //createdAt: body.createdAt,
-        updatedAt: d.toISOString(),
-        driveId: driveid,
-      }
-
-      // if isManager(user) {
-        if ( body.acronym ) { data['acronym'] = body.acronym; }
-        if ( body.scanningOptions ) { data['scanningOptions'] = body.scanningOptions; }
-      // }
-
-      console.log("=== data: ", data);
-
-      const project = await this.prisma.project.update({
-        where:{
-          id : projectId
-        },
-        data: data
-      })
-      return project 
+      return this.projects.update({body, projectId})
     }
 
 
     async updateids(ids, data){
+      return this.projects.updateids(ids, data)
 
-      const projects = await this.prisma.project.updateMay({
-        where:{
-          id:{
-            in:ids
-          }
-        },
-        data: data
-      })
-      return projects
     }
 
     async updates({body, params}) {
-
-      console.log("projects:update:",body,params);
-      const ids = params.ids.split(',').map(id => +id);
-
-      return this.updateids(ids, body)
-        .then(res => {
-            console.log("rrrr",res);
-            // this.prisma.$disconnect()
-            return res;
-         })
-        .catch(async(e) =>{
-            // this.prisma.$disconnect()
-            console.error(e);
-            throw(e);
-        }) 
+      return this.projects.updates({body, params})
     }
 
 
     async deleteid(id){
-      const project = await this.prisma.project.delete({
-        where:{
-          id:id
-        }
-      })
-      return project
+      return this.projects.deleteid(id)
     }
 
     async delete({params}){
-      console.log("projects:delete:",params);
-      const {id} = params;
-
-      return this.deleteid(+id)
-        .then(res => {
-            console.log("rrrr",res);
-            // this.prisma.$disconnect()
-            return res;
-         })
-        .catch(async(e) =>{
-            // this.prisma.$disconnect()
-            console.error(e);
-            throw(e);
-        })   
+      return this.projects.delete({params})
     }
 
     async deleteids(ids) {
-      const count = await this.prisma.project.deleteMany({
-        where:{
-          id:{
-            in:ids
-          }
-        }
-      });
-      return count;
+      return this.projects.deleteids(ids)
     }
 
     async deletes({params}) {
-      console.log("projects:deletes:",body,params);
-      const ids = params.ids.split(',').map(id => +id);
-
-      return this.deleteids(ids)
-        .then(res => {
-            console.log("rrrr",res);
-            // this.prisma.$disconnect()
-            return res;
-         })
-        .catch(async(e) =>{
-            // this.prisma.$disconnect()
-            console.error(e);
-            throw(e);
-        })     
+      return this.projects.deletes({params})
     }
 
 
     async nbSamples(project){
-      const samples = await this.prisma.project.findAll({
-        include:{
-          _count:{
-            select:{
-              samples:true
-            }
-          }
-        }
-      })
-      return samples
+      return this.projects.nbSamples(project)
     }
 
     async qcDone(project){
-      const samples = await this.prisma.project.findAll({
-        include:{
-          where:{
-            QCState:"Done"
-          }
-        }
-      })
-      return samples
+      return this.projects.qcDone(project)
     }
 
     async findqcnotdone(){
-      const samples = await this.prisma.samples.findAll({userid:id, project:projectid , qcState:"None"})
-      return samples
+      return this.projects.findqcnotdone()
     }
 
 

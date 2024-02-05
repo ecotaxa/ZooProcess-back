@@ -1,48 +1,44 @@
 
-// const {PrismaClient} = require('@prisma/client')
-// const { prisma } = require('@/services/client')
-const { Prisma } = require('./client')
+const { Drives } = require("../services/prisma/drives")
 
-// const prisma = new PrismaClient();
+// const { file } = require("file")
+const fs = require('fs');
+const path = require('path')
 
 module.exports.Drives = class {
 
     constructor() {
-        // this.prisma = new PrismaClient()
-        this.prisma = new Prisma().client;
-        // this.prisma = prisma;
-      } 
+        this.drives = new Drives()
+      }
 
       async findAll() {
-        const drives = await this.prisma.drive.findMany({})
-        return drives
+        return this.drives.findAll()
     }
 
     async get(driveId) {
-        const drive = await this.prisma.drive.findMany({
-            where:{
-                id:driveId
-            }
-        })
-        return drive
+        return this.drives.get(driveId)
     }
 
-    // async findDrive({params}){
-    //     return this.getDrive(params.id) 
-    //     .then(res => {
-    //         console.log("rrrr",res) 
-    //         return res
-    //     })
-    //     .catch (async (e) => {
-    //         console.error(e)
-    //         throw(e)
-    //     })
-    // }
-
-
     async add(data) {
-        const drive = this.prisma.drive.create({data:data})
-        return drive
+
+        console.log("Drives::add ", data)
+        console.log("data.name: ", data.name)
+        console.log("DRIVE_PATH: ", process.env.DRIVES_PATH)
+
+        const folderName = path.join(process.env.DRIVES_PATH, data.name)
+        console.log("folderName: ", folderName)
+
+        if (!fs.existsSync(folderName)) 
+            fs.mkdirSync(folderName,'0777', true)
+            // .then(result => {
+            //      console.log("result mkdir: ", result)
+        return this.drives.add(data)
+            // })
+            // .catch( err => {
+            //     console.error("error: ", err)
+            //     throw(err)
+            // })
+
     }
 
 }

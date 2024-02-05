@@ -25,7 +25,7 @@ module.exports = {
                 const token = jwt.sign({
                       id : payload.id,
                     },
-                    'secret',
+                    process.env.JWT_SECRET,
                     { expiresIn: '3d'}
                 );
 
