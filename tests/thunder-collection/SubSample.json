@@ -1,0 +1,149 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ZooProcess SubSample",
+    "dateExported": "2024-02-02T09:05:21.058Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "e8f261d8-bcee-43d1-8244-75b17f2fd5ff",
+            "colId": "ea389d55-3e41-4831-8d85-b56c6c364de8",
+            "containerId": "",
+            "name": "add sub sample euh??",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}/samples",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-30T08:40:09.010Z",
+            "modified": "2023-11-30T08:40:09.010Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "655d3062983b92b6e29b33691",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"projectId\":\"655d3062983b92b6e29b3369\",\n  \"metadata\":\"{'scientific_program':'string','station_id':'string','bottom_depth':'string'}\",\n  \"metadataModelId\":\"6565df171af7a84541c48b20\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f3b06e72-a6f3-44b3-8b00-8e0dc05d6bcd",
+            "colId": "ea389d55-3e41-4831-8d85-b56c6c364de8",
+            "containerId": "",
+            "name": "add sub sample",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}/samples/{sampleId}/subsamples",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2023-12-24T18:43:10.865Z",
+            "modified": "2023-12-31T23:23:37.269Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "6565b055ae8de1c051ae0ed0",
+                    "isPath": true
+                },
+                {
+                    "name": "sampleId",
+                    "value": "6567622b285b4e5dc0181e7b",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"p12\",\n  \"metadataModelId\":\"\",\n  \"data\":{\n    \"scan_id\":\"p11\",\n    \"sample_id\":1,\n    \"fraction_id\":1,\n    \"fraction_number\":1,\n    \"scanning_operator\":\"seb\",\n    \"observation\":\"balmbala\",\n    \"fraction_min_mesh\":1,\"fraction_max_mesh\":1,\n    \"spliting_ratio\":1,\n    \"remark_on_fraction\":\"euh\",\n    \"submethod\":\"motoda\"\n  },\n  \"user_id\":\"658dd7ea24bc10a4bf1e37e2\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "61ac7907-cf43-4ffb-857d-09b5383fa6cb",
+            "colId": "ea389d55-3e41-4831-8d85-b56c6c364de8",
+            "containerId": "",
+            "name": "add sub sample Copy",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}/samples/{sampleId}/subsamples",
+            "method": "POST",
+            "sortNum": 17500,
+            "created": "2024-01-05T20:44:32.811Z",
+            "modified": "2024-01-05T20:45:04.922Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "6565b055ae8de1c051ae0ed0",
+                    "isPath": true
+                },
+                {
+                    "name": "sampleId",
+                    "value": "6567622b285b4e5dc0181e7b",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"p14\",\n  \"metadataModelId\":\"\",\n  \"data\":{\n    \"scan_id\":\"p14\",\n    \"sample_id\":1,\n    \"fraction_id\":1,\n    \"fraction_number\":1,\n    \"scanning_operator\":\"seb\",\n    \"observation\":\"balmbala\",\n    \"fraction_min_mesh\":1,\"fraction_max_mesh\":1,\n    \"spliting_ratio\":1,\n    \"remark_on_fraction\":\"euh\",\n    \"submethod\":\"motoda\"\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "15bff33c-2de6-47a9-ac54-3d76e679b628",
+            "colId": "ea389d55-3e41-4831-8d85-b56c6c364de8",
+            "containerId": "",
+            "name": "get sub samples",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}/samples/{sampleId}/subsamples",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-12-22T10:57:04.274Z",
+            "modified": "2023-12-31T20:35:59.352Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "6565b055ae8de1c051ae0ed0",
+                    "isPath": true
+                },
+                {
+                    "name": "sampleId",
+                    "value": "656710188e5704edf3d6019d",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "77674582-987f-4c97-82a7-0520a4086d6a",
+            "colId": "ea389d55-3e41-4831-8d85-b56c6c364de8",
+            "containerId": "",
+            "name": "del sub samples",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}/samples/{sampleId}/subsamples/{subsampleId}",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2023-12-28T21:44:54.652Z",
+            "modified": "2023-12-28T22:02:32.907Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "655d3062983b92b6e29b3369",
+                    "isPath": true
+                },
+                {
+                    "name": "sampleId",
+                    "value": "65739caf3122b96669402fe4",
+                    "isPath": true
+                },
+                {
+                    "name": "subsampleId",
+                    "value": "658df06cac7dea7f05850e17",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        }
+    ]
+}

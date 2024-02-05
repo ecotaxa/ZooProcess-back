@@ -1,0 +1,102 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ZooProcess Metadata",
+    "dateExported": "2024-02-02T09:07:02.367Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "2edb8b6c-84a6-42ce-96ed-56cfaefc3368",
+            "colId": "180f7adf-b986-45d5-ace2-ccfcb14b2f90",
+            "containerId": "",
+            "name": "list metadata model whith sample associated",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/metadata?sample=true",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-30T08:37:05.714Z",
+            "modified": "2023-11-30T08:37:05.714Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "sample",
+                    "value": "true",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "1bd3a846-a5e7-40c4-ae7e-364718b63491",
+            "colId": "180f7adf-b986-45d5-ace2-ccfcb14b2f90",
+            "containerId": "",
+            "name": "get metadata model",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/metadata/{id}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-11-30T08:37:10.308Z",
+            "modified": "2023-11-30T08:37:10.308Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "6565df171af7a84541c48b20",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "7d0b9aa2-f0bc-4ac7-8f9e-8e77d2319bbf",
+            "colId": "180f7adf-b986-45d5-ace2-ccfcb14b2f90",
+            "containerId": "",
+            "name": "add metadata model",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/metadata",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-11-30T08:37:14.075Z",
+            "modified": "2023-11-30T08:37:14.075Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"PIQv_Zooscan\",\n  \"value\":\"{'scientific_program':'string','station_id':'string','bottom_depth':'string'}\",\n  \"description\":\"metadata model use by the PIQv for the Zooscan\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "06908f5e-b019-4d5d-bfd6-70cd82a7b302",
+            "colId": "180f7adf-b986-45d5-ace2-ccfcb14b2f90",
+            "containerId": "",
+            "name": "List Metadata",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/metadata",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-11-30T08:39:04.488Z",
+            "modified": "2023-11-30T08:39:04.488Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e9401c62-380c-465c-b431-71a518f3051d",
+            "colId": "180f7adf-b986-45d5-ace2-ccfcb14b2f90",
+            "containerId": "",
+            "name": "delete metadata model",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/metadata/{id}",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2023-12-31T07:37:05.266Z",
+            "modified": "2023-12-31T10:09:59.735Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "65913de284276feb0966551d",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        }
+    ]
+}

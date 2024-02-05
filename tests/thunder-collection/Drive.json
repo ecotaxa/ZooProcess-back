@@ -1,0 +1,42 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ZooProcess Drive",
+    "dateExported": "2024-02-02T09:06:44.604Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "17b42acc-66e0-45a0-a5ca-9f2d6643686a",
+            "colId": "f6fd164d-d1a7-41e6-a34e-a7e5f611f388",
+            "containerId": "",
+            "name": "drive list",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/drives",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-30T08:37:49.499Z",
+            "modified": "2023-11-30T08:37:49.499Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "fad280ab-9f43-448e-ae62-85cba8dedc77",
+            "colId": "f6fd164d-d1a7-41e6-a34e-a7e5f611f388",
+            "containerId": "",
+            "name": "new drive",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/drives",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-30T08:37:52.508Z",
+            "modified": "2023-11-30T08:37:52.508Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Zooscan_lov\",\n  \"url\":\"file://drives/zooscan_lov\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

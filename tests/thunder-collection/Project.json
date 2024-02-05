@@ -1,0 +1,141 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ZooProcess Project",
+    "dateExported": "2024-02-02T09:06:04.351Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "7853f92c-4c98-4163-bcc2-5bccb8a2dfa3",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "Project IS",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-30T08:37:36.983Z",
+            "modified": "2023-12-21T07:44:34.243Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"name\":\"debug\",\"drive\":\"655cb8d55461b0e51c463b65\",\"acronym\":\"debug\",\"description\":null,\"ecotaxa_project_title\":null,\"ecotaxa_project\":null,\"scanningOptions\":\"1\",\"ecotaxa_project_name\":\"aaaaaa\"}",
+                "form": []
+            },
+            "tests": [],
+            "docs": "  \"drive\":\"Zooscan\"\n  \"driveId\":\"65563ee45676620fb7087be4\"\n"
+        },
+        {
+            "_id": "7e0c64ea-b2bc-478a-9f9d-d18c8a70f5ab",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "Project IS Copy",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-30T08:37:41.708Z",
+            "modified": "2023-11-30T08:37:41.708Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"acronym\" : \"aaa\",\n\"description\" : \"toto\",\n\"drive\" : {\"name\": \"Zooscan_lov\"},\n\"ecotaxa_project\" : null,\n\"name\" : \"Zooscan_zzzz\"\n}\n",
+                "form": []
+            },
+            "tests": [],
+            "docs": "  \"drive\":\"Zooscan\"\n  \"driveId\":\"65563ee45676620fb7087be4\"\n"
+        },
+        {
+            "_id": "bf36b829-7ebe-4108-8df0-355bdb79d641",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "Project IS Copy",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-11-30T08:37:45.078Z",
+            "modified": "2023-11-30T08:37:45.078Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"monproject\",\n  \"drive\":\"Zooscan\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "39df9311-74b5-43f8-92d4-c92d490c32e3",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "LIST projects",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-11-30T08:37:59.272Z",
+            "modified": "2023-11-30T08:37:59.272Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0913eed0-7a49-45bb-8974-c58ef20b9420",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "LIST Projects",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-11-30T08:38:36.656Z",
+            "modified": "2023-11-30T08:38:36.656Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f5dc303b-2535-469d-a6b6-e69ad9377205",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "get project",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-11-30T08:40:17.544Z",
+            "modified": "2023-12-31T20:35:01.581Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "6565b055ae8de1c051ae0ed0",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "ac860053-a0c2-4ccc-a8ea-ce94fda13f74",
+            "colId": "18b05449-39b3-4abb-8cf9-be4f2409df4e",
+            "containerId": "",
+            "name": "update project",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/projects/{projectId}",
+            "method": "PUT",
+            "sortNum": 70000,
+            "created": "2023-12-12T09:32:52.267Z",
+            "modified": "2023-12-12T13:39:01.834Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "projectId",
+                    "value": "6565b055ae8de1c051ae0ed0",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\":\"6565b055ae8de1c051ae0ed0\",\n  \"name\":\"monproject2\",\n  \n  \"driveid\":\"655c5b54457834999b769d06\",\n  \"description\":\"desc\",\n  \"acronym\":\"\",\n  \"scanningOptions\":\"1\",\n  \"samples\": [\n    {\n      \"id\": \"656710188e5704edf3d6019d\",\n      \"name\": \"mon sample 1\",\n      \"projectId\": \"6565b055ae8de1c051ae0ed0\",\n      \"metadataModelId\": \"6565df171af7a84541c48b20\"\n    },\n    {\n      \"id\": \"65671129265afe04e78e0b8d\",\n      \"name\": \"mon sample 2\",\n      \"projectId\": \"6565b055ae8de1c051ae0ed0\",\n      \"metadataModelId\": \"6565df171af7a84541c48b20\"\n    },\n    {\n      \"id\": \"6567622b285b4e5dc0181e7b\",\n      \"name\": \"mon sample 3\",\n      \"projectId\": \"6565b055ae8de1c051ae0ed0\",\n      \"metadataModelId\": \"6565df171af7a84541c48b20\"\n    },\n    {\n      \"id\": \"6567697b3d2d32abf64ffc3a\",\n      \"name\": \"Sample XXXX\",\n      \"projectId\": \"6565b055ae8de1c051ae0ed0\",\n      \"metadataModelId\": \"6565df171af7a84541c48b20\"\n    }\n  ],\n  \"updatedAt\": \"2023-11-28T09:18:13.180Z\",\n  \"createdAt\": \"2023-11-28T09:18:13.180Z\"\n}\n\n",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

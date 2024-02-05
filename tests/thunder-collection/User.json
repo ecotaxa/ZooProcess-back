@@ -1,0 +1,172 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ZooProcess User",
+    "dateExported": "2024-02-02T09:02:52.701Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "b1576b8f-2a7f-4ce6-addb-df01cd20658f",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "add User",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-12-27T22:32:57.317Z",
+            "modified": "2023-12-28T20:07:08.092Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"seb\",\n  \"email\":\"seb@seb.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c32936f0-2056-437b-aa0d-088090d0ec26",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "list Users",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-12-28T21:17:14.000Z",
+            "modified": "2024-01-31T08:17:49.779Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGRkN2VhMjRiYzEwYTRiZjFlMzdlMiIsImlhdCI6MTcwNjY4OTA1NSwiZXhwIjoxNzA2OTQ4MjU1fQ.T06GZ3PMMvjIvvmtEYhmkvLgcIsig22FHj_kraO2zOA"
+            },
+            "tests": []
+        },
+        {
+            "_id": "e993a805-48d2-4613-91da-b3482cbc241f",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "del user",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users/{userId}",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-12-28T21:43:40.264Z",
+            "modified": "2023-12-28T21:44:11.383Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "userId",
+                    "value": "",
+                    "isPath": true
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "1014a35e-98ee-4277-80be-1d6e30fe4c8c",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "Login",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/login",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-01-24T07:36:01.400Z",
+            "modified": "2024-01-24T18:13:35.790Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"seb@seb.com\",\n  \"password\":\"seb1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d2fa6ff2-5ab5-43bb-a1b9-3aa56fc4e9b5",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "get User by email",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users?email",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-01-24T13:49:58.474Z",
+            "modified": "2024-01-24T13:51:10.517Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "email",
+                    "value": "",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "77d961a7-0fd2-464f-8d4e-1009becf2d12",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "update user",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users/{userId}",
+            "method": "PATCH",
+            "sortNum": 80000,
+            "created": "2024-01-24T17:47:58.528Z",
+            "modified": "2024-01-24T18:09:38.613Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "userId",
+                    "value": "658dd7ea24bc10a4bf1e37e2",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"password\": \"seb1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c0ab5add-2fa8-4523-b431-af337a001536",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "get user by id",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users/{id}",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2024-01-24T20:14:12.470Z",
+            "modified": "2024-01-24T22:30:55.003Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "658dd7ea24bc10a4bf1e37e2",
+                    "isPath": true
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGRkN2VhMjRiYzEwYTRiZjFlMzdlMiIsImlhdCI6MTcwNjEzMjY1NywiZXhwIjoxNzA2MzkxODU3fQ.r-hKcFhjZeIG-rt_TGOyI1zA181LxRy5Vfp1cYtPj2A"
+            },
+            "tests": []
+        },
+        {
+            "_id": "0575a0e7-5d17-4b7a-8c65-0262051cc8fb",
+            "colId": "e29f9da9-83bb-4c07-b204-bed1020cf8cb",
+            "containerId": "",
+            "name": "get me",
+            "url": "http://zooprocess.imev-mer.fr:8081/v1/users/me",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-01-25T05:21:39.233Z",
+            "modified": "2024-01-31T08:23:36.758Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGRkN2VhMjRiYzEwYTRiZjFlMzdlMiIsImlhdCI6MTcwNjY4OTA1NSwiZXhwIjoxNzA2OTQ4MjU1fQ.T06GZ3PMMvjIvvmtEYhmkvLgcIsig22FHj_kraO2zOA"
+            },
+            "tests": []
+        }
+    ]
+}
