@@ -33,16 +33,17 @@ function verifyToken (req, res, next){
   }else{
     // res. sendstatus
     console.log("No Bearer")
-    //next();
-    res.sendStatus(403);
+    next();
+    // res.sendStatus(403);
   }
 }
 
 function extractJWT(req, res, next){
 
   if ( req.token ){
+    // console.log("secret: ", process.env.JWT_SECRET)
     console.log("have token " , typeof(req.token))
-    jwt.verify (req.token, 'secret', (err, authData) => {
+    jwt.verify (req.token, process.env.JWT_SECRET, (err, authData) => {
       if (err) {
         console.log("Error", err.message)
         console.log("Error", err.name)
@@ -52,6 +53,7 @@ function extractJWT(req, res, next){
           console.log("Error Token", err)
           // res.status(498).send("Token expired") // 498 used by Nginx
           res.status(401).send("Token expired")
+          //next()
           /*
           Missing token <=> Missing identity card <=> Rejected because of identity card check <=> 401
           Expired token <=> Expired identity card <=> Rejected because of identity card check <=> 401
@@ -76,6 +78,7 @@ function extractJWT(req, res, next){
     })
   }
   else {
+
     console.log("no token")
     next();
   }
@@ -86,7 +89,7 @@ async function getRole(req, res, next){
   if ( req.jwt ){
 
     id = req.jwt.id
-    console.log("getRole: ", id)
+    console.log("getRole id: ", id)
     const users = new Users();
     await users.get(id)
     .then( user => {
@@ -106,6 +109,7 @@ async function getRole(req, res, next){
         default:
           req.jwt.role = "User"
       }
+      console.log("user.role mapped: ", req.jwt.role)
 
       next()
     })
@@ -118,8 +122,11 @@ async function getRole(req, res, next){
         //   message: err.message,
         //   errors: err.errors,
         // });
-
+        next()
     })
+  }
+  else { // else is neccessary to avoid error
+    next()
   }
 }
 
