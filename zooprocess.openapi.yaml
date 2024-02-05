@@ -14,6 +14,8 @@ tags:
   name: Manager
 - description: authentication
   name: Authentication
+- description: Admin related operations
+  name: Admin
 paths:
 
 
@@ -89,7 +91,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
-        - User
+        - Manager
       security:
         - BearerAuth: [ ]
 
@@ -120,6 +122,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+        - Manager
+        - Admin
       security:
         - BearerAuth: [ ]
 
@@ -186,6 +190,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
       tags:
       - User
+      - Manager
+      - Admin
       security:
         - BearerAuth: [ ]
 
@@ -668,6 +674,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+        - Manager
+        - Admin
       security:
         - BearerAuth: [ ]
 
