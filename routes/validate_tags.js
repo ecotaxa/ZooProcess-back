@@ -9,13 +9,13 @@ module.exports = {
         
             allowed = allowedRoles.includes(role) ? true : false
     
-            // if ( !allowed && role == "Manager"){
-            //     allowed = true
-            // }
+            if ( !allowed && role == "Manager"){
+                allowed = true
+            }
     
-            // if ( !allowed && role == "Admin"){
-            //     allowed = true
-            // }
+            if ( !allowed && role == "Admin"){
+                allowed = true
+            }
     
             // return allowedRoles.includes(role) ? true : false
             return allowed    
