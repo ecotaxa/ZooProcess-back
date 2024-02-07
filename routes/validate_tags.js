@@ -20,7 +20,11 @@ module.exports = {
             // return allowedRoles.includes(role) ? true : false
             return allowed    
         }
-        return true
+        if (allowedRoles.includes("Authentication")){
+            return true
+        } else {
+            return false
+        }
     }
 
 }
