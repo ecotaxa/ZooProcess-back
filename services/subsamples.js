@@ -105,17 +105,17 @@ module.exports.SubSamples = class {
 
 
         let userId = undefined;
-      if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator){
-        const user = await this.prisma.user.findFirstOrThrow(
-        {
-          where:{
-            name: subsample.data.scanning_operator
-          }
-        });
-        userId = user.id;
-      } else {
-        userId = subsample.user_id;
-      }
+        if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator){
+            const user = await this.prisma.user.findFirstOrThrow(
+            {
+            where:{
+                name: subsample.data.scanning_operator
+            }
+            });
+            userId = user.id;
+        } else {
+            userId = subsample.user_id;
+        }
 
 
 
@@ -138,7 +138,7 @@ module.exports.SubSamples = class {
 
         console.log("SubSamples add data: ", data)
 
-        if (subsample.name){data['name']=subsample.name}
+        if (subsample.name){data['name']=String(subsample.name)}
         if (subsample.metadataModelId){data['metadataModelId']=subsample.metadataModelId}
 
         console.log("Create: ", data);
@@ -146,6 +146,8 @@ module.exports.SubSamples = class {
         return await this.prisma.subSample.create({data})
       }
     
+
+
     async deleteSubSample({projectId, sampleId, subSampleId}) {
 
         console.log("deleteSubSample: ", {projectId, sampleId, subSampleId});
