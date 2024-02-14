@@ -19,16 +19,19 @@ module.exports.SubSamples = class {
         console.log("SubSamples findAll projectId= ", projectId);
         console.log("SubSamples findAll sampleId= ", sampleId);
 
+        // const samples = await this.prisma.subSample.findMany({
+        // })
         const samples = await this.prisma.subSample.findMany({
-        // const samples = await this.prisma.sampleview.findMany({
-            // where:{
-            //     sampleId:sampleId
-            // },
-            // include:{
-            //     metadata:true,
-            //     metadataModel:true,
-            //     scan:true
-            // }
+            where:{
+                sampleId
+            },
+            include:{
+                metadata:true,
+                metadataModel:true,
+                // metadataModelId:false,
+                scan:true,
+                user:true,
+            }
         })
 
         // console.log("Sample:", samples)

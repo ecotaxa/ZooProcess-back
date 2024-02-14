@@ -15,7 +15,29 @@ module.exports.Projects = class {
     }
 
     async findAll() {
-        return this.projects.findAll()
+        return this.projects.findAll({
+          include:{
+            drive: true,
+            ecotaxa: true,
+            samples: true,
+            user: true,
+            _count:{
+              select:{
+                samples:true
+                // samples:{
+                //   where:{
+                //     projectId
+                //   }
+                // }
+              }
+            },
+            _count:{
+              select:{
+                scan:true
+            }
+          }
+        }
+      })
     }
 
 

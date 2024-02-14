@@ -40,7 +40,7 @@ module.exports.Users = class {
         include:{
         //   project: true,
         //   samples: true,
-          SubSample: true
+          subSample: true
         }
       })
       return user
