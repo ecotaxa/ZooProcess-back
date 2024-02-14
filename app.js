@@ -53,7 +53,7 @@ function extractJWT(req, res, next){
           console.log("Error Token", err)
           // res.status(498).send("Token expired") // 498 used by Nginx
           res.status(401).send("Token expired")
-          //next()
+          // next()
           /*
           Missing token <=> Missing identity card <=> Rejected because of identity card check <=> 401
           Expired token <=> Expired identity card <=> Rejected because of identity card check <=> 401
@@ -64,17 +64,18 @@ function extractJWT(req, res, next){
         }
         else {
           res.sendStatus(403)
+          // next(); // pas le next sinon passe au midleware suivant et l'erreur n'est pas traité
         }
       }
-      
-      //res.json({
-      //  message: "Welcome to Profile",
-      //    userData: authData
-      //})
-      console.log("JWT: ", authData)
-      req.jwt = authData;
-      next();
-      
+      else {
+        //res.json({
+        //  message: "Welcome to Profile",
+        //    userData: authData
+        //})
+        console.log("JWT: ", authData)
+        req.jwt = authData;
+        next();
+      }
     })
   }
   else {
@@ -122,7 +123,7 @@ async function getRole(req, res, next){
         //   message: err.message,
         //   errors: err.errors,
         // });
-        next()
+        // next()
     })
   }
   else { // else is neccessary to avoid error
