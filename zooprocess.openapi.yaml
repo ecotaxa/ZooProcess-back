@@ -5,8 +5,10 @@ info:
   description: API to manage scan from Zooscan
   title: ZooProcess API
   version: v1
+
 servers:
 - url: http://zooprocess.imev-mer.fr:8081/v1
+
 tags:
 - description: User related operations
   name: User
@@ -16,9 +18,8 @@ tags:
   name: Authentication
 - description: Admin related operations
   name: Admin
+
 paths:
-
-
 
   /login:
     post:
@@ -458,8 +459,131 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  /instruments:
+    get:
+      description: return the list of instrument
+      summary: the instruments
+      operationId: instrument.list
+      responses:
+        '200':
+          description: Return the list of instruments
+          content:
+            application/json:
+              schema:
+                title: Response get an array of instrument
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntrumentModel'
+      tags:
+        - User
+
+    post:
+      summary: Add a new instrument
+      description: Add a new instrument
+      operationId: instrument.create
+      responses:
+        '200':
+          description: return the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrumentModel'
+      tags:
+        - User
+
+  /instruments/{instrumentId}:
+    parameters:
+      - description: the instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
 
 
+     
+    get:
+      description: return the instrument
+      summary: the instrument
+      operationId: instrument.get
+      responses:
+        '200':
+          description: Return the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrumentModel'
+      tags:
+        - User
+
+  /background/{instrumentId}:
+    parameters:
+      - description: the instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
+
+    post:
+      summary: Add a background scan
+      description: Add a background scan. to send the image to the server , in case you have separate the container of the server and the client.
+      operationId: Background.create
+      responses:
+        '200':
+          description: return the url image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageModel'
+      tags:
+        - User
+
+    get:
+      summary: get the list of background
+      description: get the list of background associate to the instrument, sort by date (earlier on top) or filtered by date range
+      operationId: Background.list
+      responses:
+        '200':
+          description: return the urls to the list of background
+          content:
+            application/json:
+              schema:
+                title: Response get the list of background
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageModel'
+      tags:
+        - User
+    
+  /background/{instrumentId}/url:
+    parameters:
+      - description: the instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
+
+    post:
+      summary: Add a background scan
+      description: Add a background scan to use with share folder, don't upload image to the server 
+      operationId: Background.addurl
+      responses:
+        '200':
+          description: return the url image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageModel'
+      tags:
+        - User
 
   /metadata:
     get:
@@ -761,7 +885,52 @@ components:
         email:
           type: string
       
+    IntrumentModel:
+      type: object
+      required:
+        - id
+        - model
+        - name
+        - sn
+      properties:
+        id:
+          readOnly: true
+          type: string
+        model:
+          type: string
+          enum:
+            - Zooscan
+        name:
+          type: string
+        sn:
+          type: string
 
+
+    ImageModel:
+      type: object
+      required:
+        - url
+      properties:
+        instrumentId:
+          type: string
+        userId:
+          type: string
+        url:
+          type: string
+          # format: binary
+
+    # ImageResponseModel:
+    #   type: object
+    #   required:
+    #     - userId
+    #     - fileName
+    #   properties:
+    #     instrumentId:
+    #       type: string
+    #     userId:
+    #       type: string
+    #     url:
+    #       type: string
 
     MetadataModel:
       type: object
