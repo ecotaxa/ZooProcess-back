@@ -110,6 +110,10 @@ model Instrument {
 model ScanningOption {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   density Int
+
+  // metadata        Metadata[]
+  // metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
+  // metadataModelId String?        @db.ObjectId
 }
 
 model QCState {
@@ -167,10 +171,18 @@ model Sample {
 }
 
 model SubSample {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  scan      Scan?    @relation(fields: [scanId], references: [id])
-  scanId    String?  @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  // scan      Scan[] //    @relation(fields: [scanId], references: [id])
+  scan Scan[] // @relation(fields: [scanId], references: [id], name: "scan")
+  // scanId          String?        @db.ObjectId
+  // background1 Scan? @relation(fields: [background1Id], references: [id], name: "playbackground1er1")
+  // background1Id          String?        @db.ObjectId
+  // background2 Scan? @relation(fields: [background2Id], references: [id], name: "background2")
+  // background2Id          String?        @db.ObjectId
+
+  // scanId    String?  @db.ObjectId
   // updatedAt DateTime? @updatedAt
   createdAt DateTime @default(now())
   // metadata   Metadata @relation(fields: [metadataId], references: [id])
@@ -202,6 +214,8 @@ model SubSample {
   metadataModelId String?        @db.ObjectId
   sample          Sample         @relation(fields: [sampleId], references: [id])
   user            User           @relation(fields: [userId], references: [id])
+  // Scan            Scan?          @relation(fields: [scanId], references: [id])
+  // scanId          String?        @db.ObjectId
 }
 
 // model Metadata {
@@ -271,6 +285,10 @@ model Scan {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   url        String
   background Boolean?
+  createdAt  DateTime @default(now())
+
+  // to know the scanner parammeters
+  // scanningOptions ScanningOption
 
   // Link
   user         User        @relation(fields: [userId], references: [id])
@@ -281,5 +299,35 @@ model Scan {
   // sampleId    String?    @db.ObjectId
   // SubSample   SubSample? @relation(fields: [subSampleId], references: [id])
   // subSampleId String?    @db.ObjectId
-  subSample    SubSample[]
+  // subSample    SubSample[]
+  // subSample    SubSample[]
+  //  @relation(fields: [subSampleId], references: [id])
+  // subSampleId  String?     @db.ObjectId
+  SubSample    SubSample?  @relation(fields: [subSampleId], references: [id])
+  subSampleId  String?     @db.ObjectId
+}
+
+enum VignetteType {
+  RAW
+  MASK
+  MERGE
+}
+
+model Vignette {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  url    String
+  // scan Scan
+  scanId String? @db.ObjectId
+
+  type        VignetteType
+  Separator   Separator?   @relation(fields: [separatorId], references: [id])
+  separatorId String?      @db.ObjectId
+}
+
+model Separator {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  scanId String? @db.ObjectId
+
+  vignette Vignette[]
 }

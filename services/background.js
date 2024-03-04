@@ -5,6 +5,7 @@ const { Scans } = require ("./prisma/scans")
 
 const fs = require('fs');
 const path = require('path');
+const { Projects } = require("./prisma/projects");
 // const background = require("../routes/background");
 
 
@@ -46,7 +47,13 @@ module.exports.Background = class {
         console.log("Background Service findAll", instrumentId)
         // throw new error("out")
         // return []
-        return this.scans.findAll(true)
+
+        const params = {
+          background: true,
+          instrumentId
+        }
+
+        return this.scans.findAll(params)
         // return Promise()
     }
 
@@ -62,6 +69,46 @@ module.exports.Background = class {
     //     console.log("instrumentId: ", instrumentId)
     //     // console.log("data.backgroundType: ", type)
     // }
+
+    async findAllfromProject(projectId/*:string*/) {
+      console.log("Background Service findAllfromProject", projectId)
+      // throw new error("out")
+      // return []
+
+      // const projectInst = new Projects()
+      // return projectInst.get(projectId)
+      // .then(project => {
+      //   if ( project == null ) {
+      //     console.log("project is null")
+      //     throw new Error("Project not found")
+      //   }
+      //   console.log("project: " , project)
+      //   const instrumentId = project.instrumentId;
+      //   console.log("instrumentId", instrumentId);
+      //   if (instrumentId == null){
+      //     //return new 
+      //     //return res.status(404).json({error:"Project has no instrument assigned"});
+      //     // return res.status(404).json({error:"Project has no instrument assigned"});
+      //     throw {error:"Project has no instrument assigned"}
+      //   }
+    
+      //   const params = {
+      //     background: true,
+      //     instrumentId
+      //   }
+  
+      //   return this.scans.findAll(params)  
+      // })
+
+      // console.log("p", p);
+      // return p
+
+
+      // return Promise()
+
+      return this.scans.findAllFromProject({background: true, projectId})
+
+  }
 
 
     ///TODO: function NOT WORKING (image is missing, name is a fake)

@@ -127,6 +127,7 @@ async function getRole(req, res, next){
     })
   }
   else { // else is neccessary to avoid error
+    console.log("getRole - no token")
     next()
   }
 }

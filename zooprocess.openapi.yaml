@@ -18,6 +18,8 @@ tags:
   name: Authentication
 - description: Admin related operations
   name: Admin
+- description: Only use by the Separator robot
+  name: Separator
 
 paths:
 
@@ -171,59 +173,41 @@ paths:
     #   tags:
     #     - User
 
-  /drives:
+  /projects/{projectId}/backgrounds:
+    parameters:
+    - name: projectId
+      in: path
+      description: The project id
+      example: "42"
+      explode: false
+      required: true
+      schema:
+        type: string
+      style: simple
+
     get:
-      description: Return the drive list
-      operationId: Drives.list
-      # operation-handler: Drives
-      x-eov-operation-handle: routes/Drives
+      description: Return background scans associated to the project
+      operationId: Background.listFromProject
+
       responses:
         '200':
-          description: Returned the project list
+          description: Returned background scans associated to the project
           content:
             application/json:
               schema:
-                title: Response get the list of drives
+                title: Response get the list of background scans
                 type: array
                 items:
-                  $ref: '#/components/schemas/Drive'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-      tags:
-      - User
-      - Manager
-      - Admin
-      security:
-        - BearerAuth: [ ]
-
-    post:
-      summary: Add a new drive 
-      description: Add a new drive
-      operationId: Drives.create
-      requestBody:
-        description: Create a new drive
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Drive'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Drive'          
-        '405':
-          description: Invalid input
-        '409':
-          description: Duplicate entry
+                  $ref: '#/components/schemas/ImageModel'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
         - User
+        - Manager
+        - Admin
       security:
         - BearerAuth: [ ]
+
 
   /projects/{project}/samples:
     parameters:
@@ -459,6 +443,62 @@ paths:
       security:
         - BearerAuth: [ ]
 
+
+  /drives:
+    get:
+      description: Return the drive list
+      operationId: Drives.list
+      # operation-handler: Drives
+      x-eov-operation-handle: routes/Drives
+      responses:
+        '200':
+          description: Returned the project list
+          content:
+            application/json:
+              schema:
+                title: Response get the list of drives
+                type: array
+                items:
+                  $ref: '#/components/schemas/Drive'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+      - User
+      - Manager
+      - Admin
+      security:
+        - BearerAuth: [ ]
+
+    post:
+      summary: Add a new drive 
+      description: Add a new drive
+      operationId: Drives.create
+      requestBody:
+        description: Create a new drive
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Drive'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drive'          
+        '405':
+          description: Invalid input
+        '409':
+          description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+
   /instruments:
     get:
       description: return the list of instrument
@@ -518,9 +558,10 @@ paths:
       tags:
         - User
 
+
   /background/{instrumentId}:
     parameters:
-      - description: the instrument ID
+      - description: The instrument ID
         example: 655d3062983b92b6e29b3369
         explode: false
         in: path
@@ -531,11 +572,13 @@ paths:
 
     post:
       summary: Add a background scan
-      description: Add a background scan. to send the image to the server , in case you have separate the container of the server and the client.
+      description: Add a background scan. 
+                    to send the image to the server, 
+                    in case you have separate the container of the server and the client.
       operationId: Background.create
       responses:
         '200':
-          description: return the url image
+          description: Return the url image
           content:
             application/json:
               schema:
@@ -544,8 +587,9 @@ paths:
         - User
 
     get:
-      summary: get the list of background
-      description: get the list of background associate to the instrument, sort by date (earlier on top) or filtered by date range
+      summary: Get the list of background
+      description: Get the list of background associate to the instrument, 
+                    sort by date (earlier on top) or filtered by date range
       operationId: Background.list
       responses:
         '200':
@@ -562,7 +606,7 @@ paths:
     
   /background/{instrumentId}/url:
     parameters:
-      - description: the instrument ID
+      - description: The instrument ID
         example: 655d3062983b92b6e29b3369
         explode: false
         in: path
@@ -573,7 +617,8 @@ paths:
 
     post:
       summary: Add a background scan
-      description: Add a background scan to use with share folder, don't upload image to the server 
+      description: Add a background scan to use with share folder, 
+                    don't upload image to the server 
       operationId: Background.addurl
       responses:
         '200':
@@ -584,6 +629,104 @@ paths:
                 $ref: '#/components/schemas/ImageModel'
       tags:
         - User
+
+
+  /separator:
+    post:
+      description: Add a separate task
+      operationId: Separators.create
+      responses:
+        '200':
+          description: Return the task id
+          content:
+            application/json:
+              schema:  
+                # type: string
+                $ref: '#/components/schemas/SeparatorModel'
+
+      tags:
+        - Separator
+              
+  /separator/{taskId}:
+    parameters:
+      - description: The task ID
+        example: 42 the "Answer to the Ultimate Question of Life, the Universe, and Everything"
+        explode: false
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+    get:
+      description: Get the status of the task
+      operationId: Separators.status
+      responses:
+        '200':
+          description: Return the status of the task
+          content:
+            application/json:
+              schema:
+                # title: Response get the status of the task
+                # type: array
+                # items:
+                  $ref: '#/components/schemas/SeparatorModel'
+                  # $ref: '#/components/schemas/VignetteModel'
+      tags:
+        - User
+        - Admin
+        - Manager
+
+    put:
+      description: Update the status of the task
+      operationId: Separators.update
+      responses:
+        '200':
+          description: Return update status
+          content:
+            application/json:
+              schema:
+                # title: update status
+                # type: boolean
+                $ref: '#/components/schemas/VignetteModel'
+      tags:
+        - Separator  
+
+
+  # /vignettes/{id}:
+  #   parameters:
+  #     - description: The vignette ID
+  #       example: Ox42
+  #       explode: false
+  #       in: path
+  #       name: id
+  #       required: true
+  #       schema:
+  #         type: string
+
+  #     - description: vignette type
+  #       in: query
+  #       # style: deepObject
+  #       name: type
+  #       required: true
+  #       example: raw
+  #       schema:
+  #         type: string
+  #         enum: [raw, mask, merge]
+
+
+  #   get:
+  #     description: get the vignette url
+  #     operationId: Vignette.get
+  #     responses:
+  #       '200':
+  #         description: return the vignette url
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/VignetteModel'
+  #     tags:
+  #       - User
+  #       - Manager
 
   /metadata:
     get:
@@ -669,7 +812,8 @@ paths:
         
     delete:
       summary: Delete a metadata model
-      description: Delete a metadata model, only if no sammple or subsample associated to it
+      description: Delete a metadata model, 
+                    only if no sammple or subsample associated to it
       operationId: MetadataModel.delete
 
       responses:
@@ -785,7 +929,8 @@ paths:
   /users/me:
     get:
       summary: Show Current User
-      description: Returns **currently authenticated user's** (i.e. you) information, permissions and last used projects.
+      description: Returns **currently authenticated user's** (i.e. you) information, 
+                    permissions and last used projects.
       operationId: Users.me
       responses:
         '200':
@@ -919,6 +1064,25 @@ components:
           type: string
           # format: binary
 
+    VignetteModel:
+      type: object
+      required:
+        - url
+        - type
+      properties:
+        id:
+          type: string
+        url: 
+          type: string
+        type:
+          type: string
+          enum: 
+            - raw
+            - mask
+            - merge
+          
+              
+
     # ImageResponseModel:
     #   type: object
     #   required:
@@ -931,6 +1095,37 @@ components:
     #       type: string
     #     url:
     #       type: string
+
+
+    # SeparatorModel:
+    #   type: object
+    #   required:
+    #     - id
+    #   properties:
+    #     id:
+    #       type: string
+    #   example:
+    #     id: 42a42
+
+    SeparatorModel:
+      type: object
+      required:
+        - id
+        # - multiple
+      properties:
+        id:
+          type: string
+        # urls:
+        vignette:
+          type: array
+        # multiple:
+        #   type: string
+      example:
+        id: 42a42
+        origin: 
+        url: /public/img/vignette_42.png
+        multiple: yes
+
 
     MetadataModel:
       type: object
@@ -971,3 +1166,4 @@ components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+

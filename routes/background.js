@@ -36,6 +36,30 @@ module.exports = {
         })
     },
 
+    listFromProject: async (req,res) => {
+        console.log("background list fromProject")
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        console.log("authorized")
+
+        console.log("req.params", req.params );
+        console.log("req.params.projectId", req.params.projectId );
+
+
+
+        return background.findAllfromProject(req.params.projectId)
+        .then(scans => {
+            return res.status(200).json(scans);
+        })
+        .catch(async(e) => {
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        })
+    },
+
+
     create: async (req,res) => {
         console.log("------------------------------------------");
         console.log("create",req);
