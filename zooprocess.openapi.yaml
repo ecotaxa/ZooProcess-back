@@ -23,6 +23,22 @@ tags:
 
 paths:
 
+  /ping:
+    get:
+      summary: Ping
+      description: "Ping the server"
+      operationId: Ping.ping
+      responses:
+        '200':
+          description: Ping the server
+          content:
+            application/json:
+              schema:
+                title: Response pong to ping
+                type: string
+      tags:
+        - Authentication
+
   /login:
     post:
       summary: Login
@@ -630,6 +646,7 @@ paths:
       tags:
         - User
 
+ 
 
   /separator:
     post:
@@ -1107,6 +1124,19 @@ components:
     #   example:
     #     id: 42a42
 
+    TaskModel:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [ "separate" ]
+
+
     SeparatorModel:
       type: object
       required:
@@ -1118,6 +1148,8 @@ components:
         # urls:
         vignette:
           type: array
+          items:
+            $ref: '#/components/schemas/VignetteModel' 
         # multiple:
         #   type: string
       example:
