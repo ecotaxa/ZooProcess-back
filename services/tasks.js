@@ -24,7 +24,7 @@ module.exports.Tasks = class {
     }
 
     async findAll() {
-        return this.prisma.task.findAll()
+        return this.prisma.task.findMany({})
     }
 
     async get({taskId}) {
@@ -37,7 +37,7 @@ module.exports.Tasks = class {
             //     task: true,
             //     // project: true,
             //     // user: true
-                vignette: true,
+                // vignette: true,
             }
         })
     }
@@ -186,10 +186,26 @@ module.exports.Tasks = class {
             return Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
         })
 
-        const message = `Launched | Take a look at ${this.zooProcessApiUrl}tasks/${taskId}`
-        console.log("message", message)
+        const url = `${this.zooProcessApiUrl}task/${taskId}`
+        const message = `Launched | Take a look at ${url}`
+
+        const returndata = {
+        //     status:200,
+        //     data: { message }
+            message,
+            url
+        }
+        // console.log("returndata", returndata)
+        // console.log("message", message)
         //return new Promise().resolve(message)
-        return message
+        // return returndata
+        // return new Promise().resolve(message)
+        // return message
+
+        return new Promise(function(resolve, reject) {
+            // return resolve(message)
+            return resolve(returndata)
+        })
     }
 
 }
