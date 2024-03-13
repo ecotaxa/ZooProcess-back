@@ -662,7 +662,7 @@ paths:
       #       $ref: '#/components/schemas/TaskModel'
       responses:
         '200':
-          description: Return the task id
+          description: Returned the task id
           content:
             application/json:
               schema:  
@@ -672,6 +672,47 @@ paths:
       tags:
         - Separator
         - User
+
+    get:
+      description: Get the list of task
+      operationId: Task.list
+      responses:
+        '200':
+          description: Returned the list of task
+          content:
+            application/json:
+              schema:
+                title: Response contain the list of task
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskModel'
+      tags:
+        - User
+
+  /task/{taskId}:
+    parameters:
+      - description: The task ID
+        example: 658dd7ea24bc10a4bf1e37e2
+        explode: false
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+    get:
+      description: Get the task informtion
+      operationId: Task.status
+      responses:
+        '200':
+          description: Returned the list of task
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/TaskModel'
+      tags:
+        - User
+
+    # put:
 
   /task/{taskId}/run:
     parameters:
@@ -692,7 +733,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TaskModel'
+                # $ref: '#/components/schemas/TaskModel'
+                $ref: '#/components/schemas/TaskStateModel'
       tags:
         - User
 
@@ -1183,6 +1225,13 @@ components:
           type: string
           enum: [ "separate" ]
 
+    TaskStateModel:
+      type: object
+      properties:
+        message:
+          type: string
+        url:
+          type: string
 
     SeparatorModel:
       type: object
