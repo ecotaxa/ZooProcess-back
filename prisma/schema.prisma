@@ -331,3 +331,25 @@ model Separator {
 
   vignette Vignette[]
 }
+
+enum TaskType {
+  SEPARATE
+  BACKGROUND
+  DETECTION
+  VIGNETTE
+}
+
+enum TaskStatus {
+  RUNNING
+  PENDING
+  FINISHED
+}
+
+model Task {
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
+  exec    TaskType
+  params  Json //  { "exec" : "" , "params" : { "param1" = "filepath" , ... } }
+  log     String? // url to log file
+  percent Int        @default(0)
+  status  TaskStatus @default(PENDING)
+}

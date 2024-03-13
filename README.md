@@ -19,10 +19,7 @@ npm start
 ## Try
 
 ```shell
-## call ping
 curl http://localhost:3000/v1/projects
-
-
 ```
 
 ## [Example Express API Server: with custom operation resolver](https://github.com/cdimascio/express-openapi-validator/tree/master/examples/5-custom-operation-resolver)
@@ -102,4 +99,12 @@ db.Project.find({"name":"monproject2"})
 
 db.Project.find({"id":"6565b055ae8de1c051ae0ed0"})
 
+
+
+
+
+
+# openapi
+
+http://zooprocess.imev-mer.fr:8081/spec
 

@@ -646,7 +646,55 @@ paths:
       tags:
         - User
 
- 
+
+
+  /task:
+    post:
+      description: Add a new task
+      operationId: Task.create
+      # consumes:
+      #   - application/json:
+      # parameters:
+      #   - in: body
+      #     name: task
+      #     description: The task to Create
+      #     schema:
+      #       $ref: '#/components/schemas/TaskModel'
+      responses:
+        '200':
+          description: Return the task id
+          content:
+            application/json:
+              schema:  
+                # type: string
+                $ref: '#/components/schemas/TaskModel'
+
+      tags:
+        - Separator
+        - User
+
+  /task/{taskId}/run:
+    parameters:
+      - description: The task ID
+        example: 42 the "Answer to the Ultimate Question of Life, the Universe, and Everything"
+        explode: false
+        in: path
+        name: taskId
+        required: true
+        schema:
+          type: string
+    post:
+      description: Run the task
+      operationId: Task.run
+      responses:
+        '200':
+          description: Return the task id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskModel'
+      tags:
+        - User
 
   /separator:
     post:
@@ -1128,7 +1176,6 @@ components:
       type: object
       required:
         - id
-        - type
       properties:
         id:
           type: string

@@ -123,6 +123,7 @@ module.exports.Projects = class {
           ecotaxa: true
         }
       })
+      console.log("project: ", project);
       return project
     }
 
@@ -312,7 +313,7 @@ module.exports.Projects = class {
     }
 
     async findqcnotdone(){
-      const samples = await this.prisma.samples.findAll({userid:id, project:projectid , qcState:"None"})
+      const samples = await this.prisma.sample.findAll({userid:id, project:projectid , qcState:"None"})
       return samples
     }
 
