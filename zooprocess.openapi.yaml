@@ -200,6 +200,7 @@ paths:
       schema:
         type: string
       style: simple
+    
 
     get:
       description: Return background scans associated to the project
@@ -575,6 +576,7 @@ paths:
         - User
 
 
+
   /background/{instrumentId}:
     parameters:
       - description: The instrument ID
@@ -647,6 +649,34 @@ paths:
         - User
 
 
+  /scan/{instrumentId}/url:
+    parameters:
+      - description: The instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
+
+    post:
+      summary: Add a scan
+      description: Add a scan to use with share folder, 
+                    don't upload image to the server 
+      operationId: Background.addurl2
+      # operationId: Scan.addur
+      responses:
+        '200':
+          description: return the url image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageModel'
+      tags:
+        - User
+
+
 
   /task:
     post:
@@ -704,7 +734,7 @@ paths:
       operationId: Task.status
       responses:
         '200':
-          description: Returned the list of task
+          description: Returned the task informtion
           content:
             application/json:
               schema:
@@ -712,7 +742,18 @@ paths:
       tags:
         - User
 
-    # put:
+    put:
+      description: Change task informtion
+      operationId: Task.update
+      responses:
+        '200':
+          description: Returned the task informtion updated
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/TaskModel'
+      tags:
+        - User
 
   /task/{taskId}/run:
     parameters:
@@ -773,11 +814,11 @@ paths:
           content:
             application/json:
               schema:
-                # title: Response get the status of the task
-                # type: array
-                # items:
-                  $ref: '#/components/schemas/SeparatorModel'
-                  # $ref: '#/components/schemas/VignetteModel'
+                title: Response get the status of the task
+                type: array
+                items:
+                  # $ref: '#/components/schemas/SeparatorModel'
+                  $ref: '#/components/schemas/VignetteModel'
       tags:
         - User
         - Admin
@@ -797,6 +838,7 @@ paths:
                 $ref: '#/components/schemas/VignetteModel'
       tags:
         - Separator  
+        - User
 
 
   # /vignettes/{id}:
@@ -1029,6 +1071,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
       tags:
         - Manager
+        # - User # faut pas sinon tout le monde peut voir les infos des autres utilisateurs
       security:
         - BearerAuth: [ ]
 

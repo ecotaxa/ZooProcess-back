@@ -74,6 +74,24 @@ module.exports = {
             return res.status(500).json({error:e})
         })
 
-    }
+    },
+
+    update:  async (req,res) => {
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        console.log("Task::update() body: ", req.body);
+
+        return tasks.update({taskId:req.params.taskId,newdata:req.body})
+        .then(result => {
+            console.log("OK", result) 
+            console.log("Task::update() -> result: ", result["id"]);
+            return res.status(200).json({id:result["id"]})
+        })
+        .catch(async(e) => {
+            console.error("Task::update() Error:",e )
+            return res.status(500).json({error:e})
+        })
+    },
 
 }

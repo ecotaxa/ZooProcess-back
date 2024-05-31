@@ -66,7 +66,24 @@ module.exports.Tasks = class {
 
 
     zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"
-    happyPipelineiUrl = 'http://zooprocess.imev-mer.fr:8000/'
+    happyPipelineUrl = 'http://zooprocess.imev-mer.fr:8000/'
+
+    async put({taskId, newdata}){
+        console.log("Task::update(data=", data)
+    
+        return await this.get({taskId})
+        .then(task => {
+            console.log("task", task)
+            let data = { ...task, ...newdata }
+            return this.prisma.task.update({
+                where:{
+                    id : taskId
+                },
+                data
+            })
+        })
+    }
+
 
     // async run(data){
     async run({taskId}){
@@ -113,6 +130,19 @@ module.exports.Tasks = class {
         // this.prisma.separate()
 
         const taskId = data.id
+
+        // const 
+
+        this.prisma.task.upsert({
+            where:{
+                id: taskId
+            },
+            update:{
+                status: "RUNNING",
+                // task.params.separator: 
+            }
+        })
+
 
         let srcFolder = ""
         let dstFolder = ""
@@ -173,7 +203,7 @@ module.exports.Tasks = class {
 
 
         console.log("CALL HAPPY PIPELINE /separator/")
-        fetch(this.happyPipelineiUrl+"separate/", {
+        fetch(this.happyPipelineUrl+"separate/", {
         // method: 'POST',
         method: 'PUT',
         body: JSON.stringify({ path: srcFolder }),
@@ -183,7 +213,7 @@ module.exports.Tasks = class {
         .then((json) => console.log(json))
         .catch(error => {
             console.log(error)
-            return Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
+            return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
         })
 
         const url = `${this.zooProcessApiUrl}task/${taskId}`
@@ -193,7 +223,8 @@ module.exports.Tasks = class {
         //     status:200,
         //     data: { message }
             message,
-            url
+            url,
+            taskId
         }
         // console.log("returndata", returndata)
         // console.log("message", message)

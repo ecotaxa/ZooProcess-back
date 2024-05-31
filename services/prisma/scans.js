@@ -67,6 +67,9 @@ module.exports.Scans = class {
             include:{
                 instrument: true,
                 user: true
+            },
+            orderBy:{
+                createdAt: 'desc'
             }
 
         //   include:{
@@ -91,6 +94,7 @@ module.exports.Scans = class {
         console.log("background: ", background)
         console.log("instrumentId: ", instrumentId)
         console.log("userId: ", userId)
+        console.log("subsampleId: ", subsampleId)
 
         let data = {
             url,
@@ -100,7 +104,8 @@ module.exports.Scans = class {
         }
 
         if (subsampleId != undefined) {
-            data['sample'] = subsampleId
+            // data['sample'] = subsampleId
+            data['subSampleId'] = subsampleId
         }      
 
         const scan = this.prisma.scan.create({data})

@@ -173,8 +173,44 @@ module.exports.Background = class {
       }
 
       return this.scans.add(data)
-
   }
       
 
+  async addurl2({ instrumentId , url , userId , subsampleId/*, type*/}) {
+
+    console.log("scan:add")
+    console.log("url: ", url)
+    console.log("instrumentId: ", instrumentId)
+    console.log("userId: ", userId)
+
+    // save image in folder : Background/{instrumentId}
+    // const filename = "2024_02_07_08_52_10_0001.jpg"
+
+
+    // const url = ""
+    // if ( background){
+
+    // }
+    // const url = path.join( this.folderName , filename)
+    // write image
+
+    // add in DB
+    const data = {
+        instrumentId,
+        //filename,
+        //image,
+        userId,
+        subsampleId,
+        url,
+        background: false,
+    }
+
+    console.log("data: ", data)
+
+    return this.scans.add(data)
 }
+  
+
+
+}
+

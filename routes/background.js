@@ -80,7 +80,7 @@ module.exports = {
             /*, type:BackgroundType.BACKGROUND*/
         })
         .then(result => {
-            console.log("OK", res) 
+            // console.log("OK", res) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
@@ -99,6 +99,7 @@ module.exports = {
             return res.status(500).json({error:e})
         })
     },
+
 
     addurl: async (req,res) => {
         console.log("------------------------------------------");
@@ -126,7 +127,56 @@ module.exports = {
             /*, type:BackgroundType.BACKGROUND*/
         })
         .then(result => {
-            console.log("OK", res) 
+            // console.log("OK", res) 
+            return res.status(200).json(result)
+        })
+        .catch(async(e) => {
+            console.error("Error:",e )
+
+            if (e.name == "PrismaClientKnownRequestError"){
+                if (e.code == "P2002"){
+                    const txt = "Drive with name '"+ req.body.name +"' already exist";
+                    const message = { error:txt };
+                    return res.status(500).json({error:message});
+                }
+                else {
+                    return res.status(500).json({error:e})
+                }
+            }
+            return res.status(500).json({error:e})
+        })
+    },
+
+
+    addurl2: async (req,res) => {
+        console.log("------------------------------------------");
+        // console.log("create",req);
+        // console.log("create files",req.files);
+        console.log("------------------------------------------");
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
+        console.log("req.jwt: ", req.jwt)
+        const userID = req.jwt.id
+
+        if ( req.body.url == undefined){
+            return res.status(400).json({error:"URL is required"})
+        }
+        console.log("req.body: ", req.body);
+        console.log("req.body.url: ", req.body.url);
+
+        return background.addurl2({
+            userId:id,
+            //image:req.body, 
+            url: req.body.url,
+            subsampleId:req.body.subsampleId,
+            instrumentId:req.params.instrumentId 
+            /*, type:BackgroundType.BACKGROUND*/
+        })
+        .then(result => {
+            // console.log("OK", res) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {

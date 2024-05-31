@@ -320,17 +320,17 @@ model Vignette {
   // scan Scan
   scanId String? @db.ObjectId
 
-  type        VignetteType
-  Separator   Separator?   @relation(fields: [separatorId], references: [id])
-  separatorId String?      @db.ObjectId
+  type VignetteType
+  // Separator   Separator?   @relation(fields: [separatorId], references: [id])
+  // separatorId String?      @db.ObjectId
 }
 
-model Separator {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  scanId String? @db.ObjectId
+// model Separator {
+//   id     String  @id @default(auto()) @map("_id") @db.ObjectId
+//   scanId String? @db.ObjectId
 
-  vignette Vignette[]
-}
+//   vignette Vignette[]
+// }
 
 enum TaskType {
   SEPARATE

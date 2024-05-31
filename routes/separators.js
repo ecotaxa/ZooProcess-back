@@ -31,6 +31,10 @@ module.exports = {
         return separators.get({taskId:req.params.taskId})
         .then(result => {
             console.log("OK", result) 
+
+            // let res = { ...result.json }
+            // res.body.type = result.json.type;
+
             return res.status(200).json(result)
         })
         .catch(async(e) => {
