@@ -72,14 +72,22 @@ module.exports = {
 
 
 
+# Mongo
+docker pull mongo:5.0.26-focal  
+
+
 # Prisma 
 On model change, to get update we need to use several commands :
-``````
+```
 npx prisma generate
 npx prisma db push
-```
+
 restart the application : npm run dev
 
+## Prisma UI
+```
+npx prisma studio
+```
 
 # Prisma error list
 
