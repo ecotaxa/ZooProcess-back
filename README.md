@@ -116,3 +116,18 @@ db.Project.find({"id":"6565b055ae8de1c051ae0ed0"})
 
 http://zooprocess.imev-mer.fr:8081/spec
 
+
+# configuration
+
+need a .env file
+
+```
+# An URL to the DB
+DATABASE_URL="mongodb://root:example@zooprocess.imev-mer.fr/zooProcess?authSource=admin"
+
+# The password to use for encrypting the JWT.
+JWT_SECRET='secret string'
+
+# The path to the directory where the drives are mounted.
+DRIVES_PATH="Drives"
+```
