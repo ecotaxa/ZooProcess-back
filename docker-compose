@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  api:
+    # image: node:20.5.1
+    build:
+      context: ./Mongo
+    args:
+        NODE_VERSION: 20.5.1
+    volumes:
+      - "./api:/var/www"  
+    ports:
+      # - "8081:3000"
+      - "8081:8080"
+    links:
+      - mongo
+    environment:
+      # - URL_MONGO=mongodb://root:zooprocess@mongo
+      - URL_MONGO=${DATABASE_URL}
+
+
+
+  mongo:
+    container_name: mongo
+    build:
+      context: ./Mongo
+      args:
+        MONGO_VERSION: 6
+    environment:
+      # MONGO_REPLICA_HOST: 127.0.0.1
+      # MONGO_REPLICA_PORT: 27017
+      # MONGO_COMMAND: 'mongosh'
+      - MONGO_COMMAND= 'mongosh'
+      - MONGO_REPLICA_HOST= ${MONGO_HOST}
+      - MONGO_REPLICA_PORT= 27017
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}      # Use "mongo" instead of "mongosh" before v5.0
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    healthcheck:
+      # Use "mongo" instead of "mongosh" before v5.0
+      test: ['CMD', 'mongosh', 'admin', '--port', '27019', '--eval', "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    volumes:
+      - ./Mongo/data:/data/db
+      - ./Mongo/log:/var/log/mongodb
+      - ./Mongo/devsetup/mongodb/rs-initiate.js:/docker-entrypoint-initdb.d/rs-initiate.js
+      - ./Mongo/keyfile:/opt/keyfile/keyfile
+
+
+  # mongo:
+  #   # image: mongo:latest
+  #   image: mongo:5.0.26-focal
+  #   container_name: mongo
+  #   restart: always
+  #   volumes:
+  #     - ./Mongo/data:/data/db
+  #     - ./Mongo/log:/var/log/mongodb
+  #     - ./Mongo/devsetup/mongodb/rs-initiate.js:/docker-entrypoint-initdb.d/rs-initiate.js
+  #     - ./Mongo/keyfile:/opt/keyfile/keyfile
+  #   environment:
+  #     # MONGO_INITDB_ROOT_USERNAME: root
+  #     # MONGO_INITDB_ROOT_PASSWORD: zooprocess
+  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+  #   ports:
+  #     - 27017:27017
+  #   command: ["--replSet", "dbrs", "--bind_ip_all", "--keyFile", "/opt/keyfile/keyfile"]
+  #   networks:
+  #     - mongodb
+
+networks:
+  mongodb:
+  

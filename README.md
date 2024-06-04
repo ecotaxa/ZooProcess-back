@@ -74,6 +74,7 @@ module.exports = {
 
 # Mongo
 docker pull mongo:5.0.26-focal  
+docker run -d --name zooprocess-db -p 27010:27010  mongo:5.0.26-focal
 
 
 # Prisma 
@@ -89,9 +90,10 @@ restart the application : npm run dev
 npx prisma studio
 ```
 
-# Prisma error list
+## Prisma error list
 
 https://www.prisma.io/docs/reference/api-reference/error-reference
+
 
 
 # Mongo
