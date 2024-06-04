@@ -11,7 +11,7 @@ services:
       - "./api:/var/www"  
     ports:
       # - "8081:3000"
-      - "8081:8080"
+      - "8082:8080"
     links:
       - mongo
     environment:
@@ -37,13 +37,14 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}      # Use "mongo" instead of "mongosh" before v5.0
     ports:
       - 27017:27017
-    restart: unless-stopped
-    healthcheck:
-      # Use "mongo" instead of "mongosh" before v5.0
-      test: ['CMD', 'mongosh', 'admin', '--port', '27019', '--eval', "db.adminCommand('ping').ok"]
-      interval: 5s
-      timeout: 2s
-      retries: 20
+    restart: always
+    # restart: unless-stopped
+    # healthcheck:
+    #   # Use "mongo" instead of "mongosh" before v5.0
+    #   test: ['CMD', 'mongosh', 'admin', '--port', '27019', '--eval', "db.adminCommand('ping').ok"]
+    #   interval: 5s
+    #   timeout: 2s
+    #   retries: 20
     volumes:
       - ./Mongo/data:/data/db
       - ./Mongo/log:/var/log/mongodb
