@@ -4,10 +4,19 @@ FROM node:${NODE_VERSION}
 
 WORKDIR /usr/src/app
 # COPY package*.json ./
-COPY . .
+COPY ["package.json", "package-lock.json", "./"]
+COPY .env ./.env
+COPY prisma ./prisma/
+
 RUN npm run deps && npm i
-EXPOSE 8080
-RUN npx prisma generate
+RUN npm i -g prisma
+
+COPY . .
+
+RUN npx prisma generate --schema ./prisma/schema.prisma
 RUN npx prisma db push
+
+
+EXPOSE 8080
 RUN npm start
 
