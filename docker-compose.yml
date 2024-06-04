@@ -8,10 +8,10 @@ services:
       args:
         NODE_VERSION: 20.5.1
     volumes:
-      - "./api:/var/www"  
+      - ./api:/var/www
     ports:
       # - "8081:3000"
-      - "8082:8080"
+      - 8082:8080
     links:
       - mongo
     environment:
