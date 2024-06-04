@@ -16,7 +16,7 @@ services:
       - mongo
     environment:
       # - URL_MONGO=mongodb://root:zooprocess@mongo
-      - URL_MONGO=${DATABASE_URL}
+      - URL_MONGO="mongodb://root:zooprocess@zooprocess.localhost.imev-mer.fr/zooProcess?authSource=admin"
 
 
 
