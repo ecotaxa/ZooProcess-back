@@ -25,7 +25,7 @@ services:
     build:
       context: ./Mongo
       args:
-        MONGO_VERSION: 6
+        MONGO_VERSION: 5.0.26-focal
     environment:
       # MONGO_REPLICA_HOST: 127.0.0.1
       # MONGO_REPLICA_PORT: 27017
