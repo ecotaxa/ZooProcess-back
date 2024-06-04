@@ -17,9 +17,10 @@ services:
     environment:
       # - URL_MONGO=mongodb://root:zooprocess@mongo
       # - URL_MONGO="mongodb://root:zooprocess@zooprocess.localhost.imev-mer.fr/zooProcess?authSource=admin"
-      # - URL_MONGO="mongodb://root:zooprocess@mongo/zooProcess?authSource=admin"
-      - URL_MONGO="mongodb://root:zooprocess@127.0.0.1/zooProcess?authSource=admin"
-
+      - URL_MONGO="mongodb://root:zooprocess@mongo/zooProcess?authSource=admin"
+      # - URL_MONGO="mongodb://root:zooprocess@127.0.0.1/zooProcess?authSource=admin"
+    depends_on:
+      - mongo
 
 
   mongo:
@@ -35,6 +36,7 @@ services:
       MONGO_COMMAND: 'mongosh'
       MONGO_INITDB_ROOT_USERNAME: 'root'
       MONGO_INITDB_ROOT_PASSWORD: 'zooprocess'
+      MONGO_INITDB_DATABASE: 'zooProcess'
       # - MONGO_COMMAND= 'mongosh'
       # - MONGO_REPLICA_HOST= ${MONGO_HOST}
       # - MONGO_REPLICA_PORT= 27017
