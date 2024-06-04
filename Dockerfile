@@ -2,7 +2,8 @@ ARG NODE_VERSION
 
 FROM node:${NODE_VERSION}
 
-WORKDIR /usr/src/app
+RUN mkdir -p /app
+WORKDIR /app
 # COPY package*.json ./
 COPY ["package.json", "package-lock.json", "./"]
 COPY .env ./.env

@@ -133,3 +133,27 @@ JWT_SECRET='secret string'
 # The path to the directory where the drives are mounted.
 DRIVES_PATH="Drives"
 ```
+
+
+
+
+
+
+# docker-compose
+
+ docker-compose up -d
+ docker-compose logs -d
+ docker-comples down
+
+
+
+ docker logs -f  zooprocess-front
+ docker logs -f  zooprocess-back_api_1
+ docker logs -f  mongo
+
+
+
+docker exec -ti zooprocess-back_api_1  bash
+
+
+
