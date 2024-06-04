@@ -1,6 +1,8 @@
 ARG MONGO_VERSION
 
-FROM mongo:${MONGO_VERSION}
+# FROM mongo:${MONGO_VERSION}
+FROM mongo:5.0.26-focal
+
 
 # we take over the default & start mongo in replica set mode in a background task
 ENTRYPOINT mongod --port $MONGO_REPLICA_PORT --replSet rs0 --bind_ip 0.0.0.0 & MONGOD_PID=$!; \
