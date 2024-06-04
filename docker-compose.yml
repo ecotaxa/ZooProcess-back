@@ -4,7 +4,7 @@ services:
   api:
     # image: node:20.5.1
     build:
-      context: ./Mongo
+      context: .
       args:
         NODE_VERSION: 20.5.1
     volumes:
@@ -16,7 +16,8 @@ services:
       - mongo
     environment:
       # - URL_MONGO=mongodb://root:zooprocess@mongo
-      - URL_MONGO="mongodb://root:zooprocess@zooprocess.localhost.imev-mer.fr/zooProcess?authSource=admin"
+      # - URL_MONGO="mongodb://root:zooprocess@zooprocess.localhost.imev-mer.fr/zooProcess?authSource=admin"
+      - URL_MONGO="mongodb://root:zooprocess@mongo/zooProcess?authSource=admin"
 
 
 
