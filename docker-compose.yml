@@ -1,11 +1,11 @@
-version: '3'
+version: '3.7'
 
 services:
   api:
     # image: node:20.5.1
     build:
       context: ./Mongo
-    args:
+      args:
         NODE_VERSION: 20.5.1
     volumes:
       - "./api:/var/www"  
