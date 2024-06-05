@@ -23,6 +23,27 @@ services:
       - mongo
 
 
+  # mongo:
+  #   # image: mongo:latest
+  #   image: mongo:5.0.26-focal
+  #   container_name: mongo
+  #   restart: always
+  #   volumes:
+  #     - ./data:/data/db
+  #     - ./log:/var/log/mongodb
+  #     - ./devsetup/mongodb/rs-initiate.js:/docker-entrypoint-initdb.d/rs-initiate.js
+  #     - ./keyfile:/opt/keyfile/keyfile
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: zooprocess
+  #     MONGO_INITDB_DATABASE: zooProcess
+  #     MONGO_COMMAND: mongosh
+  #   ports:
+  #     - 27017:27017
+  #   command: ["--replSet", "dbrs", "--bind_ip_all", "--keyFile", "/opt/keyfile/keyfile"]
+  #   networks:
+  #     - mongodb
+
   mongo:
     container_name: mongo
     build:
@@ -30,7 +51,8 @@ services:
       args:
         MONGO_VERSION: 5.0.26-focal
     environment:
-      MONGO_REPLICA_HOST: 127.0.0.1
+      # MONGO_REPLICA_HOST: 127.0.0.1
+      MONGO_REPLICA_HOST: localhost
       MONGO_REPLICA_PORT: 27017
       # Use "mongo" instead of "mongosh" before v5.0
       MONGO_COMMAND: 'mongosh'
