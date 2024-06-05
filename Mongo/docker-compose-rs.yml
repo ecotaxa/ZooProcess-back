@@ -1,0 +1,39 @@
+version: '3.9'
+
+# build with :
+# docker-compose -f docker-compose-rs.yml up --build
+
+services:
+  mongo:
+    # image: mongo:latest
+    image: mongo:5.0.22-focal
+    container_name: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+      - ./log:/var/log/mongodb
+      - ./devsetup/mongodb/rs-initiate.js:/docker-entrypoint-initdb.d/rs-initiate.js
+      - ./keyfile:/opt/keyfile/keyfile
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    command: ["--replSet", "dbrs", "--bind_ip_all", "--keyFile", "/opt/keyfile/keyfile"]
+    networks:
+      - mongodb
+
+  mongo-express:
+    image: mongo-express:1.0.0-20-alpine3.18
+    restart: always
+    ports:
+      - 18081:8081
+    networks:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    
+networks:
+  mongodb:
