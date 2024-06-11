@@ -1,8 +1,14 @@
-// const { Scan, BackgroundType } = require("../services/scan")
-const { Scan } = require("../services/scan");
-const { isRoleAllowed } = require("../routes/validate_tags");
 
-const scan = new Scan();
+
+// const { Scan, BackgroundType } = require("../services/scan")
+
+// const ScanService = require("../services/ScanService");
+const { Background } = require("../services/background");
+
+const { isRoleAllowed } = require("./validate_tags");
+
+// const scan = new ScanService();
+const scan = new Background();
 
 module.exports = {
 
@@ -55,6 +61,56 @@ module.exports = {
 //             return res.status(500).json({error:e})
 //         })
 //     }
+
+
+
+list: async (req,res) => {
+
+    console.log("scan list")
+
+
+    if ( !isRoleAllowed(req)){
+        return res.status(401).send("You are not authorized to access this resource")
+    }
+    console.log("authorized")
+
+    console.log("req.params", req.params );
+    console.log("req.params.instrumentId", req.params.instrumentId );
+
+    // return scan.findAll(req.query, BackgrsoundType)
+    return scan.findAll(req.params.instrumentId)
+    .then(scans => {
+        return res.status(200).json(scans);
+    })
+    .catch(async(e) => {
+        console.error("Error:",e );
+        return res.status(500).json({error:e});
+    })
+},
+
+listFromProject: async (req,res) => {
+    console.log("scan list fromProject")
+
+    if ( !isRoleAllowed(req)){
+        return res.status(401).send("You are not authorized to access this resource")
+    }
+    console.log("authorized")
+
+    console.log("req.params", req.params );
+    console.log("req.params.projectId", req.params.projectId );
+
+
+
+    return scan.findAllScanSamplefromProject(req.params.projectId)
+    .then(scans => {
+        return res.status(200).json(scans);
+    })
+    .catch(async(e) => {
+        console.error("Error:",e );
+        return res.status(500).json({error:e});
+    })
+},
+
 
 
 

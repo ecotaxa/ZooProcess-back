@@ -110,6 +110,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
+        - User
         - Manager
       security:
         - BearerAuth: [ ]
@@ -218,6 +219,46 @@ paths:
                   $ref: '#/components/schemas/ImageModel'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+        - Manager
+        - Admin
+      security:
+        - BearerAuth: [ ]
+
+  /projects/{projectId}/scans:
+    parameters:
+    - name: projectId
+      in: path
+      description: The project id
+      example: "42"
+      explode: false
+      required: true
+      schema:
+        type: string
+      style: simple
+    
+
+    get:
+      description: Return sample scans associated to the project
+      operationId: Scanne.listFromProject
+      # operationId: Scanne.list
+      # operationId: Background.listFromProject2
+
+      responses:
+        '200':
+          description: Returned sample scans associated to the project
+          content:
+            application/json:
+              schema:
+                title: Response get the list of sample scans
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageModel'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        # '500':
+        #   $ref: '#components/responses/MissingParameter'
       tags:
         - User
         - Manager
@@ -1338,3 +1379,5 @@ components:
     UnauthorizedError:
       description: Access token is missing or invalid
 
+    # MissingParameter:
+    #   description: Missing parameter in the query

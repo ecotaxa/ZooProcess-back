@@ -9,9 +9,10 @@ const path = require('path')
 
 
 
-module.export.Scan = class {
+module.export.ScanService = class {
 
     constructor() {
+        // console.debug("module.export.Scan constructor")
         this.scans = new Scans()
       }
 
@@ -46,6 +47,26 @@ module.export.Scan = class {
 
 //     }
  
+    async findAll(instrumentId/*:string*/) {
+        console.log("Scan Service findAll", instrumentId)
+        // throw new error("out")
+        // return []
+
+        const params = {
+            background: false,
+            instrumentId
+        }
+
+        return this.scans.findAll(params)
+        // return Promise()
+    }
+
+    async findAllfromProject(projectId/*:string*/) {
+        console.log("Scan Sample Service findAllfromProject", projectId)  
+
+        return this.scans.findAllFromProject({background: false, projectId})
+    }
+
     async addurl({ instrumentId , url , userId , subsampleId/*, type*/}) {
 
         console.log("scan:add")

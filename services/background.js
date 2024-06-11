@@ -5,7 +5,8 @@ const { Scans } = require ("./prisma/scans")
 
 const fs = require('fs');
 const path = require('path');
-const { Projects } = require("./prisma/projects");
+
+// const { Projects } = require("./prisma/projects");
 // const background = require("../routes/background");
 
 
@@ -48,9 +49,12 @@ module.exports.Background = class {
         // throw new error("out")
         // return []
 
-        const params = {
+        let params = {
           background: true,
-          instrumentId
+          // instrumentId
+        }
+        if ( instrumentId){
+          params.instrumentId = instrumentId
         }
 
         return this.scans.findAll(params)
@@ -69,6 +73,10 @@ module.exports.Background = class {
     //     console.log("instrumentId: ", instrumentId)
     //     // console.log("data.backgroundType: ", type)
     // }
+
+    async findAllScanSamplefromProject(projectId/*:string*/) {
+      return this.scans.findAllFromProject({background: false, projectId})
+    }
 
     async findAllfromProject(projectId/*:string*/) {
       console.log("Background Service findAllfromProject", projectId)

@@ -25,6 +25,10 @@ module.exports = {
         console.log("req.params", req.params );
         console.log("req.params.instrumentId", req.params.instrumentId );
 
+        if ( req.params.instrumentId == undefined) {
+            return res.status(400).send("instrumentId is undefined")
+        }
+
         // return scan.findAll(req.query, BackgrsoundType)
         return background.findAll(req.params.instrumentId)
         .then(scans => {
@@ -59,6 +63,28 @@ module.exports = {
         })
     },
 
+    listFromProject2: async (req,res) => {
+        console.log("background list fromProject")
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        console.log("authorized")
+
+        console.log("req.params", req.params );
+        console.log("req.params.projectId", req.params.projectId );
+
+
+
+        return background.findAllfromProject(req.params.projectId)
+        .then(scans => {
+            return res.status(200).json(scans);
+        })
+        .catch(async(e) => {
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        })
+    },
 
     create: async (req,res) => {
         console.log("------------------------------------------");

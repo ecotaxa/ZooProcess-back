@@ -37,7 +37,7 @@ module.exports.Scans = class {
 
     async findAllFromProject( {background /*:boolean*/, projectId} ) {
 
-        console.log("Prisma Scans findAllBackground")
+        console.log("Prisma Scans findAllBackground " , background)
         // console.log("Prisma Scans findAll - background: ", background)
         console.log("Prisma Scans findAllBackground - projectId:", projectId)
 
@@ -49,7 +49,8 @@ module.exports.Scans = class {
 
         if ( project == null ) {
             console.log("project is null")
-            throw "Project not found"
+            throw Error("Project not found")
+            // return {}
         }
 
         console.log("project: ", project)
@@ -57,17 +58,35 @@ module.exports.Scans = class {
         if ( project.instrumentId == null ) {
             console.log("instrumentId is null")
             throw new Error("Project has no instrument assigned")
+            // return []
         }
 
+        // let where = {
+        //     background: background,
+        //     instrumentId: project.instrumentId
+        // }
+        // if ( project.instrumentId ){
+        //     where.instrumentId = project.instrumentId
+        // } 
+
         const scans = await this.prisma.scan.findMany({
-            where:{
+            where: {
                 background: background,
                 instrumentId: project.instrumentId
             },
             include:{
                 instrument: true,
+                // SubSample: true,
+                SubSample: {
+                    include: {
+                        // user: true,
+                        metadata: true,
+                        qc: true
+                    }
+                },
                 user: true
             },
+            // allowNull: true,
             orderBy:{
                 createdAt: 'desc'
             }
