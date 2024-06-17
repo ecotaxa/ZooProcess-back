@@ -104,7 +104,21 @@ model Instrument {
   Project Project[]
   scan    Scan[]
 
+  // zooscanCalibration   ZooscanCalibration? @relation(fields: [zooscanCalibrationId], references: [id])
+  // zooscanCalibrationId String?             @db.ObjectId
+
   @@unique([name, sn])
+}
+
+model ZooscanCalibration {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  instrumentId String @db.ObjectId
+
+  xOffset Int
+  yOffset Int
+  xSize   Int
+  ySize   Int
 }
 
 model ScanningOption {

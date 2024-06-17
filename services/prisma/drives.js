@@ -14,7 +14,11 @@ module.exports.Drives = class {
       } 
 
       async findAll() {
-        const drives = await this.prisma.drive.findMany({})
+        const drives = await this.prisma.drive.findMany({
+                orderBy:{
+                    name: 'asc'
+                }
+        })
         return drives
     }
 

@@ -7,9 +7,17 @@ module.exports.Instrument = class {
     }
 
     async findAll(){
-        const instruments = await this.prisma.instrument.findMany({})
+        const instruments = await this.prisma.instrument.findMany({
+            orderBy:{
+                name: 'asc'
+            }
+        })
         return instruments
     }
+
+
+  
+  
 
     async get(instrumentId){
         const instrument = await this.prisma.instrument.findUnique({
@@ -17,8 +25,42 @@ module.exports.Instrument = class {
                 id:instrumentId
             }
         })
-        return instrument
+
+        const calibration = await this.prisma.zooscanCalibration.findFirst({
+            where:{
+                instrumentId: instrumentId
+            },
+            select:{
+                id: true,
+                instrumentId: false,
+                xOffset: true,
+                yOffset: true,
+                xSize: true,
+                ySize: true,
+            }
+        })
+
+        const instrumentWithCalibration = {
+           ...instrument,
+            calibration
+        }
+
+        // return instrument
+        return instrumentWithCalibration
     }
+
+    // async getZooscanCalibrations(instrumentId){
+    //     const instrument = await this.prisma.zooscanCalibration.findFirst({
+    //         where:{
+    //             id:instrumentId
+    //         },
+    //         include:{
+    //             zooscanCalibrations: true
+    //         }
+    //     })
+    //     return instrument
+    // }
+
 
     async add(data){
         const instrument = this.prisma.instrument.create({data:data})

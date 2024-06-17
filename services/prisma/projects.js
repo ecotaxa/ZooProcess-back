@@ -1,6 +1,8 @@
 
 // const {PrismaClient} = require('@prisma/client');
+const instrument = require('../../routes/instrument');
 const { Prisma } = require('../client');
+const { Instrument } = require('../instrument');
 // const { Prisma } = require("@prisma/client");
 
 module.exports.Projects = class {
@@ -38,9 +40,10 @@ module.exports.Projects = class {
     }
 
 
-    async getDriveID(project){
+    async getDriveID(project) {
       let driveid = undefined;
-      if (project.driveid == null && project.drive){
+      
+      if (project.driveid == null && project.driveId == null && project.drive){
         const drive = await this.prisma.drive.findFirstOrThrow(
         {
           where:{
@@ -49,12 +52,34 @@ module.exports.Projects = class {
         });
         driveid = drive.id;
       } else {
-        driveid = project.driveid;
+        // driveid = project.driveid;
+        if ( project.driveId!= null ) {
+          driveid = project.driveId;
+        } else if ( project.driveid!= null ) {
+          driveid = project.driveid;
+        }
       }
       return driveid;
     }
 
+
+    async getInstrumentId(project) {
+      let instrumentId = undefined;
+      if (project.instrumentId == null && project.instrument ){
+        const instrument = await this.prisma.instrument.findFirstOrThrow(
+        {
+          where:{
+            name:project.instrument.name
+          }
+        });
+        instrumentId = instrument.id;
+      } else {
+          instrumentId = project.instrumentId;
+      }
+      return instrumentId;
+    }
     
+
     async add(project) {
 
       let driveid = undefined;
@@ -120,11 +145,34 @@ module.exports.Projects = class {
         include:{
           drive: true,
           samples: true,
-          ecotaxa: true
+          ecotaxa: true,
+          // instrument: true, // include don't get calibration information
         }
       })
-      console.log("project: ", project);
-      return project
+
+      let projectWithCalibration = project
+      try {
+        const instruments = new Instrument();
+        const instrument = await instruments.get(project.instrumentId)
+        // console.debug("instrument: ", instrument);
+  
+        projectWithCalibration = {
+          ...project,
+          instrument,
+       }
+      //  console.debug("projectWithCalibration: ", projectWithCalibration);
+
+      }
+      catch (err) {
+        console.log("cannot get calibration information: ", err);
+        projectWithCalibration = project;
+      }
+
+      // console.debug("project: ", project);
+      // return project
+
+      console.log("project: ", projectWithCalibration);
+      return projectWithCalibration
     }
 
 
@@ -162,8 +210,11 @@ module.exports.Projects = class {
       //   }) 
 
       const driveid = await this.getDriveID(body);
+      console.log("driveid: ", driveid);
 
-      console.log("driveid: ",driveid);
+      const instrumentId = await this.getInstrumentId(body);
+      console.log("instrumentId: ", instrumentId);
+
 
       //let projectbody = body;
       //delete projectbody.drive
@@ -182,6 +233,7 @@ module.exports.Projects = class {
         //createdAt: body.createdAt,
         updatedAt: d.toISOString(),
         driveId: driveid,
+        instrumentId
       }
 
       // if isManager(user) {

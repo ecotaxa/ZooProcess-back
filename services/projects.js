@@ -45,12 +45,17 @@ module.exports.Projects = class {
       return this.projects.getDriveID(project)
     }
 
+    async getInstrumentId(project){
+      return this.projects.getInstrumentId(project)
+    }
+
     // add a new project
     // create folder 
     // and db entry
     async add(project) {
 
       project.driveid = await this.getDriveID(project)
+      project.getInstrumentId = await this.getInstrumentId(project)
 
       if ( project.drive && project.drive.name) {
         const folderName = path.join(process.env.DRIVES_PATH, project.drive.name , project.name)
