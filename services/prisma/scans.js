@@ -80,8 +80,14 @@ module.exports.Scans = class {
                 SubSample: {
                     include: {
                         // user: true,
+                        // user: false,
                         metadata: true,
-                        qc: true
+                        qc: true ,
+                        // qc: {
+                        //     include: {
+                        //         // state : true
+                        //     }
+                        // }
                     }
                 },
                 user: true

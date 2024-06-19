@@ -69,12 +69,12 @@ model Project {
   name            String      @unique
   acronym         String?
   description     String?
-  ecotaxa         Ecotaxa?    @relation(fields: [ecotaxaId], references: [id])
   // sample      Int       @default(0)
   // scan        Int       @default(0)
   samples         Sample[]
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
+  // ecotaxa         Ecotaxa?    @relation(fields: ecotaxaId, references: id)
   ecotaxaId       String?     @db.ObjectId
   // metadataId  String    @db.ObjectId
   updatedAt       DateTime?   @updatedAt
@@ -89,6 +89,10 @@ model Project {
   instrument      Instrument? @relation(fields: [instrumentId], references: [id])
   instrumentId    String?     @db.ObjectId
   scanningOptions String?
+
+  qc        QCState?  @relation(fields: [qCStateId], references: [id])
+  qCStateId String?   @db.ObjectId
+  Ecotaxa   Ecotaxa[]
 }
 
 enum InstrumentModel {
@@ -135,7 +139,7 @@ model QCState {
   validated     DateTime
   // state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
   state         QCStatus    @default(PENDING)
-  // Project       Project[]
+  project       Project[]
   qCStateItemId String      @db.ObjectId
   subSample     SubSample[]
 }
@@ -151,9 +155,13 @@ enum QCStatus {
 }
 
 model Ecotaxa {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  project Int
-  Project Project[]
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  ecotaxaId Int     @unique
+  // projectId   Int     @unique
+  name      String
+  // Project   Project @relation(fields: [projectId], references: [id])
+  projectId String  @db.ObjectId
+  Project   Project @relation(fields: [projectId], references: [id])
 }
 
 // view SampleView {

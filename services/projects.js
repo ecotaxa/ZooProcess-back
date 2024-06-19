@@ -15,30 +15,209 @@ module.exports.Projects = class {
     }
 
     async findAll() {
-        return this.projects.findAll({
-          include:{
-            drive: true,
-            ecotaxa: true,
-            samples: true,
-            user: true,
-            _count:{
-              select:{
-                samples:true
-                // samples:{
-                //   where:{
-                //     projectId
-                //   }
-                // }
-              }
-            },
-            _count:{
-              select:{
-                scan:true
-            }
-          }
-        }
-      })
+
+
+        // return 
+        const projectlist = await this.projects.findAll(//{
+      //     include:{
+      //       drive: true,
+      //       ecotaxa: true,
+      //       // samples: true,
+      //       samples: {
+      //         include:{
+      //           subsample: true,
+      //         }
+      //       },
+      //       user: true,
+      //       // _count:{
+      //       //   select:{
+      //       //     samples:true
+      //       //     // samples:{
+      //       //     //   where:{
+      //       //     //     projectId
+      //       //     //   }
+      //       //     // }
+      //       //   }
+      //       // },
+      //     //   _count:{
+      //     //     select:{
+      //     //       scan:true
+      //     //   }
+      //     // }
+      //   },
+      //   // nbsamples:{
+      //   //   _count:{
+      //   //     select:{
+      //   //       samples:true
+      //   //       // samples:{
+      //   //       //   where:{
+      //   //       //     projectId
+      //   //       //   }
+      //   //       // }
+      //   //     }
+      //   //   },
+
+      //   // }
+      // }
+      )
+
+      // const nbSamples = projectlist.samples?.length
+ 
+      // const nbScans = projectlist.samples?.map(sample => sample.subsample?.length).reduce((a,b) => a+b, 0)
+
+      // const p = {
+      //   projectlist,
+      //   nbSamples,
+      //   nbScans,
+      // }
+
+      // console.debug("p", p)
+
+      // return p
+
+      // projectlist.forEach(async project => {
+      //   console.debug("project: ", project.id)
+      //   const nbSamples = project.samples?.length || 0
+      //   console.debug("nbSamples", nbSamples)
+      //   project['nbSamples'] = nbSamples
+
+      //   // const samples = this.projects.samples.() .getSamples(project.)
+      //   // const nbScans = project.samples.flatMap(sample => sample.subsample?.length || 0).reduce((a,b) => a+b, 0)  
+   
+      //   // const proj = await this.get(project.id)
+      //   // console.debug("proj", proj)
+      //   // if (proj){
+      //   //   // const nbScans = proj.samples?.subsample?.length
+      //   //   const nbScans = proj.samples?.flatMap(sample => sample.subsample?.length || 0).reduce((a,b) => a+b, 0)  
+
+      //   //   console.debug("nbScans", nbScans)
+      //   //   project['nbScans'] = nbScans
+      //   // } else {
+      //   //   project['nbScans'] = 0
+      //   // }
+        
+      //   // const nbScans = this.get(project.id)
+      //   // .then(p => {
+      //   //   console.debug("project: ", p)
+      //   //   const nbScans = proj.samples?.flatMap(sample => sample.subsample?.length || 0).reduce((a,b) => a+b, 0)  
+      //   //   console.debug("nbScans", nbScans)
+      //   //   project['nbScans'] = nbScans
+      //   //   return nbScans
+      //   // })
+      //   // .catch(err => {
+      //   //   console.log("Cannot get project : ", project.id, " Error: ", err)
+      //   //   project['nbScans'] = 0
+      //   //   return 0
+      //   // })
+
+      //   // const subsampleids = this.get(project.id)
+      //   // .then(p => {
+      //   //   console.debug("analyse project: ", p.samples)
+
+      //   //   const subsampleids = p.samples?.flatMap(sample => { 
+      //   //       console.debug("sample: ", sample); 
+              
+      //   //       const subsampleids = sample.subsample?.map(subsample => {
+      //   //         console.debug("subsample: ", subsample);
+      //   //         return subsample.id
+      //   //     } )
+
+      //   //       // return sample.subsample.id 
+      //   //       return subsampleids
+      //   //     } )
+          
+          
+      //   //       console.debug("intern subsampleids", subsampleids)
+
+      //   //   return subsampleids
+
+      //   //   // const nbScans = proj.samples?.flatMap(sample => sample.subsample?.length || 0).reduce((a,b) => a+b, 0)  
+      //   //   // console.debug("nbScans", nbScans)
+      //   //   // project['nbScans'] = nbScans
+      //   //   // return nbScans
+      //   // })
+      //   // .catch(err => {
+      //   //   console.log("Cannot get project : ", project.id, " Error: ", err)
+      //   //   project['nbScans'] = 0
+      //   //   return 0
+      //   // })
+
+      //   const subsampleids = await this.getSubSampleIds(project.id)
+
+      //   console.debug("subsampleids", subsampleids)
+      //   project['subsampleids'] = subsampleids
+
+      //   // console.debug("nbScans", nbScans)
+      //   // project['nbScans'] = - nbScans
+      // })
+
+      // await this.getInfo(projectlist)
+
+
+      console.debug("projectlist", projectlist)
+
+      return projectlist
+
     }
+
+    // async getInfo(projectlist) {
+
+    //   projectlist.forEach( project => {
+    //     console.debug("project: ", project.id)
+    //     const nbSamples = project.samples?.length || 0
+    //     console.debug("nbSamples", nbSamples)
+    //     project['nbSamples'] = nbSamples
+
+    //     const subsampleids =  this.getSubSampleIds(project.id)
+
+    //     console.debug("subsampleids", subsampleids)
+    //     project['subsampleids'] = subsampleids
+
+    //     // console.debug("nbScans", nbScans)
+    //     // project['nbScans'] = - nbScans
+    //   })
+
+    // }
+
+    //  getSubSampleIds(projectid) {
+
+
+    //   const subsampleids =  this.get(projectid)
+    //     .then(p => {
+    //       console.debug("analyse project: ", p.samples)
+
+    //       const subsampleids = p.samples?.flatMap(sample => { 
+    //           console.debug("sample: ", sample); 
+              
+    //           const subsampleids = sample.subsample?.map(subsample => {
+    //             console.debug("subsample: ", subsample);
+    //             return subsample.id
+    //         } )
+
+    //           // return sample.subsample.id 
+    //           return subsampleids
+    //         } )
+          
+          
+    //           console.debug("intern subsampleids", subsampleids)
+
+    //       return subsampleids
+
+    //       // const nbScans = proj.samples?.flatMap(sample => sample.subsample?.length || 0).reduce((a,b) => a+b, 0)  
+    //       // console.debug("nbScans", nbScans)
+    //       // project['nbScans'] = nbScans
+    //       // return nbScans
+    //     })
+    //     .catch(err => {
+    //       console.log("Cannot get project : ", project.id, " Error: ", err)
+    //       // project['nbScans'] = 0
+    //       return 0
+    //     })
+
+    //     console.debug("subsampleids", subsampleids)
+    //     // project['subsampleids'] = subsampleids
+    //     return subsampleids
+    // }
 
 
     async getDriveID(project){
@@ -83,6 +262,7 @@ module.exports.Projects = class {
     // }
 
     async get(projectId){
+      console.debug("projectId(): ", projectId)
       return this.projects.get(projectId)
     }
 

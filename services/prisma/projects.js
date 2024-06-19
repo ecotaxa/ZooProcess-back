@@ -18,7 +18,16 @@ module.exports.Projects = class {
           include:{
             drive: true,
             ecotaxa: true,
-            samples: true,
+            // samples: true,
+            samples: {
+              include:{
+                subsample: {
+                  include: {
+                    scan: true,
+                  }
+                }
+              }
+            }
           //   _count:{
           //     select:{
           //       samples:true
@@ -33,10 +42,23 @@ module.exports.Projects = class {
           //     select:{
           //       scan:true
           //   }
-          }
+          // }
+          // nbsamples:{
+          //   _count:{
+          //     select:{
+          //       samples:true
+          //       // samples:{
+          //       //   where:{
+          //       //     projectId
+          //       //   }
+          //       // }
+          //     }
+          //   },
+          // }
         }
-        )
-        return projects
+        }
+      )
+      return projects
     }
 
 
@@ -144,22 +166,45 @@ module.exports.Projects = class {
         },
         include:{
           drive: true,
-          samples: true,
+          // samples: true,
+          samples: {
+            include: {
+              // count: {
+                subsample: true,
+                // _count: {
+                //   subsample: true
+                // }, 
+            },
+
+          },
           ecotaxa: true,
           // instrument: true, // include don't get calibration information
         }
       })
 
+      let subsample_count = 0
+      if (project){
+        project.samples.forEach( (sample) => {
+          
+        })
+      }
+
       let projectWithCalibration = project
       try {
         const instruments = new Instrument();
-        const instrument = await instruments.get(project.instrumentId)
+        if ( instruments && project.instrumentId ) {
+          const instrument = await instruments.get(project.instrumentId)
+          projectWithCalibration = {
+            ...project,
+            instrument,
+         }
+   
+        } else {
+          projectWithCalibration = project;
+        }
+    
         // console.debug("instrument: ", instrument);
   
-        projectWithCalibration = {
-          ...project,
-          instrument,
-       }
       //  console.debug("projectWithCalibration: ", projectWithCalibration);
 
       }
