@@ -40,6 +40,30 @@ module.exports = {
         })
     },
 
+    scan: async (req,res) => {
+        console.log("background scan")
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        console.log("authorized")
+
+        console.log("req.params", req.params );
+        console.log("req.params.projectId", req.params.projectId );
+        console.log("req.params.scanId", req.params.scanId );
+
+
+
+        return background.findScan(req.params.scanId)
+        .then(scan => {
+            return res.status(200).json(scan);
+        })
+        .catch(async(e) => {
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        })
+    },
+
     listFromProject: async (req,res) => {
         console.log("background list fromProject")
 

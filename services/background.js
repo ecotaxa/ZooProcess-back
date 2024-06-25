@@ -78,6 +78,11 @@ module.exports.Background = class {
       return this.scans.findAllFromProject({background: false, projectId})
     }
 
+    async findScan(scanId){
+      console.log("Background Service scan",scanId)
+      return this.scans.findScan(scanId)
+    }
+
     async findAllfromProject(projectId/*:string*/) {
       console.log("Background Service findAllfromProject", projectId)
       // throw new error("out")

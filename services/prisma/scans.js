@@ -35,6 +35,19 @@ module.exports.Scans = class {
         return scans
     }
 
+
+    async findScan( {scanId }) {
+        console.log("Prisma Scans findScan" , scanId)
+
+        const scan = await this.prisma.scan.findFirstOrThrow({
+            where: {
+                id: scanId
+            }
+        })
+
+        return scan
+    }
+
     async findAllFromProject( {background /*:boolean*/, projectId} ) {
 
         console.log("Prisma Scans findAllBackground " , background)

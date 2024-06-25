@@ -226,6 +226,48 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  # /projects/{projectId}/backgrounds/{scanId}:
+  /scan/{scanId}:
+    parameters:
+    # - name: projectId
+    #   in: path
+    #   description: The project id
+    #   example: "42"
+    #   explode: false
+    #   required: true
+    #   schema:
+    #     type: string
+    #   style: simple
+    - name: scanId
+      in: path
+      description: The project id
+      example: "42"
+      explode: false
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    get:
+      description: Return (background) scan
+      operationId: Background.scan
+
+      responses:
+        '200':
+          description: Returned (background) scan 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageModel'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+        - Manager
+        - Admin
+      security:
+        - BearerAuth: [ ]
+
   /projects/{projectId}/scans:
     parameters:
     - name: projectId
