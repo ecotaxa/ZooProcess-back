@@ -17,7 +17,7 @@ module.exports.Projects = class {
           {
           include:{
             drive: true,
-            ecotaxa: true,
+            // ecotaxa: true,
             // samples: true,
             samples: {
               include:{
@@ -177,7 +177,7 @@ module.exports.Projects = class {
             },
 
           },
-          ecotaxa: true,
+          // ecotaxa: true,
           // instrument: true, // include don't get calibration information
         }
       })
