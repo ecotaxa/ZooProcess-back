@@ -155,6 +155,7 @@ module.exports = {
         console.log("------------------------------------------");
         console.log("create",req);
         // console.log("create files",req.files);
+        console.log("create Req", req.query);
         console.log("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
@@ -169,11 +170,18 @@ module.exports = {
         }
         console.log("req.body.url: ", req.body.url);
 
+        if ( req.query.projectId == undefined){
+            return res.status(400).json({error:"ProjectId is required"})
+        }
+        console.log("req.query.projectId: ", req.query.projectId);
+
+
         return background.addurl({
             userId:id,
             //image:req.body, 
             url: req.body.url,
-            instrumentId:req.params.instrumentId 
+            instrumentId:req.params.instrumentId,
+            projectId: req.query.projectId
             /*, type:BackgroundType.BACKGROUND*/
         })
         .then(result => {

@@ -93,6 +93,7 @@ model Project {
   qc        QCState? @relation(fields: [qCStateId], references: [id])
   qCStateId String?  @db.ObjectId
   // Ecotaxa   Ecotaxa[]
+  scan      Scan[]
 }
 
 enum InstrumentModel {
@@ -331,6 +332,8 @@ model Scan {
 
   deleted   Boolean   @default(false)
   deletedAt DateTime? //@db.Timestamp()
+  Project   Project?  @relation(fields: [projectId], references: [id])
+  projectId String?   @db.ObjectId
 }
 
 enum VignetteType {

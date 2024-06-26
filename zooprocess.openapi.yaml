@@ -226,6 +226,28 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    # post:
+    #   description: Add a background scan to the project
+    #   operationId: Background.add
+
+    #   responses:
+    #     '200':
+    #       description: Add a background scan to the project
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: Get the background scan ID
+    #               $ref: '#/components/schemas/Background'
+    #     '401':
+    #       $ref: '#/components/responses/UnauthorizedError'
+    #   tags:
+    #     - User
+    #     - Manager
+    #     - Admin
+    #   security:
+    #     - BearerAuth: [ ]
+
+
   # /projects/{projectId}/backgrounds/{scanId}:
   /scan/{scanId}:
     parameters:
@@ -672,12 +694,39 @@ paths:
           type: string
 
     post:
-      summary: Add a background scan
+      # parameters:
+      #   - description: The project ID
+      #     example: 655d3062983b92b6e29b3369
+      #     # in: formData
+      #     in: formData
+      #     name: projectId
+      #     required: true
+      #     # type: string
+      #     schema:
+      #       $ref: '#/components/schemas/ProjectId'
+      requestBody:
+        required: true
+        content:
+          application/mulipart/form-data:
+            schema:
+              type: object
+              properties:
+                projectId:
+                  type: string
+                fileName:
+                  type: string
+                  format: binary
+              # title: the associated project id
+              # description: The project id to associate the background scan
+              # type: string
+              # example: 655d3062983b92b6e29b3369
+              
+      summary: Add a background scan.
       description: Add a background scan. 
                     to send the image to the server, 
                     in case you have separate the container of the server and the client.
       operationId: Background.create
-      responses:
+      responses: 
         '200':
           description: Return the url image
           content:
@@ -715,6 +764,14 @@ paths:
         required: true
         schema:
           type: string
+      - description: project Id
+        example: 655d3062983b92b6e29b3369
+        in: query
+        required: true
+        name: projectId 
+        schema:
+          type:
+            string
 
     post:
       summary: Add a background scan

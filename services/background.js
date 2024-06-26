@@ -5,6 +5,7 @@ const { Scans } = require ("./prisma/scans")
 
 const fs = require('fs');
 const path = require('path');
+const { Projects } = require("./projects");
 
 // const { Projects } = require("./prisma/projects");
 // const background = require("../routes/background");
@@ -157,12 +158,13 @@ module.exports.Background = class {
 
     }
         
-    async addurl({ instrumentId , url , userId /*, type*/}) {
+    async addurl({ instrumentId , url , userId , projectId /*, type*/}) {
 
-      console.log("background::add")
+      console.log("background::addurl")
       console.log("url: ", url)
       console.log("instrumentId: ", instrumentId)
       console.log("userId: ", userId)
+      console.log("projectId: ", projectId)
 
       // save image in folder : Background/{instrumentId}
       // const filename = "2024_02_07_08_52_10_0001.jpg"
@@ -175,13 +177,41 @@ module.exports.Background = class {
       // const url = path.join( this.folderName , filename)
       // write image
 
+      // l'url est locale, il faut le changer en url du project
+
+      const projects = new Projects()
+      const project = await projects.get(projectId)
+      console.log("project: ", project)
+
+      const drive = project.drive.url
+      console.log("drive: ", drive)
+
+      const date /*: string*/ = new Date().toISOString().split("T")[0]
+      const filename = date + "_" + path.basename(url)
+      console.log("filename: ", filename)
+      const projectPath = path.join(drive, project.name , "Zooscan_back")
+      const newurl = path.join(projectPath, filename)
+      console.log("url: ", newurl)
+
+      // move file from url to urlnew
+      // make path
+      console.debug("move file from url to urlnew")
+      if (!fs.existsSync(projectPath)){
+        fs.mkdirSync(projectPath, { recursive: true });
+      }
+      // move file
+      fs.rename(url, newurl, (err) => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+      });
+
       // add in DB
       const data = {
           instrumentId,
           //filename,
           //image,
           userId : userId,
-          url,
+          url: newurl,
           background: true,
       }
 
@@ -191,7 +221,7 @@ module.exports.Background = class {
 
   async addurl2({ instrumentId , url , userId , subsampleId/*, type*/}) {
 
-    console.log("scan:add")
+    console.log("background:addurl2")
     console.log("url: ", url)
     console.log("instrumentId: ", instrumentId)
     console.log("userId: ", userId)
