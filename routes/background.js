@@ -153,19 +153,20 @@ module.exports = {
 
     addurl: async (req,res) => {
         console.log("------------------------------------------");
-        console.log("create",req);
+        console.log("addurl",req);
         // console.log("create files",req.files);
-        console.log("create Req", req.query);
+        console.log("addurl Req", req.query);
         console.log("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        console.log("req.jwt: ", req.jwt)
+        // console.log("req.jwt: ", req.jwt)
         const userID = req.jwt.id
 
         if ( req.body.url == undefined){
+            console.error("background.addurl: URL is required")
             return res.status(400).json({error:"URL is required"})
         }
         console.log("req.body.url: ", req.body.url);

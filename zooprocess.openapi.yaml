@@ -787,6 +787,8 @@ paths:
                 $ref: '#/components/schemas/ImageModel'
       tags:
         - User
+        - Manager
+        - Admin
 
 
   /scan/{instrumentId}/url:
