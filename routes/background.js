@@ -58,8 +58,13 @@ module.exports = {
         .then(scan => {
             return res.status(200).json(scan);
         })
-        .catch(async(e) => {
-            console.error("Error:",e );
+        .catch(async(e/*:Error*/) => {
+
+            console.error("Error: -> ", e);
+            if ( e == "No scanId provided" ) {
+                return res.status(422).json({error:e});
+            }
+
             return res.status(500).json({error:e});
         })
     },
@@ -176,8 +181,8 @@ module.exports = {
         }
         console.log("req.query.projectId: ", req.query.projectId);
 
-
-        return background.addurl({
+    try {
+        return await background.addurl({
             userId:id,
             //image:req.body, 
             url: req.body.url,
@@ -194,7 +199,7 @@ module.exports = {
 
             if (e.name == "PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
-                    const txt = "Drive with name '"+ req.body.name +"' already exist";
+                    const txt = "Drive with name '" + req.body.name + "' already exist";
                     const message = { error:txt };
                     return res.status(500).json({error:message});
                 }
@@ -204,6 +209,11 @@ module.exports = {
             }
             return res.status(500).json({error:e})
         })
+    }
+    catch(err){
+        console.error("Error:",e )
+        return res.status(500).json({error:e})
+    }
     },
 
 

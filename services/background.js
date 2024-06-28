@@ -3,9 +3,10 @@
 const { Scans } = require ("./prisma/scans")
 // const { BackgroundType } = require("./type/background")
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const { Projects } = require("./projects");
+// const { rejects } = require("assert");
 
 // const { Projects } = require("./prisma/projects");
 // const background = require("../routes/background");
@@ -81,7 +82,8 @@ module.exports.Background = class {
 
     async findScan(scanId){
       console.log("Background Service scan",scanId)
-      return this.scans.findScan(scanId)
+      // return await this.scans.findScan(scanId) // missing {} around scanId
+      return this.scans.findScan({scanId})
     }
 
     async findAllfromProject(projectId/*:string*/) {
@@ -183,14 +185,21 @@ module.exports.Background = class {
       const project = await projects.get(projectId)
       console.log("project: ", project)
 
-      const drive = project.drive.url
+      let drive = project.drive.url
       console.log("drive: ", drive)
+      if ( drive.substring(0, "file://".length) == "file://"){
+        drive = drive.substring("file://".length)
+      }
+      console.log("drive: ", drive)
+
+      const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
 
       const date /*: string*/ = new Date().toISOString().split("T")[0]
       const filename = date + "_" + path.basename(url)
       console.log("filename: ", filename)
-      const projectPath = path.join(drive, project.name , "Zooscan_back")
-      const newurl = path.join(projectPath, filename)
+      const projectPath = path.join( root , drive, project.name , "Zooscan_back")
+      console.log("projectPath:", projectPath)
+      const newurl = path.join(projectPath, filename).toString()
       console.log("url: ", newurl)
 
       // move file from url to urlnew
@@ -200,8 +209,19 @@ module.exports.Background = class {
         fs.mkdirSync(projectPath, { recursive: true });
       }
       // move file
-      fs.rename(url, newurl, (err) => {
-        if (err) throw err;
+      fs.rename(url, newurl, async (err) => {
+        if (err) {
+          console.error(err)
+          // throw err;
+          // throw Error(err);
+          // throw new Error("error moving file")
+          // reject()
+          // return Promise.reject( "error moving file" + JSON.stringify(err))
+          // return new Promise.reject( "error moving file")
+          // const error =  Error("error moving file")
+          // return Promise.reject( error )
+          return Promise.reject(err)
+        }
         console.log("The file has been saved!");
       });
 

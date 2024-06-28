@@ -39,6 +39,8 @@ module.exports.Scans = class {
     async findScan( {scanId }) {
         console.log("Prisma Scans findScan" , scanId)
 
+        if (scanId == undefined ) throw "No scanId provided" //new Error({message:"No scanId provided"})
+
         const scan = await this.prisma.scan.findFirstOrThrow({
             where: {
                 id: scanId
