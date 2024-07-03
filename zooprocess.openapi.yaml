@@ -269,6 +269,16 @@ paths:
       schema:
         type: string
       style: simple
+    - name: show
+      in: query
+      description: get a showable scan in browser (get jpg url instead of tiff)
+      required: false
+      schema:
+        type: boolean
+        # default: false
+        nullable: true
+      allowEmptyValue: true
+
 
     get:
       description: Return (background) scan

@@ -80,11 +80,116 @@ module.exports.Background = class {
       return this.scans.findAllFromProject({background: false, projectId})
     }
 
-    async findScan(scanId){
+    isShowableImage(path/*:string*/) {
+      // var re = /(?:\.([^.]+))?$/;
+      var re = /(?:[^\/]\.([^\.\/]+))?$/;
+      var ext = re.exec(path)[1];
+      console.debug("isShowableImage: ", path, ext) 
+      if (ext == "jpg" || ext == "jpeg" || ext == "png") return true
+      console.debug("isShowableImage: false" )
+      return false
+    }
+
+    async converttiff2jpg(pathl/*:string*/) {
+      const server = "http://zooprocess.imev-mer.fr:8000"
+      const url = server + "/convert"
+      console.debug("converttiff2jpg path: ", path)
+      const body = {
+        src: pathl,
+      } 
+      const bodytext = JSON.stringify(body)
+      console.debug("converttiff2jpg body: ", body)
+      // const response = 
+      return await fetch( url , {
+          method: "POST",
+          body: bodytext, // JSON.stringify(data),
+          // body: data_test,
+          headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "User-Agent": "Zooprocess v10",
+              // "Access-Control-Allow-Origin":"no-cors"
+          },
+      })
+      .then((response) => {
+          if (response.ok) {
+              console.log("converttiff2jpg fetch response: ", response)
+              console.log("converttiff2jpg fetch response.text: ", response.text)
+              return response
+
+              // response.text()
+              // .then((imageUrl) => {
+              //     // setImageUrl(imageUrl);
+              //     console.log("imageUrl: ", imageUrl)
+              //     const localPath = pathToSessionStorage(imageUrl)
+              //     console.log("localPath: ", localPath)
+              //     setBackground(localPath)
+              //     return response
+              // })
+              // .catch((error) => {
+              //     console.log("Cannot convert Tiff to Jpg error: ", error)
+              //     const errormsg = { message:"Cannot convert Tiff to Jpg error: " + error}
+              //     // setMsg(errormsg.message)
+              //     // setError(errormsg)
+              //     throw new Error(errormsg)
+              // })
+          } else {
+              console.error("Resp NOK", response.status)
+              // setError(response)
+              // setError([response])
+              if ( response.status == 422) {
+                  console.error("The server do not accept your connection")
+                  console.error("Can't connect: ", response)
+                  // setMsg("The server do not accept your connection")
+                  throw new Error("The server do not accept your connection")
+                  // throw new Error({message:"The server do not accept your connection"})
+              } else {
+                  console.error("Cannot convert Tiff to Jpg error: ", response)
+                  // setMsg("Cannot convert Tiff to Jpg error:")
+                  throw new Error("Cannot convert Tiff to Jpg error: " + response)
+                  // throw new Error({message:"Cannot convert Tiff to Jpg error: " + response})
+              }
+          }
+      })   
+    }
+
+    async findScan(scanId, show){
       console.log("Background Service scan",scanId)
       // return await this.scans.findScan(scanId) // missing {} around scanId
+      // return this.scans.findScan({scanId})
+
       return this.scans.findScan({scanId})
+      .then(async (scan) => {
+        if (show == false){
+          return scan
+        }
+
+        // need to convert if neccessary
+        if (this.isShowableImage(scan.url)){
+          return scan
+        }
+
+        // convert to jpg
+        console.log("converttiff2jpg scan.url: ", scan.url)
+        return await (await this.converttiff2jpg(scan.url)).text()
+        .then(async (imageUrl) => {
+
+          console.log("imageUrl: ", imageUrl)
+
+          // clean text
+          imageUrl = imageUrl.replace(/"/g, "")
+
+          let newscan = {...scan , url: imageUrl}
+          return newscan
+        })
+      })
+      // .catch(async(e/*:Error*/) => {          
+      // })
+
+
     }
+
+
 
     async findAllfromProject(projectId/*:string*/) {
       console.log("Background Service findAllfromProject", projectId)

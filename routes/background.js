@@ -51,10 +51,20 @@ module.exports = {
         console.log("req.params", req.params );
         console.log("req.params.projectId", req.params.projectId );
         console.log("req.params.scanId", req.params.scanId );
+        console.log("req.query.show", req.query.show );
 
+        let show = false
+        if ( req.query.show === undefined || req.query.show == false ) {
+            show = false
+        } else {
+            if ( req.query.show == true || req.query.show === null ) {
+                show = true
+            }    
+        }
 
+        console.debug("show", show);
 
-        return background.findScan(req.params.scanId)
+        return background.findScan(req.params.scanId, show)
         .then(scan => {
             return res.status(200).json(scan);
         })
