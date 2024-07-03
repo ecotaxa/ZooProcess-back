@@ -90,13 +90,17 @@ module.exports.Background = class {
       return false
     }
 
-    async converttiff2jpg(pathl/*:string*/) {
+    async converttiff2jpg(pathl/*:string*/,pathd/*:string*/) {
       const server = "http://zooprocess.imev-mer.fr:8000"
       const url = server + "/convert"
       console.debug("converttiff2jpg path: ", path)
-      const body = {
+      let body = {
         src: pathl,
-      } 
+      }
+      if ( pathd ){
+        body.dst = pathd
+      }
+      
       const bodytext = JSON.stringify(body)
       console.debug("converttiff2jpg body: ", body)
       // const response = 
@@ -169,9 +173,21 @@ module.exports.Background = class {
           return scan
         }
 
+        let pathdest = undefined
+        pathdest = scan.url.replace(".tif", ".jpg")
+
+        pathdest = pathdest.replace("/upload/", "/show/")
+        if ( pathdest.indexOf("/drives/") != -1 ){
+          console.debug("pathdest: ", pathdest)
+          console.debug("working in drives")
+          pathdest = pathdest.replace("/Zooscan_back/", "/show/Zooscan_back/")
+          pathdest = pathdest.replace("/Zooscan_work/", "/show/Zooscan_work/")
+        }
+        console.debug("pathdest after replace: ", pathdest)
+
         // convert to jpg
         console.log("converttiff2jpg scan.url: ", scan.url)
-        return await (await this.converttiff2jpg(scan.url)).text()
+        return await (await this.converttiff2jpg(scan.url, pathdest)).text()
         .then(async (imageUrl) => {
 
           console.log("imageUrl: ", imageUrl)
