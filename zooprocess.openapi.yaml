@@ -555,6 +555,22 @@ paths:
         type: string
       style: simple
 
+    get:
+      description: Get the subsample associated to the sample
+      operationId: subsamples.get
+
+      responses:
+        "200":
+          description: Returned the list of subsamples associated to the sample
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubSample'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
     delete:
       summary: Delete a subsample
       description: Delete a subsample
@@ -595,9 +611,9 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
-      - User
-      - Manager
-      - Admin
+        - User
+        - Manager
+        - Admin
       security:
         - BearerAuth: [ ]
 

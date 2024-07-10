@@ -76,7 +76,13 @@ module.exports.SubSamples = class {
             include:{
                 metadata:true,
                 metadataModel:true,
-                subsample:true
+                // subsample:true
+                sample: {
+                    include: {
+                        metadata: true,
+                    }
+                },
+                qc: true
             }
         })
         return sample
