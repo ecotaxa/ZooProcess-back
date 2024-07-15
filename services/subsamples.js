@@ -67,15 +67,16 @@ module.exports.SubSamples = class {
         return samples
     }
 
-    async get({/*projectId, sampleId,*/ subsampleId}) {
+    async get({/*projectId, sampleId,*/ subSampleId}) {
         const sample = await this.prisma.subSample.findFirst({
             where:{
-                id:subsampleId,
+                id:subSampleId,
                 //projectId:projectId
             },
             include:{
                 metadata:true,
                 metadataModel:true,
+                user:true,
                 // subsample:true
                 sample: {
                     include: {
