@@ -6,6 +6,7 @@ const { Scans } = require ("./prisma/scans")
 const fs = require('node:fs');
 const path = require('node:path');
 const { Projects } = require("./projects");
+const { SubSamples } = require("./prisma/subSample");
 // const { rejects } = require("assert");
 
 // const { Projects } = require("./prisma/projects");
@@ -360,15 +361,31 @@ module.exports.Background = class {
   }
       
 
-  async addurl2({ instrumentId , url , userId , subsampleId/*, type*/}) {
+  async addurl2({ /*instrumentId ,*/ url , userId , subsampleId/*, type*/}) {
 
     console.log("background:addurl2")
     console.log("url: ", url)
-    console.log("instrumentId: ", instrumentId)
+    // console.log("instrumentId: ", instrumentId)
     console.log("userId: ", userId)
+    console.log("subsampleId: ", subsampleId)
+
+    // if ( !subsampleId) {
+    //   return Promise.reject("subsampleId is not defined")
+    // }
 
     // save image in folder : Background/{instrumentId}
     // const filename = "2024_02_07_08_52_10_0001.jpg"
+
+    // const prisma = new Prisma().client;
+
+    const subSamples = new SubSamples()
+    const subSample = await subSamples.find({subSampleId:subsampleId})
+    console.log("subSample", subSample)
+
+    if ( ! subSample ){
+      return Promise.reject("Can't find the subsample")
+    }
+
 
 
     // const url = ""
@@ -378,15 +395,102 @@ module.exports.Background = class {
     // const url = path.join( this.folderName , filename)
     // write image
 
+
+    // const projects = new Projects()
+    // const project = await projects.get(projectId)
+    const project = subSample.sample.project
+    console.log("project: ", project)
+
+    let drive = project.drive.url
+    console.log("drive: ", drive)
+    if ( drive.substring(0, "file://".length) == "file://"){
+      drive = drive.substring("file://".length)
+    }
+    console.log("drive: ", drive)
+
+
+    const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+
+    const date /*: string*/ = new Date().toISOString().split("T")[0]
+    const filename = date + "_" + path.basename(url)
+    console.log("filename: ", filename)
+    const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
+    console.log("projectPath:", projectPath)
+    const newurl = path.join(projectPath, filename).toString()
+    console.log("url: ", newurl)
+
+    // move file from url to urlnew
+    // make path
+    console.debug("moving file from url to urlnew")
+    if (!fs.existsSync(projectPath)){
+      fs.mkdirSync(projectPath, { recursive: true });
+    }
+
+    // move file
+    if ( !fs.existsSync(url)){
+      return Promise.reject("File do not exist: " + url)
+    }
+
+    // fs.rename(url, newurl, async (err) => {
+    //   if (err) {
+    //     console.error("rename error", err)
+    //     // throw err;
+    //     // throw Error(err);
+    //     // throw new Error("error moving file")
+    //     // reject()
+    //     // return Promise.reject( "error moving file" + JSON.stringify(err))
+    //     // return new Promise.reject( "error moving file")
+    //     // const error =  Error("error moving file")
+    //     // return Promise.reject( error )
+    //     return Promise.reject(err)
+    //   }
+    //   console.log("The file has been saved!");
+    // });
+
+    // try {
+    //   await fs.rename(ulr, newurl);
+    //   console.log('SubSample renamed successfully');
+    //   // You can add additional logic here if needed
+    // } catch (error) {
+    //   console.error('Error renaming subSample:', error);
+    //   // Handle the error appropriately, e.g., throw it or return an error response
+    //   // throw new Error('Failed to rename subSample');
+    //   throw new Error('Cannot save the scan in the project folder');
+    // }
+
+
+    function renameSubSampleSync(oldPath, newPath) {
+      try {
+        fs.renameSync(oldPath, newPath);
+        console.log('SubSample renamed successfully');
+        return true;
+      } catch (error) {
+        console.error('Error renaming subSample:', error);
+        // throw error;
+        throw new Error('Cannot save the scan in the project folder: ' +  error);
+      }
+    }
+    
+    renameSubSampleSync(url,newurl)
+
+    
+
     // add in DB
+
+    console.log("project.id: ", project.id)
+
     const data = {
-        instrumentId,
+        instrumentId: project.instrumentId,
         //filename,
         //image,
         userId,
         subsampleId,
-        url,
+        src: url, // pq c'est  pas newurl ??
+        //url,
+        url: newurl,
         background: false,
+
+        projectId: project.id
     }
 
     console.log("data: ", data)

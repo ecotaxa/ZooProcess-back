@@ -817,13 +817,15 @@ paths:
         - Admin
 
 
-  /scan/{instrumentId}/url:
+  # /scan/{instrumentId}/url:
+  /scan/{subSampleId}/url:
     parameters:
       - description: The instrument ID
         example: 655d3062983b92b6e29b3369
         explode: false
         in: path
-        name: instrumentId
+        # name: instrumentId
+        name: subSampleId
         required: true
         schema:
           type: string
@@ -833,6 +835,29 @@ paths:
       description: Add a scan to use with share folder, 
                     don't upload image to the server 
       operationId: Background.addurl2
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: The URL of the image to be scanned
+                subSampleId:
+                  type: string
+                  description: The ID of the sub-sample to associate the scan with
+
+              required:
+                - url 
+                - subSampleId
+
+            example:
+              url: "/project/scan/_raw/scan.tif"
+              subSampleId: "655d3062983b92b6e29b3369"
+
       # operationId: Scan.addur
       responses:
         '200':
@@ -841,6 +866,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImageModel'
+
+        # no need to define the response type, it's already defined in the schema (requestBody do the job)
+        # '400':
+        #   description: Error message from api/background:addurl2
+        #   content:
+        #     application/json:
+        #       schema:
+        #         type: object
+        #         properties:
+        #           error:
+        #             type: string
+        #             description: The error message from api/background:addurl2
+      
       tags:
         - User
 

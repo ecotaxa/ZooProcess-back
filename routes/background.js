@@ -240,9 +240,14 @@ module.exports = {
         console.log("req.jwt: ", req.jwt)
         const userID = req.jwt.id
 
-        if ( req.body.url == undefined){
-            return res.status(400).json({error:"URL is required"})
-        }
+        // plus besoin géré dans openapi
+        // if ( req.body.url == undefined){
+        //     return res.status(400).json({error:"URL is required"})
+        // }
+
+        // if ( req.body.subSampleId == undefined) {
+        //     return res.status(400).json({error:"subsampleId is required"})
+        // }
         console.log("req.body: ", req.body);
         console.log("req.body.url: ", req.body.url);
 
@@ -250,8 +255,8 @@ module.exports = {
             userId:id,
             //image:req.body, 
             url: req.body.url,
-            subsampleId:req.body.subsampleId,
-            instrumentId:req.params.instrumentId 
+            subsampleId:req.body.subSampleId,
+            // instrumentId:req.params.instrumentId // got from the project
             /*, type:BackgroundType.BACKGROUND*/
         })
         .then(result => {
