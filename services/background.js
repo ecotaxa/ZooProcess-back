@@ -411,8 +411,9 @@ module.exports.Background = class {
 
     const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
 
-    const date /*: string*/ = new Date().toISOString().split("T")[0]
-    const filename = date + "_" + path.basename(url)
+    // const date /*: string*/ = new Date().toISOString().split("T")[0]
+    // const filename = date + "_" + path.basename(url)
+    const filename = path.basename(url)
     console.log("filename: ", filename)
     const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
     console.log("projectPath:", projectPath)
