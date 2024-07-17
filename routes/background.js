@@ -255,7 +255,7 @@ module.exports = {
             userId:id,
             //image:req.body, 
             url: req.body.url,
-            subsampleId:req.body.subSampleId,
+            subsampleId:req.params.subSampleId,
             // instrumentId:req.params.instrumentId // got from the project
             /*, type:BackgroundType.BACKGROUND*/
         })

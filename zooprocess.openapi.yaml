@@ -846,17 +846,17 @@ paths:
                 url:
                   type: string
                   description: The URL of the image to be scanned
-                subSampleId:
-                  type: string
-                  description: The ID of the sub-sample to associate the scan with
+                # subSampleId:
+                #   type: string
+                #   description: The ID of the sub-sample to associate the scan with
 
               required:
                 - url 
-                - subSampleId
+                # - subSampleId
 
             example:
               url: "/project/scan/_raw/scan.tif"
-              subSampleId: "655d3062983b92b6e29b3369"
+              # subSampleId: "655d3062983b92b6e29b3369"
 
       # operationId: Scan.addur
       responses:
