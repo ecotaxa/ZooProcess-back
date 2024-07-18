@@ -646,6 +646,52 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  /projects/{projectId}/samples/{sampleId}/subsamples/{subSampleId}/process:
+    parameters:
+    - description: The project id
+      example: 655d3062983b92b6e29b3369
+      explode: false
+      in: path
+      name: projectId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: sampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sub sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: subSampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    get:
+      description: process the scan
+      operationId: process.subsample
+      responses:
+        '200':
+          description: Return the process
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcesstModel'
+
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
 
   /instruments:
     get:
@@ -657,7 +703,7 @@ paths:
           description: Return the list of instruments
           content:
             application/json:
-              schema:
+              schema:               
                 title: Response get an array of instrument
                 type: array
                 items:
@@ -1406,6 +1452,13 @@ components:
         sn:
           type: string
 
+    ProcesstModel:
+      type: object
+      required:
+        - state
+      properties:
+        state:
+          type: string
 
     ImageModel:
       type: object
