@@ -10,9 +10,10 @@ const { Prisma } = require('./client');
 
 // module.exports.
 const TaskType = {
-    separate : "separate",
+    separate   : "separate",
     background : "background",
-    vignette : "vignette"
+    vignette   : "vignette",
+    process    : "process",
   }
   
   
@@ -52,7 +53,11 @@ module.exports.Tasks = class {
 
 
         //(Object.values(TaskType)) as String[]).include(exec)
-        if ( exec != TaskType.separate && exec != TaskType.background && exec != TaskType.vignette ) {
+        if ( exec != TaskType.separate 
+            && exec != TaskType.background 
+            && exec != TaskType.vignette 
+            && exec != TaskType.process 
+        ) {
             throw new Error("TaskType not valid")
         }
 
