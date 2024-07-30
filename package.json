@@ -10,8 +10,7 @@
     "dev": "nodemon --watch . --ext js,yaml --exec node --ignore '*.test.js' app.js",
     "prisma.format": "npx prisma format",
     "prisma.generate": "npx prisma generate",
-    "prisma.dbpush": "npx prisma db push",
-    "build": "next build"
+    "prisma.dbpush": "npx prisma db push"
   },
   "keywords": [],
   "author": "",
