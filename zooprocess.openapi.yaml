@@ -555,6 +555,10 @@ paths:
         type: string
       style: simple
 
+#patch:
+    #  description: Update the sampleId only observation is authorized
+
+ 
     get:
       description: Get the subsample associated to the sample
       operationId: subsamples.get
