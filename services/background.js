@@ -328,10 +328,17 @@ module.exports.Background = class {
       // make path
       console.debug("move file from url to urlnew")
       if (!fs.existsSync(projectPath)){
+        console.debug("mkdir:" , projectPath )
         fs.mkdirSync(projectPath, { recursive: true });
       }
       // move file
-      fs.rename(url, newurl, async (err) => {
+      if (!fs.existsSync(url) && !fs.existsSync(newurl)){
+        return Promise.reject( "file do not exist ??? " + url )
+      }
+
+      try {
+      if (fs.existsSync(url))
+      fs.rename(url, newurl, async (err /*: NodeJS.ErrnoException | null*/ ) => {
         if (err) {
           console.error(err)
           // throw err;
@@ -346,6 +353,10 @@ module.exports.Background = class {
         }
         console.log("The file has been saved!");
       });
+      }
+      catch(err){
+        return Promise.reject(err)
+      }
 
       // add in DB
       const data = {
@@ -415,7 +426,7 @@ module.exports.Background = class {
     // const filename = date + "_" + path.basename(url)
     const filename = path.basename(url)
     console.log("filename: ", filename)
-    const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
+    const projectPath = path.join( root, drive, project.name , "Zooscan_scan" , "_raw" )
     console.log("projectPath:", projectPath)
     const newurl = path.join(projectPath, filename).toString()
     console.log("url: ", newurl)
