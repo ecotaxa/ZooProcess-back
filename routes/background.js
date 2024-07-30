@@ -167,11 +167,11 @@ module.exports = {
 
 
     addurl: async (req,res) => {
-        console.log("------------------------------------------");
-        console.log("addurl",req);
+        console.debug("------------------------------------------");
+        console.debug("route.background.addurl",req);
         // console.log("create files",req.files);
-        console.log("addurl Req", req.query);
-        console.log("------------------------------------------");
+        console.debug("addurl Req", req.query);
+        console.debug("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")

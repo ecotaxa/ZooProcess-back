@@ -116,8 +116,9 @@ listFromProject: async (req,res) => {
 
 addurl: async (req,res) => {
     console.log("------------------------------------------");
-    // console.log("create",req);
-    // console.log("create files",req.files);
+    console.log("scanne.addurl");
+    console.log("create",req);
+    console.log("create files",req.files);
     console.log("------------------------------------------");
 
     if ( !isRoleAllowed(req)){
