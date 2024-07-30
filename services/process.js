@@ -29,6 +29,16 @@ module.exports.Process = class {
         }
 
         return Promise.resolve(data)
+        // .then(() => {
+        //     return new Promise((resolve) => {
+        //         setTimeout(() => {
+        //             const newData = {
+        //                 state: "SPLITTING",
+        //             }
+        //             resolve(newData)
+        //         }, 10000)
+        //     })
+        // })
 
     }
 
