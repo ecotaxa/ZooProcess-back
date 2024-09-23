@@ -108,3 +108,14 @@ db.Project.find({"id":"6565b055ae8de1c051ae0ed0"})
 
 http://zooprocess.imev-mer.fr:8081/spec
 
+
+
+# docker  
+
+build
+
+docker build -t zooprocess-back .
+
+run
+
+docker run -p 8081:8081  --name zooprocess-back zooprocess-back
