@@ -75,6 +75,19 @@ module.exports = {
         });
     },
 
+    put: async (req,res) => {
+        console.log("put: ", {projectId:req.params.projectId, sampleId:req.params.sampleId, sample:req.body});
+
+        return samples.update({projectId:req.params.projectId, sampleId:req.params.sampleId, sample:req.body})
+        .then(payload => {
+            return res.status(200).json(payload);
+        })
+        .catch(async(e) => {
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        });
+    },
+
     delete: async (req,res) => {
 
         // console.log("list req.query:", req.query);

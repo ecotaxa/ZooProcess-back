@@ -441,6 +441,24 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    put:
+      description: Update a sample from project
+      operationId: samples.put
+
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sample'
+          description: Return the project sample updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+      - User
+      security:
+        - BearerAuth: [ ]
+        
     delete:
       summary: Delete a sample
       description: Delete a sample
