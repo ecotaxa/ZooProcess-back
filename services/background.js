@@ -331,6 +331,11 @@ module.exports.Background = class {
         fs.mkdirSync(projectPath, { recursive: true });
       }
       // move file
+
+      if ( !fs.existsSync(url)){
+        return Promise.reject("file "+url+" not found")
+      }
+      // try{
       fs.rename(url, newurl, async (err) => {
         if (err) {
           console.error(err)
@@ -344,9 +349,22 @@ module.exports.Background = class {
           // return Promise.reject( error )
           return Promise.reject(err)
         }
-        console.log("The file has been saved!");
+        console.log("The file has been saved at",newurl," !");
       });
-
+      // }
+      // catch(err){
+      //   console.error(err)
+      //   // throw err;
+      //   // throw Error(err);
+      //   // throw new Error("error moving file")
+      //   // reject()
+      //   // return Promise.reject( "error moving file" + JSON.stringify(err))
+      //   // return new Promise.reject( "error moving file")
+      //   // const error =  Error("error moving file")
+      //   // return Promise.reject( error )
+      //   return Promise.reject(err)
+      // }
+      
       // add in DB
       const data = {
           instrumentId,

@@ -1,12 +1,12 @@
-FROM node:14-alpine
+FROM node:20.16-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY .next ./.next
-COPY public ./public
 
 RUN npm ci --only=production
+
+COPY . .
 
 EXPOSE 3000
 
