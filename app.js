@@ -17,6 +17,7 @@ const app = express();
 // const apiSpec = path.join(__dirname, 'api.yaml');
 const apiSpec = path.join(__dirname, 'zooprocess.openapi.yaml');
 
+
 function verifyToken (req, res, next){
 
   console.log("verifyToken middleware")
@@ -37,6 +38,7 @@ function verifyToken (req, res, next){
     // res.sendStatus(403);
   }
 }
+
 
 function extractJWT(req, res, next){
 
@@ -206,6 +208,7 @@ async function getRole(req, res, next){
 //   return handler[method];
 // }
 
+// console.log("modulePathResolverSeb ok")
 var corsOption = {
   origin: 'http://zooprocess.imev-mer.fr',
   optionSuccessStatus: 200 // for legacy browser
@@ -213,12 +216,18 @@ var corsOption = {
 // app.use (cors(corsOption))
 app.use(cors())
 
+// console.log("cors ok")
+
 // 1. Install bodyParsers for the request types your API will support
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());
 app.use(express.json());
 
+// console.log("bodyParsers ok")
+
 app.use(logger('dev'));
+
+// console.log("logger ok")
 
 app.use('/spec', express.static(apiSpec));
 
@@ -226,6 +235,8 @@ app.use(verifyToken)
 app.use(extractJWT)
 app.use(getRole)
 // app.use(isRoleAllowed)
+
+// console.log("verifyToken ok")
 
 //  2. Install the OpenApiValidator middleware
 app.use(
