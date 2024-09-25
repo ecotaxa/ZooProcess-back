@@ -261,96 +261,97 @@ module.exports.Samples = class {
 //     }
    
 
-// stringify = (value,type) => {
-//     if (type == "string") {
-//         return value;
-//     }
-//     if (type == "number") {
-//         return value.toString();
-//     }
-//     if (type == "boolean") {
-//         return value == "true";
-//     }
-//     if (type == "date") {
-//         return value.toISOString()
-//     }
-//     if (type == "object") {
-//         return JSON.stringify(value);
-//     }   
-//     return value;
-// }
-
-async updateSampleMetadata(sampleId, metadataUpdates) {
-
-    var sample = metadataUpdates;
-
-    console.log("updateSampleMetadata sampleId: ", sampleId);
-    console.log("updateSampleMetadata metadataUpdates: ", metadataUpdates);
-
-    const existingMetadata = await this.prisma.metadata.findMany({
-        where: { sampleId: sampleId }
-    });
-
-    const updatePromises = existingMetadata.map(async (metadata) => {
-        console.log("updateSampleMetadata existingMetadata.map: ", metadata);
-
-        const newValue = sample[metadata.name];
-        // const newValue = this.stringify(sample[metadata.name], metadata.type);
-
-        console.debug('type : ', typeof newValue);
-
-        // enleve du tableau
-        console.debug("remove metadata.name from the array")
-        sample[metadata.name] = undefined;
-
-        console.log("updateSampleMetadata newValue: ", newValue);
-        if (newValue !== undefined && newValue !== metadata.value) {
-            console.log("updating metadata: ", metadata);
-            return this.prisma.metadata.update({
-                where: { id: metadata.id },
-                data: { value: newValue }
-            });
-
-        }
-        // }
-        return null;
-    });
-
-    console.debug("waiting updatePromises: ", updatePromises);
-    await Promise.all(updatePromises.filter(Boolean));
-    console.debug("waiting updatePromises: OK");
-
-    const addPromises = Object.entries(sample).map(async ([name, value]) => {
-        if (value !== undefined) {
-            console.log("adding metadata: ", { name, value });
-            return this.prisma.metadata.create({
-                data: {
-                    name,
-                    value: JSON.stringify(value),
-                    type: typeof value,
-                    sampleId: sampleId
-                }
-            });
-        }
-        return null;
-    });
-    console.debug("waiting addPromises: ", addPromises);
-    await Promise.all(addPromises.filter(Boolean));
-    console.debug("waiting addPromises: OK");
-
-    // return the updated sample
-    return await this.prisma.sample.findUnique({
-        where: { id: sampleId },
-        include: { metadata: true }
-    });
+stringify = (value,type) => {
+    if (type == "string") {
+        return value;
+    }
+    if (type == "number") {
+        return value.toString();
+    }
+    if (type == "boolean") {
+        return value == "true";
+    }
+    if (type == "date") {
+        return value.toISOString()
+    }
+    if (type == "object") {
+        return JSON.stringify(value);
+    }   
+    return value;
 }
 
+    async updateSampleMetadata(sampleId, metadataUpdates) {
 
-async update({projectId, sampleId, sample}) {
-    console.log("put sample: ", {projectId, sampleId, sample});
-    
-   return this.updateSampleMetadata(sampleId,sample)
-}
+        var sample = metadataUpdates;
+
+        console.log("updateSampleMetadata sampleId: ", sampleId);
+        console.log("updateSampleMetadata metadataUpdates: ", metadataUpdates);
+
+        const existingMetadata = await this.prisma.metadata.findMany({
+            where: { sampleId: sampleId }
+        });
+
+        const updatePromises = existingMetadata.map(async (metadata) => {
+            console.log("updateSampleMetadata existingMetadata.map: ", metadata);
+
+            // const newValue = sample[metadata.name];
+            const newValue = this.stringify(sample[metadata.name], metadata.type);
+
+            console.debug('type : ', typeof newValue);
+
+            // enleve du tableau
+            console.debug("remove metadata.name from the array")
+            sample[metadata.name] = undefined;
+
+            console.log("updateSampleMetadata newValue: ", newValue);
+            if (newValue !== undefined && newValue !== metadata.value) {
+                console.log("updating metadata: ", metadata);
+                return this.prisma.metadata.update({
+                    where: { id: metadata.id },
+                    data: { value: newValue }
+                });
+
+            }
+            // }
+            return null;
+        });
+
+        console.debug("waiting updatePromises: ", updatePromises);
+        await Promise.all(updatePromises.filter(Boolean));
+        console.debug("waiting updatePromises: OK");
+
+        const addPromises = Object.entries(sample).map(async ([name, value]) => {
+            if (value !== undefined) {
+                console.log("adding metadata: ", { name, value });
+                return this.prisma.metadata.create({
+                    data: {
+                        name,
+                        value: JSON.stringify(value),
+                        type: typeof value,
+                        sampleId: sampleId
+                    }
+                });
+            }
+            return null;
+        });
+        console.debug("waiting addPromises: ", addPromises);
+        await Promise.all(addPromises.filter(Boolean));
+        console.debug("waiting addPromises: OK");
+
+        // return the updated sample
+        return await this.prisma.sample.findUnique({
+            where: { id: sampleId },
+            include: { metadata: true }
+        });
+    }
+
+
+    async update({projectId, sampleId, sample}) {
+        console.log("put sample: ", {projectId, sampleId, sample});
+        
+    return this.updateSampleMetadata(sampleId,sample)
+    }
+
 
 
     async deleteSample({projectId, sampleId}) {
