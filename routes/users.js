@@ -73,7 +73,7 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        return users.get(req.params.userId)
+        return users.get(req.params.id)
         .then(user => {
             return res.status(200).json(user)
         })
