@@ -112,13 +112,19 @@ model Instrument {
   // zooscanCalibration   ZooscanCalibration? @relation(fields: [zooscanCalibrationId], references: [id])
   // zooscanCalibrationId String?             @db.ObjectId
 
+  ZooscanCalibration ZooscanCalibration[]
+
   @@unique([name, sn])
 }
 
 model ZooscanCalibration {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  instrumentId String @db.ObjectId
+  // instrumentId String @db.ObjectId
+  instrument      Instrument? @relation(fields: [instrumentId], references: [id])
+  instrumentId    String?     @db.ObjectId
+
+  frame String
 
   xOffset Int
   yOffset Int

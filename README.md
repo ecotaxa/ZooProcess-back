@@ -119,3 +119,32 @@ docker build -t zooprocess-back .
 run
 
 docker run -p 8081:8081  --name zooprocess-back zooprocess-back
+
+
+
+
+
+
+
+
+# MongoDB Tips
+
+show databases;
+
+use zooProcess;
+show collections;
+
+show the collection ZoooscanCalibration
+db.ZoooscanCalibration.find().limit(5).pretty()
+
+db.Instrument.find().limit(1).pretty()
+
+
+for example to update broken table due to change model
+I broken ZoooscanCalibration collection, when i added the frame type and link with the intrument collection
+
+then I added the new fields: the frame type and the link with the intrument collection in each ZooscanCalibration rows
+db.ZooscanCalibration.updateMany(
+  {},
+  { $set: { frame: "LARGE", instrumentId: ObjectId("65c4e0994653afb2f69b11ce") } }
+)
