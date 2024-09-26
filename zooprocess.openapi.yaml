@@ -686,6 +686,8 @@ paths:
                   $ref: '#/components/schemas/IntrumentModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       summary: Add a new instrument
@@ -700,6 +702,8 @@ paths:
                 $ref: '#/components/schemas/IntrumentModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /instruments/{instrumentId}:
     parameters:
@@ -727,6 +731,8 @@ paths:
                 $ref: '#/components/schemas/IntrumentModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
 
 
@@ -783,6 +789,8 @@ paths:
                 $ref: '#/components/schemas/ImageModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     get:
       summary: Get the list of background
@@ -801,7 +809,9 @@ paths:
                   $ref: '#/components/schemas/ImageModel'
       tags:
         - User
-    
+      security:
+        - BearerAuth: [ ]
+
   /background/{instrumentId}/url:
     parameters:
       - description: The instrument ID
@@ -837,6 +847,8 @@ paths:
         - User
         - Manager
         - Admin
+      security:
+        - BearerAuth: [ ]
 
 
   # /scan/{instrumentId}/url:
@@ -903,6 +915,8 @@ paths:
       
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
 
 
@@ -930,6 +944,8 @@ paths:
       tags:
         - Separator
         - User
+      security:
+        - BearerAuth: [ ]
 
     get:
       description: Get the list of task
@@ -946,6 +962,8 @@ paths:
                   $ref: '#/components/schemas/TaskModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /task/{taskId}:
     parameters:
@@ -969,6 +987,8 @@ paths:
                   $ref: '#/components/schemas/TaskModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     put:
       description: Change task informtion
@@ -982,6 +1002,8 @@ paths:
                   $ref: '#/components/schemas/TaskModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /task/{taskId}/run:
     parameters:
@@ -1006,6 +1028,8 @@ paths:
                 $ref: '#/components/schemas/TaskStateModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
   /separator:
     post:
@@ -1022,6 +1046,8 @@ paths:
 
       tags:
         - Separator
+      security:
+        - BearerAuth: [ ]
               
   /separator/{taskId}:
     parameters:
@@ -1051,6 +1077,8 @@ paths:
         - User
         - Admin
         - Manager
+      security:
+        - BearerAuth: [ ]
 
     put:
       description: Update the status of the task
@@ -1067,6 +1095,8 @@ paths:
       tags:
         - Separator  
         - User
+      security:
+        - BearerAuth: [ ]
 
 
   # /vignettes/{id}:
@@ -1127,6 +1157,8 @@ paths:
                   $ref: '#/components/schemas/MetadataModel'
       tags:
         - User
+      security:
+        - BearerAuth: [ ]
 
     post:
       summary: Add a metadata model 
@@ -1556,7 +1588,7 @@ components:
             type: string
             description: User password.
             example: test!
-          username:
+          email:
             title: User's email
             type: string
             description: User email used during registration.
