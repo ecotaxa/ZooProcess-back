@@ -23,30 +23,41 @@ module.exports.Instrument = class {
         const instrument = await this.prisma.instrument.findUnique({
             where:{
                 id:instrumentId
-            }
-        })
-
-        const calibration = await this.prisma.zooscanCalibration.findFirst({
-            where:{
-                instrumentId: instrumentId
             },
-            select:{
-                id: true,
-                instrumentId: false,
-                xOffset: true,
-                yOffset: true,
-                xSize: true,
-                ySize: true,
+            include:{
+                ZooscanCalibration: {
+                    orderBy:{
+                        frame: 'asc'
+                    }
+                },
+                ZooscanCalibration: true,
+
             }
         })
 
-        const instrumentWithCalibration = {
-           ...instrument,
-            calibration
-        }
+        // const calibration = await this.prisma.zooscanCalibration.findFirst({
+        //     where:{
+        //         instrumentId: instrumentId
+        //     },
+        //     select:{
+        //         id: true,
+        //         instrumentId: false,
+        //         xOffset: true,
+        //         yOffset: true,
+        //         xSize: true,
+        //         ySize: true,
+        //     }
+        // })
 
-        // return instrument
-        return instrumentWithCalibration
+        // const instrumentWithCalibration = {
+        //    ...instrument,
+        //     calibration
+        // }
+
+        console.log("instrument", instrument)
+
+        return instrument
+        // return instrumentWithCalibration
     }
 
     // async getZooscanCalibrations(instrumentId){
