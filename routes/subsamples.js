@@ -115,6 +115,23 @@ module.exports = {
             // end transaction
         })
         ;
+    },
+
+    process: async (req,res) => {
+
+        console.log("route::subsamples::process(req):",req)
+
+        return subsamples.process()
+        .then(result => {
+            // console.log("OK", res) 
+            console.log("OK", result);
+            return res.status(200).json(result);
+        })
+        .catch(async(e) => {
+            console.error("Error:",e );
+            return res.status(500).json({error:e});
+        });
+
     }
 
 }

@@ -613,6 +613,57 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  /projects/{projectId}/samples/{sampleId}/subsamples/{subSampleId}/process:
+    parameters:
+    - description: The project id
+      example: 655d3062983b92b6e29b3369
+      explode: false
+      in: path
+      name: projectId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: sampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+    - description: The sub sample id
+      example: 655db3a95ef7f584269ff27b
+      explode: false
+      in: path
+      name: subSampleId
+      required: true
+      schema:
+        type: string
+      style: simple
+
+#patch:
+    #  description: Update the sampleId only observation is authorized
+
+ 
+    get:
+      description: Get the subsample associated to the sample
+      operationId: subsamples.process
+
+      responses:
+        "200":
+          description: Returned the list of subsamples associated to the sample
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+
 
   /drives:
     get:
@@ -717,7 +768,7 @@ paths:
           type: string
 
 
-     
+
     get:
       description: return the instrument
       summary: the instrument
@@ -734,6 +785,84 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  /instruments/{instrumentId}/calibration/{calibrationId}:
+    parameters:
+      - description: the instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
+      - description: the calibration ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: calibrationId
+        required: true
+        schema:
+          type: string
+
+
+    get:
+      description: return the calibration of instrumentId
+      summary: the calibration
+      operationId: calibration.get
+      responses:
+        '200':
+          description: Return the calibration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalibrationtModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+    put:
+      description: return the calibration of instrumentId updated
+      summary: the calibration updated
+      operationId: calibration.update
+      responses:
+        '200':
+          description: Return the calibration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalibrationtModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+  /instruments/{instrumentId}/calibration:
+    parameters:
+      - description: the instrument ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: instrumentId
+        required: true
+        schema:
+          type: string
+     
+    post:
+      description: add a calibration to the instrument
+      summary: add a calibration
+      operationId: calibration.create
+      responses:
+        '200':
+          description: Return the calibration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalibrationtModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
 
 
   /background/{instrumentId}:
@@ -1413,6 +1542,13 @@ components:
         #   type: integer
         #   readOnly: true
 
+    Process:
+      type: object
+      # required:
+      # properties:
+        # id:
+          # readOnly: string
+
     SubSample:
       type: object
       required:
@@ -1460,6 +1596,29 @@ components:
         sn:
           type: string
 
+    CalibrationtModel:
+      type: object
+      required:
+      - id
+      - frame
+      - xOffset
+      - yOffset
+      - xSize
+      - ySize
+      properties:
+        id:
+          readOnly: true
+          type: string
+        frame:
+          type: string
+        xOffset:
+          type: number
+        yOffset:
+          type: number
+        xSize:
+          type: number
+        ySize:
+          type: number
 
     ImageModel:
       type: object

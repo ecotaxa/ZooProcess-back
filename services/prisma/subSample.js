@@ -1,8 +1,6 @@
 
 
 const { Prisma } = require('../client')
-
-
 module.exports.SubSamples = class {
 
     constructor() {
@@ -31,6 +29,8 @@ module.exports.SubSamples = class {
 
         return subSample
     }
+    
+
 
 }
 

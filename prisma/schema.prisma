@@ -372,6 +372,7 @@ enum TaskType {
   BACKGROUND
   DETECTION
   VIGNETTE
+  PROCESS
 }
 
 enum TaskStatus {

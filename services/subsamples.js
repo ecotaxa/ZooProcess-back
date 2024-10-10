@@ -170,4 +170,22 @@ module.exports.SubSamples = class {
         });
     }
 
+    async process(){
+        console.log("service::subsamples:process()")
+        return new Promise(function(resolve, reject) {
+            // return resolve(message)
+
+            const data = {
+                "mask" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_msk1.gif",
+                "out" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_out1.gif",
+                "vis" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_vis1.tif",
+                "log" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_log.txt",
+
+            }
+
+            return resolve(data)
+        })
+    }
+
+
 }
