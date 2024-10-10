@@ -38,9 +38,9 @@ module.exports = {
     create: async (req, res) => {
         console.log("Route User create", req.body);
 
-        if ( !isRoleAllowed(req)){
-            return res.status(401).send("You are not authorized to access this resource")
-        }
+        // if ( !isRoleAllowed(req)){
+        //     return res.status(401).send("You are not authorized to access this resource")
+        // }
 
         return users.add(req.body)
         .then(user => {
