@@ -43,6 +43,7 @@ module.exports.Users = class {
           subSample: true
         }
       })
+      console.debug("user: ", user);
       return user
     }
 

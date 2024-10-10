@@ -22,7 +22,11 @@ function verifyToken (req, res, next){
 
   console.log("verifyToken middleware")
 
+  console.debug("req.path", req.path)
+
+  console.debug("req.headers", req.headers)
   const bearerHeader = req.headers [ "authorization" ];
+  console.debug("Bearer header: ", bearerHeader)
   if (typeof bearerHeader !== 'undefined' ) {
     const bearer = bearerHeader .split(' ');
     const bearerToken = bearer[1];
