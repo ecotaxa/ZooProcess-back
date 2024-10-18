@@ -85,8 +85,8 @@ module.exports = {
     },
 
     me: async (req, res) => {
-        console.log("Route User::get", req.params);
-        console.log("Route User::get req", req);
+        // console.log("Route User::get", req.params);
+        // console.log("Route User::get req", req);
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")

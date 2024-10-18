@@ -20,24 +20,24 @@ const apiSpec = path.join(__dirname, 'zooprocess.openapi.yaml');
 
 function verifyToken (req, res, next){
 
-  console.log("verifyToken middleware")
+  // console.log("verifyToken middleware")
 
-  console.debug("req.path", req.path)
+  // console.debug("req.path", req.path)
 
-  console.debug("req.headers", req.headers)
+  // console.debug("req.headers", req.headers)
   const bearerHeader = req.headers [ "authorization" ];
-  console.debug("Bearer header: ", bearerHeader)
+  // console.debug("Bearer header: ", bearerHeader)
   if (typeof bearerHeader !== 'undefined' ) {
     const bearer = bearerHeader .split(' ');
     const bearerToken = bearer[1];
 
-    console.log("Bearer found : ", bearerToken);
+    // console.log("Bearer found : ", bearerToken);
 
     req.token = bearerToken;
     next ();
   }else{
     // res. sendstatus
-    console.log("No Bearer")
+    // console.log("No Bearer")
     next();
     // res.sendStatus(403);
   }
@@ -48,15 +48,18 @@ function extractJWT(req, res, next){
 
   if ( req.token ){
     // console.log("secret: ", process.env.JWT_SECRET)
-    console.log("have token " , typeof(req.token))
+    // console.log("have token " , typeof(req.token))
+
+    // console.debug("jwt.decode()", jwt.decode(req.token))
+
     jwt.verify (req.token, process.env.JWT_SECRET, (err, authData) => {
       if (err) {
-        console.log("Error", err.message)
-        console.log("Error", err.name)
-        console.log("Error", err.expiredAt)
+        console.error("Error", err.message)
+        console.error("Error", err.name)
+        console.error("Error", err.expiredAt)
         // if (err.name.includes("jwt expired") ){
         if (err.name == "TokenExpiredError" ) {
-          console.log("Error Token", err)
+          console.error("Error Token", err)
           // res.status(498).send("Token expired") // 498 used by Nginx
           res.status(401).send("Token expired")
           // next()
@@ -78,7 +81,7 @@ function extractJWT(req, res, next){
         //  message: "Welcome to Profile",
         //    userData: authData
         //})
-        console.log("JWT: ", authData)
+        // console.debug("JWT: ", authData)
         req.jwt = authData;
         next();
       }
@@ -86,7 +89,7 @@ function extractJWT(req, res, next){
   }
   else {
 
-    console.log("no token")
+    // console.log("no token")
     next();
   }
 }
@@ -96,12 +99,12 @@ async function getRole(req, res, next){
   if ( req.jwt ){
 
     id = req.jwt.id
-    console.log("getRole id: ", id)
+    // console.log("getRole id: ", id)
     const users = new Users();
     await users.get(id)
     .then( user => {
       // console.log("user:", user)
-      console.log("user.role: ", user.role)
+      // console.log("user.role: ", user.role)
 
       //req.jwt.role = user.role
       switch (user.role) {
@@ -117,7 +120,7 @@ async function getRole(req, res, next){
         default:
           req.jwt.role = "User"
       }
-      console.log("user.role mapped: ", req.jwt.role)
+      // console.log("user.role mapped: ", req.jwt.role)
 
       next()
     })
@@ -134,7 +137,7 @@ async function getRole(req, res, next){
     })
   }
   else { // else is neccessary to avoid error
-    console.log("getRole - no token")
+    // console.log("getRole - no token")
     next()
   }
 }
