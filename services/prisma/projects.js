@@ -318,7 +318,7 @@ module.exports.Projects = class {
 
       return this.updateids(ids, body)
         .then(res => {
-            console.log("rrrr",res);
+            console.log("updates - updated projects",res);
             // this.prisma.$disconnect()
             return res;
          })
