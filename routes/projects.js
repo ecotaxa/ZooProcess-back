@@ -91,6 +91,21 @@ module.exports = {
             return res.status(500).json({error:e});
         }) 
 
-    }
+    },
+
+    delete: async (req,res) => {
+        console.log("Projects::delete");
+        console.log("id: ", req.params.projectId);
+
+        return projects.deleteid(req.params.projectId)
+        .then(project => {
+            return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
+        })
+        .catch(async(e) =>{
+            console.error("Error:",e );
+            return res.status
+         })
+    },
 
  }
+

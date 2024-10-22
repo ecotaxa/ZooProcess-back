@@ -165,6 +165,21 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    delete:
+      description: Delete the project
+      operationId: Projects.delete
+    
+      responses:
+        '200':
+          description: Returned is project deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Project not found
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
 
     # post:
     #   description: Add a new sample

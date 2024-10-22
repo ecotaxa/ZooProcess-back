@@ -287,6 +287,7 @@ module.exports.Projects = class {
 
 
     async deleteid(id){
+      console.debug("Project deleteid: ", id)
       return this.projects.deleteid(id)
     }
 
