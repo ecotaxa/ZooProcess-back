@@ -26,7 +26,8 @@ module.exports = {
                       id : payload.id,
                     },
                     process.env.JWT_SECRET,
-                    { expiresIn: '3d'}
+                    // { expiresIn: '3d'}  // TOKEN expire
+                    { expiresIn: '30d' }  // TOKEN expire
                 );
 
                 console.log(`User ${email} logged with token: ${token}`)

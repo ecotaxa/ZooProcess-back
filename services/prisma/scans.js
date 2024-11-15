@@ -1,4 +1,5 @@
 
+const subsamples = require('../../routes/subsamples');
 const { Prisma } = require('../client')
 
 
@@ -18,10 +19,11 @@ module.exports.Scans = class {
 
         const scans = await this.prisma.scan.findMany({
             where:{
-                background,
+                // background,
+                type: "BACKGROUND",
                 // instrumentId
-            }
-        //   include:{
+            },
+          include:{
         //         background,
         //         // project: {
         //         //     include:{
@@ -30,7 +32,13 @@ module.exports.Scans = class {
         //         //         samples: true,
         //         //     }
         //         // }
-        //     }
+            // SubSample: true
+            SubSample: {
+                include: {
+                    scan: true,
+                }
+            }
+        }
         })
         return scans
     }
@@ -44,6 +52,14 @@ module.exports.Scans = class {
         const scan = await this.prisma.scan.findFirstOrThrow({
             where: {
                 id: scanId
+            },
+            include: {
+                // SubSample: true
+                SubSample: {
+                include: {
+                        scan: true,
+                    }
+                }
             }
         })
 
@@ -103,6 +119,7 @@ module.exports.Scans = class {
                         //         // state : true
                         //     }
                         // }
+                        scan: true
                     }
                 },
                 user: true
@@ -127,7 +144,7 @@ module.exports.Scans = class {
     }
 
 
-    async add({url, background, subsampleId, userId, instrumentId, projectId}) {
+    async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
 
         console.log("Prisma Scans add")
         console.log("Scan::add")
@@ -136,13 +153,15 @@ module.exports.Scans = class {
         console.log("instrumentId: ", instrumentId)
         console.log("subsampleId: ", subsampleId)
         console.log("background: ", background)
+        console.log("type: ", type) 
 
         let data = {
             url,
             userId,
             background,
             instrumentId,
-            projectId
+            projectId,
+            type
         }
 
         if (subsampleId != undefined) {

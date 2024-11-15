@@ -74,6 +74,7 @@ module.exports.SubSamples = class {
                 //projectId:projectId
             },
             include:{
+                scan:true,
                 metadata:true,
                 metadataModel:true,
                 user:true,

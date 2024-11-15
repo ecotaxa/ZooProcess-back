@@ -4,8 +4,8 @@ module.exports = {
         const allowedRoles = req.openapi.schema.tags;
         if ( req.jwt && req.jwt.role){
             const role = req.jwt.role
-            console.log("role: ", role)
-            console.log("TAGS", allowedRoles);
+            // console.log("role: ", role)
+            // console.log("TAGS", allowedRoles);
         
             allowed = allowedRoles.includes(role) ? true : false
     

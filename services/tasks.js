@@ -1,4 +1,9 @@
+// const background = require('../routes/background');
+// const { update } = require('../routes/task');
+const { Background } = require('./background');
 const { Prisma } = require('./client');
+const { Process } = require('./process');
+const { TaskType } = require('./type/tasktype');
 
 // const TaskType = require("./type/tasktype")
 
@@ -9,16 +14,17 @@ const { Prisma } = require('./client');
 //   }
 
 // module.exports.
-const TaskType = {
-    separate : "separate",
-    background : "background",
-    vignette : "vignette",
-    process : "process",
-  }
+// const TaskType = {
+//     separate : "separate",
+//     background : "background",
+//     vignette : "vignette",
+//     process : "process",
+//   }
   
   
 
-module.exports.Tasks = class {
+// module.exports.Tasks = class {
+class Tasks {
 
     constructor() {
         this.prisma = new Prisma().client;
@@ -67,7 +73,7 @@ module.exports.Tasks = class {
         }
 
         return this.prisma.task.create({data:formatdata}) // return the taskId
-    }
+    } 
 
 
     zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"
@@ -89,13 +95,83 @@ module.exports.Tasks = class {
         })
     }
 
+    async exist({data}){
+        console.log("Task::exist(data=", data)
+
+        const type = data.type
+        const params = data.params
+
+
+        return await this.prisma.task.findFirst({
+            where:{
+                exec: type.toUpperCase(),
+                params: params
+            }
+        })
+    }
+
+    async delete({taskId}){
+        console.log("Task::delete(taskId=", taskId)
+        return this.prisma.task.delete({
+            where:{
+                id: taskId
+            }
+        })
+    }
+
+    async deleteAll(){
+        console.log("Task::deleteAll()")
+        return this.prisma.task.deleteMany({})
+    }
+
+    // async deleteAllByProject({projectId}){
+    //     console.log("Task::deleteAllByProject(projectId=", projectId)
+    //     return this.prisma.task.deleteMany({
+    //         where:{
+    //             projectId: projectId
+    //         }
+    //     })
+    // }
+
+    ///TODO: A TESTER
+    async deleteAllByProject({projectId}){
+
+        // launch stop tasks before deleting tasks
+
+        console.log("Task::deleteAllByProject(projectId=", projectId)
+        return this.prisma.task.deleteMany({
+            where:{
+                // contains: {
+                    params: {
+                        contains: { projectId } }
+                }
+            // }
+        })
+    }
+
+    async deleteAllByType({type}){
+        console.log("Task::deleteAllByType(type=", type)
+        return this.prisma.task.deleteMany({
+            where:{
+                exec: type.toUpperCase()
+            }
+        })
+    }
+
+
+
 
     // async run(data){
-    async run({taskId}){
+    async run({taskId},authHeader){
 
         // const exec = data.exec
 
         // taskId = data.taskId
+
+        console.log("Task::run(taskId=", taskId)
+        console.log("Task::run(authHeader=", authHeader)
+
+        const bearer = authHeader.split(" ")[1]
 
         const task = await this.prisma.task.findFirst({
             where:{
@@ -120,18 +196,20 @@ module.exports.Tasks = class {
         switch (task.exec){
             case TaskType.separate.toUpperCase():
                 // return await this.separate(task)
-                console.debug("run separate(task)")
-                return await this.separate(task);
+                console.debug(`run separate(task:${task})`)
+                return await this.separate(task,bearer);
 
             case TaskType.process.toUpperCase():
-                console.debug("run Process(task");
+                console.debug(`run Process(task:${JSON.stringify(task)})`);
 
-                return await this.process(task)
+                const process = new Process()
+                // return await this.process(task, bearer)
+                return await process.process(task, bearer,this)
 
                 //TODO change the promise with code to do the processing job
-                return new Promise(function(resolve, reject) {
-                    return resolve({taskId})
-                })
+                // return Promise(function(resolve, reject) {
+                //     return resolve({taskId})
+                // })
 
             default:
 
@@ -142,7 +220,7 @@ module.exports.Tasks = class {
     }
 
 
-    async separate(data){
+    async separate(data,bearer){
 
         console.log("tasks::separate", data)
         // this.prisma.separate()
@@ -220,26 +298,33 @@ module.exports.Tasks = class {
 
 
 
-        console.log("CALL HAPPY PIPELINE /separator/")
-        fetch(this.happyPipelineUrl+"separate/", {
+        console.log("CALL HAPPY PIPELINE /separate/")
+        console.debug("Trace")
+        console.trace()
+    fetch(this.happyPipelineUrl+"separate/", {
         // method: 'POST',
         method: 'PUT',
         body: JSON.stringify({ path: srcFolder }),
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
+        headers: { 
+            'Content-type': 'application/json; charset=UTF-8',
+            "Authorization": authHeader 
+        },
     })
         .then((response) => response.json())
         .then((json) => console.log(json))
         .catch(error => {
             console.log(error)
-            return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
+            console.log("taskId:", taskId)
+
+            return new Promise((resolve, reject) => { reject(`Cannot launch the task ${taskId} | Error: ${error}`)});
         })
 
         const url = `${this.zooProcessApiUrl}task/${taskId}`
         const message = `Launched | Take a look at ${url}`
 
         const returndata = {
-        //     status:200,
-        //     data: { message }
+            //     status:200,
+            //     data: { message }
             message,
             url,
             taskId
@@ -259,110 +344,355 @@ module.exports.Tasks = class {
 
 
 
-    async process(data){
+    /**
+     * 
+     * @param {*} data 
+     * @param {*} authHeader 
+     * @returns 
+     * 
+     
+    @startuml
 
-        console.log("tasks::process", data)
-        // this.prisma.separate()
+front Participant as Front
+api Participant as API
+python as Pipeline
 
-        const taskId = data.id
+front -> api : process
 
-        // const 
+api -> python : process 
 
-        this.prisma.task.upsert({
+
+hnote over front : ({projectId,smapleId, subSampleId, scanId})
+
+api -> python : ({scanPath, backPath, taskID, DB, Bearer})
+
+@enduml
+     */
+
+    // async process(data, authHeader){
+
+    //     console.log("tasks::process", data)
+    //     // this.prisma.separate()
+
+    //     const taskId = data.id
+    //     console.debug("process - taskId:",taskId)
+    //     // const 
+
+    //     this.prisma.task.upsert({
+    //         where:{
+    //             id: taskId
+    //         },
+    //         update:{
+    //             status: "RUNNING",
+    //             // task.params.separator: 
+    //         }
+    //     })
+
+
+    //     let scanFile = ""
+    //     let backFile = ""
+    //     let srcFolder = ""
+    //     let dstFolder = ""
+
+    //     if ( data.params.back == null || data.params.scan == null ){
+
+    //         console.debug("Need to build the parameters to run the task")
+    //     // ici je connais les données, mais ai je toutes les infos ?
+    //         const project = await this.prisma.project.findFirst({
+    //             where:{
+    //                 id: data.params.project
+    //             },
+    //             include:{
+    //                 drive: true,
+    //                 samples: true,
+    //             }
+    //         })
+    //         console.log("project", project)
+
+    //         if (project == null){
+    //             throw new Error(`project ${data.params.project} not found.`)
+    //         }
+
+    //         const driveurl = project.drive.url
+    //         console.log("driveurl", driveurl)
+
+    //         // const sample_name = project.samples.filter(sample => sample.id == data.params.sampleid)[0].name
+    //         const samples = project.samples.filter(sample => sample.id == data.params.sample)
+    //         if ( samples.length == 0 ){
+    //             throw new Error(`sample with id: ${data.params.sampleid} not found.`)
+    //         }
+    //         const sample_name = samples[0].name
+    //         console.log("sample_name", sample_name)
+
+    //         const projectFolder = `${driveurl}/${project.name}`
+
+    //         srcFolder = `${projectFolder}/Zooscan_scan/_work/${sample_name}/`
+    //         console.debug("srcFolder", srcFolder)
+
+    //         dstFolder = `${projectFolder}/Zooscan_scan/_work/${sample_name}/`
+    //         console.debug("dstFolder", dstFolder)
+
+    //         // srcFolder = "/Users/sebastiengalvagno/Drives/Zooscan/Zooscan_dyfamed_wp2_2023_biotom_sn001/Zooscan_scan/_work/dyfamed_20230111_200m_d1_1/multiples_to_separate/"
+    //         // srcFolder = "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/vignettes/"
+    //         // console.log("HARD CODED: folder", srcFolder)
+
+    //         console.debug("data.params", data.params)
+
+
+    //         scanFile = `${srcFolder}/${data.params.scan}`
+    //         backFile = `${srcFolder}/${data.params.back}`
+            
+    //         const scan = new Background()
+
+    //         scanInfo = await scan.findScan(data.params.scanId)
+
+    //         console.debug("scanInfo", scanInfo)
+    //         scan = scanInfo.url
+
+    //         backFile = await scan.findScan(data.params.backId)
+
+    //         // const data = {
+    //         //     folder,
+            
+    //     // }
+    //     } else {
+    //         scanFile = data.params.scan
+    //         backFile = data.params.back
+    //         srcFolder = data.params.src
+    //         dstFolder = data.params.dst
+    //     }
+
+    //     const body = {
+    //         //scanFile,
+    //         //backFile,
+    //         //srcFolder,
+    //         //dstFolder
+    //         path: srcFolder,
+    //         // scan:scanFile,
+    //         scanId: data.params.scanId,
+    //         taskId: taskId,
+    //         bearer:"bearer",
+    //         db:"db",
+    //         back:["url1","url2"]
+
+    //         }
+    //     // }
+    //     // }
+
+    //         const body2 = {
+    //             path: srcFolder,
+    //             dstFolder, 
+    //             scan: scanFile,
+    //             back: backFile,
+    //             taskId: taskId,
+    //             bearer:"bearer",
+    //             db:"db",
+    //             // back:["url1","url2"]
+    //         }
+
+    //     console.debug("body:", body)
+    //     console.debug("body2:", body2)
+
+    //     const processUrl = this.happyPipelineUrl+"process/"
+
+    //     console.log("CALL HAPPY PIPELINE /process/")
+    //     fetch(processUrl, {
+    //         method: 'POST',
+    //         // method: 'PUT',
+    //         // body: JSON.stringify({ path: srcFolder }),
+    //         body: JSON.stringify(body),
+    //         // body,
+    //         headers: { 
+    //             'Content-type': 'application/json; charset=UTF-8',
+    //             "Accept": "application/json",
+    //             "User-Agent": "Zooprocess v10",
+    //             // "Access-Control-Allow-Origin":"no-cors"
+    //             "Authorization": authHeader
+
+    //         },
+    //     })
+    //     .then(async (response) => {
+    //         console.debug("---------> response", response)
+    //         if (! response.ok) {
+    //             // console.log("reponse:",response.status)
+    //             // return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`)
+    //             const text = await response.text();
+    //             console.error("Error details:", text);
+    //             return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`);
+    //         }
+    //     return response.json()
+    //     })
+    //     // .then((json) => console.log(json))
+    //     // .catch(error => {
+    //     //     console.log(error)
+    //     //     return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
+    //     // })
+
+    //     const url = `${this.zooProcessApiUrl}task/${taskId}`
+    //     const message = `Launched | Take a look at ${url}`
+
+    //     const returndata = {
+    //     //     status:200,
+    //     //     data: { message }
+    //         message,
+    //         url,
+    //         taskId
+    //     }
+    //     // console.log("returndata", returndata)
+    //     // console.log("message", message)
+    //     //return new Promise().resolve(message)
+    //     // return returndata
+    //     // return new Promise().resolve(message)
+    //     // return message
+
+    //     return new Promise(function(resolve, reject) {
+    //         // return resolve(message)
+    //         return resolve(returndata)
+    //     })
+    // }
+
+    async update({taskId, data}){
+        console.log("Task::exist(taskId=",taskId," data=", data)
+
+        return {"OK": "OK"}
+        return this.setTaskStatus(taskId, stadatatus)
+    }
+
+
+    setTaskStatus(taskId, data){
+        console.debug("setTaskStatus", data)
+
+        // return this.prisma.task.upsert({
+        //     where:{
+        //         id: taskId
+        //     },
+        //     update:{
+        //         status: status.state,
+        //         // task.params.separator:
+        //     },
+        //     create: {
+        //         status: {
+        //         state: "FINISHED",
+        //         log: "log"
+        //         }
+        //     }
+        // })
+        return this.prisma.task.update({
             where:{
                 id: taskId
             },
-            update:{
-                status: "RUNNING",
-                // task.params.separator: 
+            data: {
+                status: data.status,
+                log: data.log
             }
         })
-
-
-        let srcFolder = ""
-        let dstFolder = ""
-
-        if ( data.params.back == null || data.params.scan == null ){
-
-        // ici je connais les données, mais ai je toutes les infos ?
-            const project = await this.prisma.project.findFirst({
-                where:{
-                    id: data.params.projectid
-                },
-                include:{
-                    drive: true,
-                    samples: true,
-                }
-            })
-            console.log("project", project)
-
-            if (project == null){
-                throw new Error(`project ${data.params.projectid} not found.`)
-            }
-
-            const driveurl = project.drive.url
-            console.log("driveurl", driveurl)
-
-            const sample_name = project.samples.filter(sample => sample.id == data.params.sampleid)[0].name
-            console.log("sample_name", sample_name)
-
-            const projectFolder = `${driveurl}/${project.name}`
-
-            srcFolder = `${projectFolder}/Zooscan_scan/_work/${sample_name}/` + "/multiples_to_separate"
-            console.log("srcFolder", srcFolder)
-
-            // srcFolder = "/Users/sebastiengalvagno/Drives/Zooscan/Zooscan_dyfamed_wp2_2023_biotom_sn001/Zooscan_scan/_work/dyfamed_20230111_200m_d1_1/multiples_to_separate/"
-            srcFolder = "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/vignettes/"
-            console.log("HARD CODED: folder", srcFolder)
-
-            
-            // const data = {
-            //     folder,
-            
-        // }
-        } else {
-            srcFolder = data.params.src
-            dstFolder = data.params.dst
-        }
-
-
-
-        console.log("CALL HAPPY PIPELINE /separator/")
-        fetch(this.happyPipelineUrl+"separate/", {
-        // method: 'POST',
-        method: 'PUT',
-        body: JSON.stringify({ path: srcFolder }),
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
-    })
-        .then((response) => response.json())
-        .then((json) => console.log(json))
-        .catch(error => {
-            console.log(error)
-            return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
-        })
-
-        const url = `${this.zooProcessApiUrl}task/${taskId}`
-        const message = `Launched | Take a look at ${url}`
-
-        const returndata = {
-        //     status:200,
-        //     data: { message }
-            message,
-            url,
-            taskId
-        }
-        // console.log("returndata", returndata)
-        // console.log("message", message)
-        //return new Promise().resolve(message)
-        // return returndata
-        // return new Promise().resolve(message)
-        // return message
-
-        return new Promise(function(resolve, reject) {
-            // return resolve(message)
-            return resolve(returndata)
-        })
+        // console.debug("setTaskStatus",status)
     }
 
+//     async process(data, bearer){
+
+//         console.log("tasks::process data:", data)
+//         console.log("tasks::process bearer:", bearer)
+
+//         const taskId = data.id
+//         console.debug("process - taskId:",taskId)
+//         this.setTaskStatus(taskId, {status:"ANALYSING",log:"analysing"})
+
+//         const scanInfo = await new Background().findScan(data.params.scanId)
+
+//         if ( scanInfo == null){
+//             console.log("scanInfo is null")
+//             this.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is null"})
+//             return new Promise().reject(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
+//         }
+
+//         console.debug("scanInfo", scanInfo)
+        
+//         if ( scanInfo.type != "SCAN" ){
+//             console.log("scanInfo is not a scan")
+//             this.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is not a scan"})
+//             return new Promise().reject(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
+//         }
+
+//         const background = scanInfo.SubSample.scan.find(scan => scan.type == "BACKGROUND")
+//         if ( background == null ){
+//             console.log("no background")
+//             this.setTaskStatus(taskId, {status:"FAILED",log:"no background"})
+//             return new Promise().reject(`Cannot launch the task ${taskId} there is no background | Error: ${scanInfo}`)
+//         }
+        
+//         this.setTaskStatus(taskId, {status:"RUNNING",log:"running"})
+
+//         const body = {
+
+//             src: "srcpath",
+//             dst: "dstpath",
+//             scan: scanInfo.url,
+//             back: background.url,
+
+//             // scanId: data.params.scanId,
+//             taskId: taskId,
+//             bearer: bearer,
+//             db: "http://zooprocess.imev-mer.fr:8081/v1/",
+//         }
+
+        
+//         console.debug("body:", body)
+        
+//         const processUrl = this.happyPipelineUrl+"process/"
+
+//         console.log("CALL HAPPY PIPELINE /process/")
+//         fetch(processUrl, {
+//             method: 'POST',
+//             body: JSON.stringify(body),
+//             headers: { 
+//                 'Content-type': 'application/json; charset=UTF-8',
+//                 "Accept": "application/json",
+//                 "User-Agent": "Zooprocess v10",
+//                 "Authorization": bearer
+
+//             },
+//         })
+//         .then(async (response) => {
+//             console.debug("---------> response", response)
+//             if (! response.ok) {
+//                 // console.log("reponse:",response.status)
+//                 // return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`)
+//                 const text = await response.text();
+//                 console.error("Error details:", text);
+//                 return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`);
+//             }
+//         return response.json()
+//         })
+//         // .then((json) => console.log(json))
+//         // .catch(error => {
+//         //     console.log(error)
+//         //     return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${error}`)
+//         // })
+
+//         const url = `${this.zooProcessApiUrl}task/${taskId}`
+//         const message = `Launched | Take a look at ${url}`
+
+//         const returndata = {
+//         //     status:200,
+//         //     data: { message }
+//             message,
+//             url,
+//             taskId
+//         }
+//         // console.log("returndata", returndata)
+//         // console.log("message", message)
+//         //return new Promise().resolve(message)
+//         // return returndata
+//         // return new Promise().resolve(message)
+//         // return message
+
+//         return new Promise(function(resolve, reject) {
+//             // return resolve(message)
+//             return resolve(returndata)
+//         })
+//     }
 
 }
+
+module.exports = { Tasks }

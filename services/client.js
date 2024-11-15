@@ -7,7 +7,8 @@ const {PrismaClient} = require('@prisma/client')
 
 
 const prismaOptions = {
-    log: ['query'],
+    // log: ['query'],
+    log: ['error', 'warn']
 }
 
 

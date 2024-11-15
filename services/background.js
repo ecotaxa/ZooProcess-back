@@ -519,5 +519,92 @@ module.exports.Background = class {
   
 
 
+
+async addurl3({ url , userId , subsampleId, type, move}) {
+
+  console.log("background:addurl3")
+  console.log("url: ", url)
+  console.log("userId: ", userId)
+  console.log("subsampleId: ", subsampleId)
+  console.log("type: ", type)
+
+  const subSamples = new SubSamples()
+  const subSample = await subSamples.find({subSampleId:subsampleId})
+  console.log("subSample", subSample)
+
+  if ( ! subSample ){
+    return Promise.reject("Can't find the subsample (bad id)")
+  }
+
+  const project = subSample.sample.project
+  console.log("project: ", project)
+
+  let drive = project.drive.url
+  console.log("drive: ", drive)
+  if ( drive.substring(0, "file://".length) == "file://"){
+    drive = drive.substring("file://".length)
+  }
+  console.log("drive: ", drive)
+
+
+  const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+
+  let newurl = url
+  if ( move){
+    const filename = path.basename(url)
+    console.log("filename: ", filename)
+    const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
+    console.log("projectPath:", projectPath)
+    const newurl = path.join(projectPath, filename).toString()
+    console.log("url: ", newurl)
+
+    // move file from url to urlnew
+    // make path
+    console.debug("moving file from url to urlnew")
+    if (!fs.existsSync(projectPath)){
+      fs.mkdirSync(projectPath, { recursive: true });
+    }
+
+    // move file
+    if ( !fs.existsSync(url)){
+      return Promise.reject("File do not exist: " + url)
+    }
+
+
+    function renameSubSampleSync(oldPath, newPath) {
+      try {
+        fs.renameSync(oldPath, newPath);
+        console.log('SubSample renamed successfully');
+        return true;
+      } catch (error) {
+        console.error('Error renaming subSample:', error);
+        // throw error;
+        throw new Error('Cannot save the scan in the project folder: ' +  error);
+      }
+    }
+    
+    renameSubSampleSync(url,newurl)
+  }
+
+  // add in DB
+
+  console.log("project.id: ", project.id)
+
+  const data = {
+      instrumentId: project.instrumentId,
+      userId,
+      subsampleId,
+      src: url,
+      url: newurl,
+      type,
+
+      projectId: project.id
+  }
+
+  console.log("data: ", data)
+
+  return this.scans.add(data)
+}
+
 }
 

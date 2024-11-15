@@ -263,6 +263,65 @@ paths:
     #     - BearerAuth: [ ]
 
 
+  /subsamples/{subSampleId}/scan:
+    parameters:
+    - name: subSampleId
+      in: path
+      description: The subSample id
+      example: "42"
+      explode: false
+      required: true
+      schema:
+        type: string
+      style: simple
+    - name: nomove
+      in: query
+      description: don't move the image
+      required: false
+      schema:
+        type: boolean
+        # default: false
+        nullable: true
+      allowEmptyValue: true
+    - name: task
+      in: query
+      description: use taskId instead of subSampleId (subSampleId is taskId)
+      required: false
+      schema:
+        type: boolean
+        # default: false
+        nullable: true
+      allowEmptyValue: true
+    post:
+      summary: Add a scan to the subsample
+      description: Add a scan to the subsample
+      # operationId: scan.create
+      operationId: background.create
+      requestBody:
+        description: An url to a new scan
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScanModel'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanModel'          
+        '405':
+          description: Invalid input
+        '409':
+          description: Duplicate entry
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
   # /projects/{projectId}/backgrounds/{scanId}:
   /scan/{scanId}:
     parameters:
@@ -891,50 +950,50 @@ paths:
         schema:
           type: string
 
-    post:
-      # parameters:
-      #   - description: The project ID
-      #     example: 655d3062983b92b6e29b3369
-      #     # in: formData
-      #     in: formData
-      #     name: projectId
-      #     required: true
-      #     # type: string
-      #     schema:
-      #       $ref: '#/components/schemas/ProjectId'
-      requestBody:
-        required: true
-        content:
-          application/mulipart/form-data:
-            schema:
-              type: object
-              properties:
-                projectId:
-                  type: string
-                fileName:
-                  type: string
-                  format: binary
-              # title: the associated project id
-              # description: The project id to associate the background scan
-              # type: string
-              # example: 655d3062983b92b6e29b3369
+    # post:
+    #   # parameters:
+    #   #   - description: The project ID
+    #   #     example: 655d3062983b92b6e29b3369
+    #   #     # in: formData
+    #   #     in: formData
+    #   #     name: projectId
+    #   #     required: true
+    #   #     # type: string
+    #   #     schema:
+    #   #       $ref: '#/components/schemas/ProjectId'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/mulipart/form-data:
+    #         schema:
+    #           type: object
+    #           properties:
+    #             projectId:
+    #               type: string
+    #             fileName:
+    #               type: string
+    #               format: binary
+    #           # title: the associated project id
+    #           # description: The project id to associate the background scan
+    #           # type: string
+    #           # example: 655d3062983b92b6e29b3369
               
-      summary: Add a background scan.
-      description: Add a background scan. 
-                    to send the image to the server, 
-                    in case you have separate the container of the server and the client.
-      operationId: Background.create
-      responses: 
-        '200':
-          description: Return the url image
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ImageModel'
-      tags:
-        - User
-      security:
-        - BearerAuth: [ ]
+    #   summary: Add a background scan.
+    #   description: Add a background scan. 
+    #                 to send the image to the server, 
+    #                 in case you have separate the container of the server and the client.
+    #   operationId: Background.create
+    #   responses: 
+    #     '200':
+    #       description: Return the url image
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/ImageModel'
+    #   tags:
+    #     - User
+    #   security:
+    #     - BearerAuth: [ ]
 
     get:
       summary: Get the list of background
@@ -998,7 +1057,7 @@ paths:
   # /scan/{instrumentId}/url:
   /scan/{subSampleId}/url:
     parameters:
-      - description: The instrument ID
+      - description: The subSample ID
         example: 655d3062983b92b6e29b3369
         explode: false
         in: path
@@ -1134,7 +1193,7 @@ paths:
       security:
         - BearerAuth: [ ]
 
-    put:
+    post:
       description: Change task informtion
       operationId: Task.update
       responses:
@@ -1174,6 +1233,41 @@ paths:
         - User
       security:
         - BearerAuth: [ ]
+
+  /task/exist:
+    post:
+      description: Run the task
+      operationId: Task.exist
+      responses:
+        '200':
+          description: Return the task id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskModel'
+                # $ref: '#/components/schemas/TaskStateModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+  # purge
+  /task/delete/all/process:
+    get:
+      description: delete all task of process
+      operationId: Task.deleteAllTaskOfProcess
+      responses:
+        '200':
+          description: Return
+          content:
+            application/json:
+              schema:  
+                type: string
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
 
   /separator:
     post:
@@ -1648,6 +1742,26 @@ components:
           type: string
           # format: binary
 
+    ScanModel:
+      type: object
+      required:
+        - url
+      properties:
+        instrumentId:
+          type: string
+        userId:
+          type: string
+        url:
+          type: string
+        type:
+          type: string
+          enum: 
+            - SCAN
+            - BACKGROUND
+            - MASK
+            - VIS
+            - OUT
+
     VignetteModel:
       type: object
       required:
@@ -1700,7 +1814,7 @@ components:
           type: string
         type:
           type: string
-          enum: [ "separate" ]
+          enum: [ "separate", "process" ]
 
     TaskStateModel:
       type: object

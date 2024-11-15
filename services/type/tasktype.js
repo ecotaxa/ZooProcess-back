@@ -13,4 +13,13 @@
 //     vignette : "vignette"
 //   }
   
+const TaskType = {
+    separate : "separate",
+    background : "background",
+    vignette : "vignette",
+    process : "process",
+  }
+  
+
+  module.exports = { TaskType };
   

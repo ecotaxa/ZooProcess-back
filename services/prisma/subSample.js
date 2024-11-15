@@ -22,7 +22,8 @@ module.exports.SubSamples = class {
                             }
                         }
                     }
-                }
+                }//,
+                //scan:true
             }
         }
         )

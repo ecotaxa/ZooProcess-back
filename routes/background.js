@@ -5,6 +5,9 @@ const { Background } = require("../services/background");
 
 
 const { isRoleAllowed } = require("../routes/validate_tags");
+const { Tasks } = require("../services/tasks");
+
+const tasks = new Tasks();
 
 // const scan = new Scan();
 // const background = new Background();
@@ -30,7 +33,7 @@ module.exports = {
         }
 
         // return scan.findAll(req.query, BackgrsoundType)
-        return background.findAll(req.params.instrumentId)
+        return background.findAll(req.params.instrumentId,false)
         .then(scans => {
             return res.status(200).json(scans);
         })
@@ -126,10 +129,10 @@ module.exports = {
     },
 
     create: async (req,res) => {
-        console.log("------------------------------------------");
-        console.log("create",req);
+        // console.log("------------------------------------------");
+        // console.log("create",req);
         // console.log("create files",req.files);
-        console.log("------------------------------------------");
+        // console.log("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
@@ -138,14 +141,63 @@ module.exports = {
         console.log("req.jwt: ", req.jwt)
         const userID = req.jwt.id
 
-        return background.add({
-            userId:id,
-            image:req.body, 
-            instrumentId:req.params.instrumentId 
-            /*, type:BackgroundType.BACKGROUND*/
+        console.log("req.body: ", req.body);
+        console.log("req.body.url: ", req.body.url);
+        console.log("req.body.type: ", req.body.type);
+        console.log("req.params: ", req.params);
+        console.log("req.query", req.query );
+        console.log("req.query.nomove", req.query.nomove );
+        console.log("req.query.task", req.query.task );
+
+        let move = true
+        // if ( req.query.nomove ) move = false
+        if ( req.query.nomove == true || req.query.nomove === null ) {
+            move = false
+        }
+        let subsampleId = String(req.params.subSampleId)
+
+        // let task = false
+        // if ( req.query.nomove ) move = false
+        if ( req.query.task == true || req.query.task === null ) {
+            // task = true
+            // const task = new Tasks()
+            console.debug("---> use taskId")
+            // subsampleId = tasks.get(subsampleId)
+            // .then(response=>{
+            //     console.debug("subsampleId:",response.subsampleId)
+            //     return response.subsampleId
+            // })
+            // .catch(async(e) => {
+            //     console.error("Error:",e );
+            //     return res.status(500).json({error:e});
+            // })
+
+            // let task = await this.prisma.task.findUnique({
+            //     where:{
+            //         id: subsampleId
+            //     }
+            // })
+            let task = await tasks.get({taskId:subsampleId})
+            console.log("task:", task)
+            if ( task.params.subsample == undefined ) {
+                return res.status(422).json({error:"subsampleId not found in task params."});
+            }
+            subsampleId = task.params.subsample     
+        }  
+
+
+
+
+        return background.addurl3({
+            // userId:id,
+            userId:userID,
+            url: req.body.url,
+            subsampleId, // :req.params.subSampleId,
+            type:req.body.type,
+            move,
         })
         .then(result => {
-            // console.log("OK", res) 
+            console.log("added scan OK", res) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
@@ -164,6 +216,46 @@ module.exports = {
             return res.status(500).json({error:e})
         })
     },
+
+    // create: async (req,res) => {
+    //     console.log("------------------------------------------");
+    //     console.log("create",req);
+    //     // console.log("create files",req.files);
+    //     console.log("------------------------------------------");
+
+    //     if ( !isRoleAllowed(req)){
+    //         return res.status(401).send("You are not authorized to access this resource")
+    //     }
+
+    //     console.log("req.jwt: ", req.jwt)
+    //     const userID = req.jwt.id
+
+    //     return background.add({
+    //         userId:id,
+    //         image:req.body, 
+    //         instrumentId:req.params.instrumentId 
+    //         /*, type:BackgroundType.BACKGROUND*/
+    //     })
+    //     .then(result => {
+    //         // console.log("OK", res) 
+    //         return res.status(200).json(result)
+    //     })
+    //     .catch(async(e) => {
+    //         console.error("Error:",e )
+
+    //         if (e.name == "PrismaClientKnownRequestError"){
+    //             if (e.code == "P2002"){
+    //                 const txt = "Drive with name '"+ req.body.name +"' already exist";
+    //                 const message = { error:txt };
+    //                 return res.status(500).json({error:message});
+    //             }
+    //             else {
+    //                 return res.status(500).json({error:e})
+    //             }
+    //         }
+    //         return res.status(500).json({error:e})
+    //     })
+    // },
 
 
     addurl: async (req,res) => {
@@ -250,12 +342,21 @@ module.exports = {
         // }
         console.log("req.body: ", req.body);
         console.log("req.body.url: ", req.body.url);
+        console.log("req.params: ", req.params);
+
+        if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
+            return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
+        }
+        if ( req.body.subSampleId && req.body.subSampleId != req.params.subSampleId ){
+            return res.status(500).json({error:"the subSampleId defined in body is different from the subsampleId defined in the url"})
+        }
 
         return background.addurl2({
             userId:id,
             //image:req.body, 
             url: req.body.url,
             subsampleId:req.params.subSampleId,
+            // subsampleId:req.body.subSampleId,
             // instrumentId:req.params.instrumentId // got from the project
             /*, type:BackgroundType.BACKGROUND*/
         })

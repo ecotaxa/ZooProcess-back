@@ -229,7 +229,7 @@ model SubSample {
   qCStateId String?  @db.ObjectId
 
   // fraction    String
-  // fractionMin Int
+  // fractionMin Ints
   // fractionMax Int
   // fractionNb  Int
 
@@ -311,21 +311,29 @@ model MetadataModel {
 //   Metadata Metadata[]
 // }
 
+enum ScanType {
+  SCAN
+  BACKGROUND
+  MASK
+  RAW_BACKGROUND
+  VIS
+  OUT
+}
 model Scan {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   url        String
-  background Boolean?
+  type       ScanType @default(SCAN)
   createdAt  DateTime @default(now())
 
   // to know the scanner parammeters
-  // scanningOptions ScanningOption
+  // scanningOptions ScanningOptionnnj
 
   // Link
   user         User        @relation(fields: [userId], references: [id])
   userId       String      @db.ObjectId
   instrument   Instrument? @relation(fields: [instrumentId], references: [id])
   instrumentId String?     @db.ObjectId
-  // Sample      Sample?    @relation(fields: [sampleId], references: [id])
+  // Sample      Samplwe?    @relation(fields: [sampleId], references: [id])
   // sampleId    String?    @db.ObjectId
   // SubSample   SubSample? @relation(fields: [subSampleId], references: [id])
   // subSampleId String?    @db.ObjectId
@@ -336,6 +344,8 @@ model Scan {
   SubSample    SubSample?  @relation(fields: [subSampleId], references: [id])
   subSampleId  String?     @db.ObjectId
 
+  background Boolean? // to remove use type ScanType
+  archived  Boolean? @default(false)
   deleted   Boolean   @default(false)
   deletedAt DateTime? //@db.Timestamp()
   Project   Project?  @relation(fields: [projectId], references: [id])
@@ -379,6 +389,8 @@ enum TaskStatus {
   RUNNING
   PENDING
   FINISHED
+  FAILED
+  ANALYSING
 }
 
 model Task {
@@ -388,4 +400,6 @@ model Task {
   log     String? // url to log file
   percent Int        @default(0)
   status  TaskStatus @default(PENDING)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

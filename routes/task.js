@@ -1,9 +1,14 @@
 const { Tasks } = require("../services/tasks");
+console.log("import Tasks:", Tasks);
+
 const { isRoleAllowed } = require("../routes/validate_tags");
+// const { Process } = require("../services/process");
 
 const tasks = new Tasks();
+// const process = new Process();
 
-module.exports = {
+// module.exports = {
+const handlers = {
 
     list: async (req,res) => {
 
@@ -22,7 +27,7 @@ module.exports = {
     },
 
     status: async (req,res) => {
-        console.log("create");
+        // console.log("status");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
@@ -30,7 +35,7 @@ module.exports = {
 
         return tasks.get({taskId:req.params.taskId})
         .then(result => {
-            console.log("OK", result) 
+            // console.log("OK", result) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
@@ -64,7 +69,50 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        return await tasks.run(req.body)
+        const authHeader = req.headers.authorization;
+        console.debug("*********************************************");
+        console.debug("authHeader", authHeader);
+        console.debug("*********************************************");
+
+        return tasks.run(req.body,authHeader)
+        .then(result => {
+            console.log("OK", result) 
+            return res.status(200).json(result)
+        })
+        .catch(async(e) => {
+            console.error("Error:",e )
+            return res.status(500).json({error:e})
+        })
+
+    },
+
+    deleteAllTaskOfProcess: async (req,res) => {
+        console.log("deleteAllTaskOfProcess",req.body);
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
+        return tasks.deleteAllByType({type:"PROCESS"})
+        .then(result => {
+            console.log("OK", result)
+            return res.status(200).json("done")
+        })
+        .catch(async(e) => {
+            console.error("Error:",e )
+            return res.status(500).json({error:e})
+        })
+
+    },
+
+    exist: async (req,res) => {
+        console.exist("exist", req.body);
+        
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
+        return tasks.exist(req.body)
         .then(result => {
             console.log("OK", result) 
             return res.status(200).json(result)
@@ -82,7 +130,8 @@ module.exports = {
         }
         console.log("Task::update() body: ", req.body);
 
-        return tasks.update({taskId:req.params.taskId,newdata:req.body})
+        return tasks.setTaskStatus(req.params.taskId,req.body)
+        // return tasks.update({taskId:req.params.taskId,data:req.body})
         .then(result => {
             console.log("OK", result) 
             console.log("Task::update() -> result: ", result["id"]);
@@ -92,6 +141,9 @@ module.exports = {
             console.error("Task::update() Error:",e )
             return res.status(500).json({error:e})
         })
+        // return res.status(200).json({id:req.params.taskId})
     },
 
 }
+
+module.exports = handlers;

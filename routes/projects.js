@@ -54,7 +54,7 @@ module.exports = {
 
     get: async (req,res) => {
 
-        console.log("Projects::get", req.params.projectId);
+        // console.log("Projects::get", req.params.projectId);
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
