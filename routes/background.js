@@ -5,7 +5,7 @@ const { Background } = require("../services/background");
 
 
 const { isRoleAllowed } = require("../routes/validate_tags");
-const { Tasks } = require("../services/tasks");
+const { Tasks } = require("../services/Tasks/tasks");
 
 const tasks = new Tasks();
 

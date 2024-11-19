@@ -246,7 +246,10 @@ model SubSample {
   user            User           @relation(fields: [userId], references: [id])
   // Scan            Scan?          @relation(fields: [scanId], references: [id])
   // scanId          String?        @db.ObjectId
+
+  // tasks       Task[]
 }
+
 
 // model Metadata {
 //   id                  String             @id @default(auto()) @map("_id") @db.ObjectId

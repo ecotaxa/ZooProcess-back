@@ -1,6 +1,6 @@
 
 const { Prisma } = require('./client');
-const { Tasks } = require("./tasks")
+const { Tasks } = require("./Tasks/tasks")
 
 // const { file } = require("file")
 // const fs = require('fs');

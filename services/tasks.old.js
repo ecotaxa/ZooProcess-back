@@ -3,7 +3,7 @@
 const { Background } = require('./background');
 const { Prisma } = require('./client');
 const { Process } = require('./process');
-// const { TaskType } = require('./type/tasktype');
+const { TaskType } = require('./type/tasktype');
 
 // const TaskType = require("./type/tasktype")
 
@@ -14,12 +14,12 @@ const { Process } = require('./process');
 //   }
 
 // module.exports.
-const TaskType = {
-    separate : "separate",
-    background : "background",
-    vignette : "vignette",
-    process : "process",
-  }
+// const TaskType = {
+//     separate : "separate",
+//     background : "background",
+//     vignette : "vignette",
+//     process : "process",
+//   }
   
   
 

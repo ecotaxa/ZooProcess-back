@@ -1,9 +1,18 @@
 // const background = require('../routes/background');
 // const { update } = require('../routes/task');
-const { Background } = require('./background');
-const { Prisma } = require('./client');
+const { Background } = require('../background');
+const { Prisma } = require('../client');
 const { Process } = require('./process');
-// const { TaskType } = require('./type/tasktype');
+// const { TaskType } = require('../type/tasktype');
+const { TaskStatus, TaskType } = require('@prisma/client');
+
+
+// const { strategies} = require("./strategies.js");
+// const { SeparateStrategy } = require('./SeparateStrategy.js');
+// const { ProcessStrategy } = require("./ProcessStrategy");
+// const { BackgroundStrategy } = require("./BackgroundStrategy"); 
+// const { DetectiondStrategy } = require("./DetectiondStrategy");
+// const { VignetteStrategy } = require("./VignetteStrategy");
 
 // const TaskType = require("./type/tasktype")
 
@@ -14,12 +23,12 @@ const { Process } = require('./process');
 //   }
 
 // module.exports.
-const TaskType = {
-    separate : "separate",
-    background : "background",
-    vignette : "vignette",
-    process : "process",
-  }
+// const TaskType = {
+//     separate : "separate",
+//     background : "background",
+//     vignette : "vignette",
+//     process : "process",
+//   }
   
   
 
@@ -58,13 +67,17 @@ class Tasks {
         const exec = data.exec
 
 
-        //(Object.values(TaskType)) as String[]).include(exec)
+        // (Object.values(TaskType)) as String[]).include(exec)
         if ( exec != TaskType.separate
             && exec != TaskType.background 
             && exec != TaskType.vignette 
             && exec != TaskType.process
         ) {
             throw new Error("TaskType not valid")
+        }
+
+        if (!Object.values(TaskType).includes(exec.toUpperCase())) {
+            throw new Error("Invalid TaskType value")
         }
 
         const formatdata = {
@@ -162,185 +175,217 @@ class Tasks {
 
 
     // async run(data){
-    async run({taskId},authHeader){
+    // async run({taskId},authHeader){
 
-        // const exec = data.exec
+    //     // const exec = data.exec
 
-        // taskId = data.taskId
+    //     // taskId = data.taskId
 
-        console.log("Task::run(taskId=", taskId)
-        console.log("Task::run(authHeader=", authHeader)
+    //     console.log("Task::run(taskId=", taskId)
+    //     console.log("Task::run(authHeader=", authHeader)
 
-        const bearer = authHeader.split(" ")[1]
+    //     const bearer = authHeader.split(" ")[1]
 
+    //     const task = await this.prisma.task.findFirst({
+    //         where:{
+    //             id : taskId
+    //         }
+    //     })
+
+    //     console.log("task", task)
+
+    //     task["status"] = "RUNNING"
+    //     task["dbserver"]= this.zooProcessApiUrl
+
+    //     console.log("task", task)
+    //     // Logger.info("task", task)
+
+    //     // let dataupdated = {
+    //     //     ...data,
+    //     // }
+    //     // dataupdated.params["dbserver"]= zooProcessApiUrl
+
+    //     const { strategies } = require('./strategies');
+
+
+    //     let action = null
+    //     switch (task.exec){
+    //         case TaskType.separate.toUpperCase():
+    //             // return await this.separate(task)
+    //             console.debug(`run separate(task:${task})`)
+    //             return await this.separate(task,bearer);
+
+    //         case TaskType.process.toUpperCase():
+    //             console.debug(`run Process(task:${JSON.stringify(task)})`);
+
+    //             const process = new Process()
+    //             // return await this.process(task, bearer)
+    //             return await process.process(task, bearer,this)
+
+    //             //TODO change the promise with code to do the processing job
+    //             // return Promise(function(resolve, reject) {
+    //             //     return resolve({taskId})
+    //             // })
+
+    //         default:
+
+    //             throw new Error("TaskType not valid")
+
+    //     }
+
+    // }
+
+    async run({taskId}, authHeader) {
+        const bearer = authHeader.split(" ")[1];
         const task = await this.prisma.task.findFirst({
-            where:{
-                id : taskId
-            }
-        })
+            where: { id: taskId }
+        });
 
-        console.log("task", task)
+        const strategies = {
+            [TaskType.SEPARATE]: SeparateStrategy,
+        [TaskType.PROCESS]: ProcessStrategy,
+        [TaskType.BACKGROUND]: BackgroundStrategy,
+        [TaskType.DETECTION]: DetectiondStrategy,
+        [TaskType.VIGNETTE]: VignetteStrategy,
+    };
 
-        task["status"] = "RUNNING"
-        task["dbserver"]= this.zooProcessApiUrl
 
-        console.log("task", task)
-        // Logger.info("task", task)
-
-        // let dataupdated = {
-        //     ...data,
-        // }
-        // dataupdated.params["dbserver"]= zooProcessApiUrl
-
-        let action = null
-        switch (task.exec){
-            case TaskType.separate.toUpperCase():
-                // return await this.separate(task)
-                console.debug(`run separate(task:${task})`)
-                return await this.separate(task,bearer);
-
-            case TaskType.process.toUpperCase():
-                console.debug(`run Process(task:${JSON.stringify(task)})`);
-
-                const process = new Process()
-                // return await this.process(task, bearer)
-                return await process.process(task, bearer,this)
-
-                //TODO change the promise with code to do the processing job
-                // return Promise(function(resolve, reject) {
-                //     return resolve({taskId})
-                // })
-
-            default:
-
-                throw new Error("TaskType not valid")
-
+        console.debug("which strategies ?")
+        const StrategyClass = strategies[task.exec];
+        console.debug("",StrategyClass);
+        if (!StrategyClass) {
+            throw new Error("TaskType not valid");
         }
+    
 
+
+    
+        // const strategy = new StrategyClass(this);
+        return strategy.execute(task, bearer);
     }
 
 
-    async separate(data,bearer){
+    // async separate(data,bearer){
 
-        console.log("tasks::separate", data)
-        // this.prisma.separate()
+    //     console.log("tasks::separate", data)
+    //     // this.prisma.separate()
 
-        const taskId = data.id
+    //     const taskId = data.id
 
-        // const 
+    //     // const 
 
-        this.prisma.task.upsert({
-            where:{
-                id: taskId
-            },
-            update:{
-                status: "RUNNING",
-                // task.params.separator: 
-            }
-        })
-
-
-        let srcFolder = ""
-        let dstFolder = ""
-        if ( data.params.src == null || data.params.dst == null /*|| data.params.projectid == null*/){
-
-        // ici je connais les données, mais ai je toutes les infos ?
-            const project = await this.prisma.project.findFirst({
-                where:{
-                    id: data.params.projectid
-                },
-                include:{
-                    drive: true,
-                    samples: true,
-                }
-            })
-            console.log("project", project)
-
-            if (project == null){
-                throw new Error(`project ${data.params.projectid} not found.`)
-            }
-
-            // let driveurl = "" ;//project.drive.url
-            // if (project.drive){
-            //     driveurl = project.drive.url
-            // } else {
-            //     const drive = await this.prisma.drive.findFirst({
-            //         where:{
-            //             id: project.driveId
-            //         }
-            //     })
-            //     if (drive == null){
-            //         throw new Error("Cannot determine the drive url")
-            //     }
-            //     driveurl = drive.url
-            // }
-
-            const driveurl = project.drive.url
-            console.log("driveurl", driveurl)
-
-            const sample_name = project.samples.filter(sample => sample.id == data.params.sampleid)[0].name
-            console.log("sample_name", sample_name)
+    //     this.prisma.task.upsert({
+    //         where:{
+    //             id: taskId
+    //         },
+    //         update:{
+    //             status: "RUNNING",
+    //             // task.params.separator: 
+    //         }
+    //     })
 
 
-            srcFolder = `${driveurl}/${project.name}Zooscan_scan/_work/${sample_name}/` + "/multiples_to_separate"
-            console.log("srcFolder", srcFolder)
+    //     let srcFolder = ""
+    //     let dstFolder = ""
+    //     if ( data.params.src == null || data.params.dst == null /*|| data.params.projectid == null*/){
 
-            srcFolder = "/Users/sebastiengalvagno/Drives/Zooscan/Zooscan_dyfamed_wp2_2023_biotom_sn001/Zooscan_scan/_work/dyfamed_20230111_200m_d1_1/multiples_to_separate/"
-            console.log("HARD CODED: folder", srcFolder)
-            // const data = {
-            //     folder,
+    //     // ici je connais les données, mais ai je toutes les infos ?
+    //         const project = await this.prisma.project.findFirst({
+    //             where:{
+    //                 id: data.params.projectid
+    //             },
+    //             include:{
+    //                 drive: true,
+    //                 samples: true,
+    //             }
+    //         })
+    //         console.log("project", project)
+
+    //         if (project == null){
+    //             throw new Error(`project ${data.params.projectid} not found.`)
+    //         }
+
+    //         // let driveurl = "" ;//project.drive.url
+    //         // if (project.drive){
+    //         //     driveurl = project.drive.url
+    //         // } else {
+    //         //     const drive = await this.prisma.drive.findFirst({
+    //         //         where:{
+    //         //             id: project.driveId
+    //         //         }
+    //         //     })
+    //         //     if (drive == null){
+    //         //         throw new Error("Cannot determine the drive url")
+    //         //     }
+    //         //     driveurl = drive.url
+    //         // }
+
+    //         const driveurl = project.drive.url
+    //         console.log("driveurl", driveurl)
+
+    //         const sample_name = project.samples.filter(sample => sample.id == data.params.sampleid)[0].name
+    //         console.log("sample_name", sample_name)
+
+
+    //         srcFolder = `${driveurl}/${project.name}Zooscan_scan/_work/${sample_name}/` + "/multiples_to_separate"
+    //         console.log("srcFolder", srcFolder)
+
+    //         srcFolder = "/Users/sebastiengalvagno/Drives/Zooscan/Zooscan_dyfamed_wp2_2023_biotom_sn001/Zooscan_scan/_work/dyfamed_20230111_200m_d1_1/multiples_to_separate/"
+    //         console.log("HARD CODED: folder", srcFolder)
+    //         // const data = {
+    //         //     folder,
             
-        // }
-        } else {
-            srcFolder = data.params.src
-            dstFolder = data.params.dst
-        }
+    //     // }
+    //     } else {
+    //         srcFolder = data.params.src
+    //         dstFolder = data.params.dst
+    //     }
 
 
 
-        console.log("CALL HAPPY PIPELINE /separate/")
-        console.debug("Trace")
-        console.trace()
-    fetch(this.happyPipelineUrl+"separate/", {
-        // method: 'POST',
-        method: 'PUT',
-        body: JSON.stringify({ path: srcFolder }),
-        headers: { 
-            'Content-type': 'application/json; charset=UTF-8',
-            "Authorization": authHeader 
-        },
-    })
-        .then((response) => response.json())
-        .then((json) => console.log(json))
-        .catch(error => {
-            console.log(error)
-            console.log("taskId:", taskId)
+    //     console.log("CALL HAPPY PIPELINE /separate/")
+    //     console.debug("Trace")
+    //     console.trace()
+    // fetch(this.happyPipelineUrl+"separate/", {
+    //     // method: 'POST',
+    //     method: 'PUT',
+    //     body: JSON.stringify({ path: srcFolder }),
+    //     headers: { 
+    //         'Content-type': 'application/json; charset=UTF-8',
+    //         "Authorization": authHeader 
+    //     },
+    // })
+    //     .then((response) => response.json())
+    //     .then((json) => console.log(json))
+    //     .catch(error => {
+    //         console.log(error)
+    //         console.log("taskId:", taskId)
 
-            return new Promise((resolve, reject) => { reject(`Cannot launch the task ${taskId} | Error: ${error}`)});
-        })
+    //         return new Promise((resolve, reject) => { reject(`Cannot launch the task ${taskId} | Error: ${error}`)});
+    //     })
 
-        const url = `${this.zooProcessApiUrl}task/${taskId}`
-        const message = `Launched | Take a look at ${url}`
+    //     const url = `${this.zooProcessApiUrl}task/${taskId}`
+    //     const message = `Launched | Take a look at ${url}`
 
-        const returndata = {
-            //     status:200,
-            //     data: { message }
-            message,
-            url,
-            taskId
-        }
-        // console.log("returndata", returndata)
-        // console.log("message", message)
-        //return new Promise().resolve(message)
-        // return returndata
-        // return new Promise().resolve(message)
-        // return message
+    //     const returndata = {
+    //         //     status:200,
+    //         //     data: { message }
+    //         message,
+    //         url,
+    //         taskId
+    //     }
+    //     // console.log("returndata", returndata)
+    //     // console.log("message", message)
+    //     //return new Promise().resolve(message)
+    //     // return returndata
+    //     // return new Promise().resolve(message)
+    //     // return message
 
-        return new Promise(function(resolve, reject) {
-            // return resolve(message)
-            return resolve(returndata)
-        })
-    }
+    //     return new Promise(function(resolve, reject) {
+    //         // return resolve(message)
+    //         return resolve(returndata)
+    //     })
+    // }
 
 
 
