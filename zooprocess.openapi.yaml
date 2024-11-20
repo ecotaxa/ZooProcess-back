@@ -1121,6 +1121,23 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  /qc:
+    post:
+      description: add a new qc
+      operationId: qc.create
+      responses:
+        '200':
+          description: Returned the qc id created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QCModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+
 
 
   /task:
@@ -1143,7 +1160,6 @@ paths:
               schema:  
                 # type: string
                 $ref: '#/components/schemas/TaskModel'
-
       tags:
         - Separator
         - User
@@ -1804,6 +1820,14 @@ components:
     #       type: string
     #   example:
     #     id: 42a42
+
+    QCModel:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
 
     TaskModel:
       type: object

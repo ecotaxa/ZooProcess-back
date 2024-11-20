@@ -90,10 +90,12 @@ model Project {
   instrumentId    String?     @db.ObjectId
   scanningOptions String?
 
+  // qc        QCState? @relation(fields: [qCStateId], references: [id])
+  // qCStateId String?  @db.ObjectId
   qc        QCState? @relation(fields: [qCStateId], references: [id])
-  qCStateId String?  @db.ObjectId
   // Ecotaxa   Ecotaxa[]
   scan      Scan[]
+  qCStateId String?  @db.ObjectId
 }
 
 enum InstrumentModel {
@@ -121,8 +123,8 @@ model ZooscanCalibration {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   // instrumentId String @db.ObjectId
-  instrument      Instrument? @relation(fields: [instrumentId], references: [id])
-  instrumentId    String?     @db.ObjectId
+  instrument   Instrument? @relation(fields: [instrumentId], references: [id])
+  instrumentId String?     @db.ObjectId
 
   frame String
 
@@ -142,13 +144,15 @@ model ScanningOption {
 }
 
 model QCState {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  validated     DateTime
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  updatedAt DateTime    @updatedAt
   // state         QCStateItem @relation(fields: [qCStateItemId], references: [id])
-  state         QCStatus    @default(PENDING)
-  project       Project[]
-  qCStateItemId String      @db.ObjectId
-  subSample     SubSample[]
+  state     QCStatus    @default(PENDING)
+  // project       Project[]
+  // qCStateItemId String      @db.ObjectId
+  // subSample     SubSample[]
+  Project   Project[]
+  SubSample SubSample[]
 }
 
 // model QCStateItem {
@@ -159,6 +163,11 @@ model QCState {
 
 enum QCStatus {
   PENDING
+  DONE
+  UNPROCESSED
+  MISSING_SCAN
+  MISSING_BACKGROUND
+  TOO_MORE_ORGANISM
 }
 
 model Ecotaxa {
@@ -225,9 +234,10 @@ model SubSample {
   // operator User   @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
 
-  qc        QCState? @relation(fields: [qCStateId], references: [id])
-  qCStateId String?  @db.ObjectId
-
+  // qc        QCState? @relation(fields: [qCStateId], references: [id])
+  // qCStateId String?  @db.ObjectId
+  qc QCState? @relation(fields: [qCStateId], references: [id])
+  // qc  QCStatus @default(PENDING)
   // fraction    String
   // fractionMin Ints
   // fractionMax Int
@@ -248,8 +258,8 @@ model SubSample {
   // scanId          String?        @db.ObjectId
 
   // tasks       Task[]
+  qCStateId String? @db.ObjectId
 }
-
 
 // model Metadata {
 //   id                  String             @id @default(auto()) @map("_id") @db.ObjectId
@@ -322,11 +332,12 @@ enum ScanType {
   VIS
   OUT
 }
+
 model Scan {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  url        String
-  type       ScanType @default(SCAN)
-  createdAt  DateTime @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  type      ScanType @default(SCAN)
+  createdAt DateTime @default(now())
 
   // to know the scanner parammeters
   // scanningOptions ScanningOptionnnj
@@ -348,11 +359,11 @@ model Scan {
   subSampleId  String?     @db.ObjectId
 
   background Boolean? // to remove use type ScanType
-  archived  Boolean? @default(false)
-  deleted   Boolean   @default(false)
-  deletedAt DateTime? //@db.Timestamp()
-  Project   Project?  @relation(fields: [projectId], references: [id])
-  projectId String?   @db.ObjectId
+  archived   Boolean?  @default(false)
+  deleted    Boolean   @default(false)
+  deletedAt  DateTime? //@db.Timestamp()
+  Project    Project?  @relation(fields: [projectId], references: [id])
+  projectId  String?   @db.ObjectId
 }
 
 enum VignetteType {
@@ -397,12 +408,12 @@ enum TaskStatus {
 }
 
 model Task {
-  id      String     @id @default(auto()) @map("_id") @db.ObjectId
-  exec    TaskType
-  params  Json //  { "exec" : "" , "params" : { "param1" = "filepath" , ... } }
-  log     String? // url to log file
-  percent Int        @default(0)
-  status  TaskStatus @default(PENDING)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  exec      TaskType
+  params    Json //  { "exec" : "" , "params" : { "param1" = "filepath" , ... } }
+  log       String? // url to log file
+  percent   Int        @default(0)
+  status    TaskStatus @default(PENDING)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
