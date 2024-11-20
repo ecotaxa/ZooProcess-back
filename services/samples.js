@@ -78,7 +78,15 @@ module.exports.Samples = class {
             include:{
                 metadata:true,
                 metadataModel:true,
-                subsample:true
+                // subsample:true
+                subsample: {
+                    include:{
+                        //scans:true
+                        metadata:true,
+                        user:true,
+                        qc:true,
+                    }
+                }
             }
         })
         return sample
@@ -159,7 +167,7 @@ module.exports.Samples = class {
     //     id: number;
     //     name: string;
     //     value: string;
-    //     type: string;
+    //     type: string; 
     //   };
 
     //   async updateMetadata(id,value,type){
@@ -182,7 +190,7 @@ module.exports.Samples = class {
             type,
             sampleId
         }
-        console.log("addMetadata meta: ", meta);
+        console.log("addMetadata meta: ", meta); 
 
         return await this.prisma.metadata.create({data:meta})
     }
