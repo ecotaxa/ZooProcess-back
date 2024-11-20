@@ -4,7 +4,7 @@
   "description": "The Zooprocess API",
   "main": "index.js",
   "scripts": {
-    "dev": "node app.js",
+    "dev": "nodemon --watch . -e js,mjs,json,prisma app.js",
     "dev:watch": "nodemon app.js",
     "test": "jest"
   },
