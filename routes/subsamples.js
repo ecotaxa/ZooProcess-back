@@ -33,7 +33,8 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId: req.param.subSampleId})
+        console.debug("subsample get", req.params);
+        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId: req.params.subSampleId})
         .then(payload => {
             return res.status(200).json(payload);
         })
