@@ -1137,10 +1137,82 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    get:
+      description: Get the list of qc
+      operationId: qc.list
+      responses:
+        '200':
+          description: Returned the qc id created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QCModel'
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+  
+  /qc/{qcId}:
+    parameters:
+      - description: The qc ID
+        example: 655d3062983b92b6e29b3369
+        explode: false
+        in: path
+        name: qcId
+        required: true
+        schema:
+          type: string
+
+    get:
+      summary: Get the qc
+      description: Get the qc 
+      operationId: qc.get
+      responses:
+        '200':
+          description: Returned the qc
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QCModel'
+        
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
 
 
 
   /task:
+
+
+    delete:
+      description: delete all task of process
+      operationId: Task.delete
+      parameters:
+        - description: project Id
+          in: query
+          # style: deepObject
+          name: projectId
+          required: true
+          example: "42"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return
+          content:
+            application/json:
+              schema:  
+                type: string
+      tags:
+        - User
+      security:
+        - BearerAuth: [ ]
+
+
     post:
       description: Add a new task
       operationId: Task.create
@@ -1169,6 +1241,15 @@ paths:
     get:
       description: Get the list of task
       operationId: Task.list
+      parameters:
+        - description: project Id
+          in: query
+          # style: deepObject
+          name: projecId
+          required: false
+          example: "42"
+          schema:
+            type: string
       responses:
         '200':
           description: Returned the list of task
@@ -1280,7 +1361,7 @@ paths:
               schema:  
                 type: string
       tags:
-        - User
+        - Manager
       security:
         - BearerAuth: [ ]
 
