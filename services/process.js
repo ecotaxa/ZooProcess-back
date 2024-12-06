@@ -25,7 +25,7 @@ async process(data, bearer,taskInstance){
     if ( scanInfo == null){
         console.log("scanInfo is null")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is null"})
-        return new Promise().reject(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
+        return Promise.reject(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
     }
 
     console.debug("scanInfo", scanInfo)
@@ -33,14 +33,16 @@ async process(data, bearer,taskInstance){
     if ( scanInfo.type != "SCAN" ){
         console.log("scanInfo is not a scan")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is not a scan"})
-        return new Promise().reject(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
+        return Promise.reject(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
     }
 
     const background = scanInfo.SubSample.scan.find(scan => scan.type == "BACKGROUND")
     if ( background == null ){
         console.log("no background")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"no background"})
-        return new Promise().reject(`Cannot launch the task ${taskId} there is no background | Error: ${scanInfo}`)
+        // return Promise.reject(`Cannot launch the task ${taskId} - Error: there is no background - Error: ${JSON.stringify(scanInfo)}`)
+        return Promise.reject(`Cannot launch the task ${taskId} : there is no background associated to scan ${scanInfo.id}`)
+
     }
     
     taskInstance.setTaskStatus(taskId, {status:"RUNNING",log:"running"})
@@ -83,7 +85,8 @@ async process(data, bearer,taskInstance){
             // return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`)
             const text = await response.text();
             console.error("Error details:", text);
-            return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`);
+            // return new Promise().reject(`Cannot launch the task ${taskId} | Error: ${response.status}`);
+            return Promise.reject(`Cannot launch the task ${taskId} - Error: ${response.status}`);
         }
     return response.json()
     })
@@ -110,10 +113,11 @@ async process(data, bearer,taskInstance){
     // return new Promise().resolve(message)
     // return message
 
-    return new Promise(function(resolve, reject) {
-        // return resolve(message)
-        return resolve(returndata)
-    })
+    // return new Promise(function(resolve, reject) {
+    //     // return resolve(message)
+    //     return resolve(returndata)
+    // })
+    return Promise.resolve(returndata)
 }
 
 }

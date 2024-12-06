@@ -118,15 +118,41 @@ module.exports = {
         ;
     },
 
+
+    //http://localhost:3001/api/subsample/6718b8446a417cb382c781e0/6718eb7b6a417cb382c78395/673f48f71e5039acf464dd5e
+
     process: async (req,res) => {
 
-        console.log("route::subsamples::process(req):",req)
+        console.log("route::subsamples::process(req.params):",req.params)
 
-        return subsamples.process()
-        .then(result => {
+        // return subsamples.process()
+        // return get.process()
+
+        // console.log("req.params",req.params)
+
+        return subsamples.get({projectId:req.params.projectId, sampleId:req.params.sampleId, subSampleId: req.params.subSampleId})
+        .then(subsample => {
             // console.log("OK", res) 
-            console.log("OK", result);
-            return res.status(200).json(result);
+            console.log("route::subsamples::process OK", subsample);
+
+            const scan = subsample.scan
+            const vis = scan.find(s=>s.type=  "VIS" )
+            const mask = scan.find(s=>s.type=  "MASK" )
+            const out = scan.find(s=>s.type=  "OUT" )
+            const gif = scan.find(s=>s.type=  "GIF" )
+
+            const data = {
+                vis:vis.url,
+                mask:nak.url,
+                out:out.url,
+                gif:gif.url
+            }
+
+            console.log("process() return data:",data);
+
+            return res.status(200).json(data);
+
+            // return res.status(200).json(subsample);
         })
         .catch(async(e) => {
             console.error("Error:",e );

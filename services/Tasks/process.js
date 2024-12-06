@@ -40,7 +40,12 @@ async run(data, bearer, taskInstance){
     if ( background == null ){
         console.log("no background")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"no background"})
-        return new Promise().reject(`Cannot launch the task ${taskId} there is no background | Error: ${scanInfo}`)
+        // return Promise.reject(`Cannot launch the task ${taskId} there is no background | Error: ${scanInfo}`)
+        return Promise.reject({
+            status: 400,
+            message: `Cannot launch the task ${taskId} there is no background`,
+            error: `No background found for scan ${scanInfo.id}`
+        })
     }
     
     taskInstance.setTaskStatus(taskId, {status:"RUNNING",log:"running"})

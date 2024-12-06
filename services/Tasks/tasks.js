@@ -243,11 +243,11 @@ class Tasks {
 
         const strategies = {
             [TaskType.SEPARATE]: SeparateStrategy,
-        [TaskType.PROCESS]: ProcessStrategy,
-        [TaskType.BACKGROUND]: BackgroundStrategy,
-        [TaskType.DETECTION]: DetectiondStrategy,
-        [TaskType.VIGNETTE]: VignetteStrategy,
-    };
+            [TaskType.PROCESS]: ProcessStrategy,
+            [TaskType.BACKGROUND]: BackgroundStrategy,
+            [TaskType.DETECTION]: DetectiondStrategy,
+            [TaskType.VIGNETTE]: VignetteStrategy,
+        };
 
 
         console.debug("which strategies ?")

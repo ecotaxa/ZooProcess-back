@@ -67,8 +67,13 @@ module.exports.SubSamples = class {
         return samples
     }
 
-    async get({/*projectId, sampleId,*/ subSampleId}) {
-        const sample = await this.prisma.subSample.findFirst({
+    // async get({/*projectId, sampleId,*/ subSampleId}) {
+    async get({projectId, sampleId, subSampleId}) {
+            console.debug("SubSamples get projectId= ", projectId);
+            console.debug("SubSamples get sampleId= ", sampleId);
+            console.debug("SubSamples get subSampleId= ", subSampleId);
+
+            const sample = await this.prisma.subSample.findFirst({
             where:{
                 id:subSampleId,
                 //projectId:projectId
@@ -171,22 +176,43 @@ module.exports.SubSamples = class {
         });
     }
 
-    async process(){
-        console.log("service::subsamples:process()")
-        return new Promise(function(resolve, reject) {
-            // return resolve(message)
+    // async process(){
+    //     console.log("service::subsamples:process()")
+    //     // return new Promise(function(resolve, reject) {
+    //         // // return resolve(message)
+    //         // const data = {
+    //         //     "mask" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_msk1.gif",
+    //         //     "out" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_out1.gif",
+    //         //     "vis" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_vis1.tif",
+    //         //     "log" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_log.txt",
 
-            const data = {
-                "mask" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_msk1.gif",
-                "out" : "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_out1.gif",
-                "vis" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_vis1.tif",
-                "log" :  "/demo/Zooscan_iado_wp2_2023_sn002/Zooscan_scan/_work/t_17_2_tot_1/t_17_2_tot_1_log.txt",
+    //         // }
+    //         // return resolve(data)
 
-            }
 
-            return resolve(data)
-        })
-    }
+    //         const sample = await this.prisma.subSample.findFirst({
+    //             where:{
+    //                 id:subSampleId,
+    //                 //projectId:projectId
+    //             },
+    //             include:{
+    //                 scan:true,
+    //             }
+    //         })
+
+    //         const data
+
+
+
+    //         return new Promise(function(resolve, reject) {
+    //         return resolve(data)
+
+
+
+
+
+    //     })
+    // }
 
 
 }

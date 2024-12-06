@@ -78,6 +78,11 @@ module.exports.Samples = class {
             include:{
                 metadata:true,
                 metadataModel:true,
+                project:{
+                    include:{
+                        instrument:true,
+                    }
+                },
                 // subsample:true
                 subsample: {
                     include:{
