@@ -1,0 +1,104 @@
+@startuml
+front -> front 
+
+rnote over front
+params : {
+  projectId,sampleId, subSampleId, scanId
+}
+endrnote
+
+
+front -> api :  process ({projectId,sampleId, subSampleId, scanId})
+
+api -> db : new task params : { ... }
+
+db -> api : task:{...}
+
+rnote over api
+task {
+  id: '673323d2b0c1c41e2f0e2449',
+  exec: 'PROCESS',
+  params: {
+    project: '6718b8446a417cb382c781e0',
+    sample: '6718eb7b6a417cb382c78395',
+    subsample: '658de2ba43a25af55929ff04',
+    scanId: '672a405e854bbaf0b8b50582'
+  },
+  log: null,
+  percent: 0,
+  status: 'RUNNING',
+  dbserver: 'http://zooprocess.imev-mer.fr:8081/v1/'
+}
+endrnote
+
+api -> front : taskId
+
+front -> api : run taskId
+
+api -> db : getScan(scanId)
+db -> api : scanInfo
+
+rnote over api
+scan: {
+ ...
+  SubSample: {
+    scan : [...]
+  }
+}
+endrnote
+
+api -> api : search background associated
+
+rnote over api
+{
+  scan : "file url" ,
+  back: "file url" ,
+  src :"path" ,
+  dst : "path" ,
+
+  taskId,
+  db,
+  bearer
+}
+  
+endrnote
+
+
+api -> python : process({scanPath, backPath, taskID, DB, Bearer})
+
+hnote over python
+  send ERROR status if missing or bad parameters
+endhnote
+python -> api: POST /task/{taskId} status ( ERROR)
+
+hnote over python : else process
+
+python -> api: POST /subsample/{subsampleId}/add { image processed }
+python -> api: POST /subsample/{subsampleId}/add { image processed }
+
+python -> api: POST /task/{taskId} status ( DONE )
+python -> api: ret :{object with images processed}
+rnote over api: {ret} usefull when no db use
+
+front -> api: ask task status
+api -> db : task status
+
+
+api -> front
+rnote over front
+task {
+  id: '673323d2b0c1c41e2f0e2449',
+  exec: 'PROCESS',
+  params: {
+    project: '6718b8446a417cb382c781e0',
+    sample: '6718eb7b6a417cb382c78395',
+    subsample: '658de2ba43a25af55929ff04',
+    scanId: '672a405e854bbaf0b8b50582'
+  },
+  log: "blabla",
+  percent: 0,
+  status: 'DONE',
+  dbserver: 'http://zooprocess.imev-mer.fr:8081/v1/'
+}
+endrnote
+@enduml
