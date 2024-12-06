@@ -27,23 +27,31 @@ const handlers = {
         })
     },
 
-    status: async (req,res) => {
-        // console.log("status");
+    // status: async (req,res) => {
+    //     console.debug("status()");
+    //     if ( !isRoleAllowed(req)){
+    //         return res.status(401).send("You are not authorized to access this resource")
+    //     }
 
-        if ( !isRoleAllowed(req)){
-            return res.status(401).send("You are not authorized to access this resource")
-        }
+    //     console.debug("get taskId: ", req.params.taskId);
+    //     console.error("taskId is required req.params:", req.params);
 
-        return tasks.get({taskId:req.params.taskId})
-        .then(result => {
-            // console.log("OK", result) 
-            return res.status(200).json(result)
-        })
-        .catch(async(e) => {
-            console.error("Error:",e )
-            return res.status(500).json({error:e})
-        })
-    },
+    //     if( req.params.taskId == undefined){
+    //         console.error("taskId is required req.params:", req.params);
+    //         return res.status(400).json({error:"taskId is required"})
+    //     }
+
+    //     return tasks.get({taskId:req.params.taskId})
+    //     .then(result => {
+    //         // console.log("OK", result) 
+    //         return res.status(200).json(result)
+    //     })
+    //     .catch(async(e) => {
+    //         console.error("status Error:",e )
+    //         return res.status(500).json({error:e})
+    //     })
+    // },
+
 
     create: async (req,res) => {
         if ( !isRoleAllowed(req)){
@@ -63,28 +71,211 @@ const handlers = {
         })
     },
 
-    run: async (req,res) => {
-        console.log("run",req.body);
+    // status: async (req,res) => {
+    //     console.debug("status()");
+    //     if ( !isRoleAllowed(req)){
+    //         return res.status(401).send("You are not authorized to access this resource")
+    //     }
+    
+    //     console.debug("get taskId: ", req.params.taskId);
+    //     console.error("taskId is required req.params:", req.params);
+    
+    //     if( req.params.taskId == undefined){
+    //         console.error("taskId is required req.params:", req.params);
+    //         return res.status(400).json({error:"taskId is required"})
+    //     }
+    
+    //     return tasks.get({taskId:req.params.taskId})
+    //     .then(result => {
+    //         // console.log("OK", result) 
+    //         return res.status(200).json(result)
+    //     })
+    //     // .catch(async(e) => {
+    //     //     console.error("status Error:",e )
+    //     //     return res.status(500).json({error:e})
+    //     // })
+    //     // .catch(async(e) => {
+    //     //     console.error("status Error:",e )
+    //     //     return res.status(500).json({
+    //     //         error: e.message || String(e)
+    //     //     })
+    //     // })
+    //     .catch(async(e) => {
+    //         console.error("status Error:", e);
+    //         const errorResponse = {
+    //             error: e.message || String(e)
+    //         };
+    //         const errorResponse2 = {
+    //             status: 500,
+    //             error: "Static error message for testing frontend",
+    //             details: "Task status could not be retrieved"
+    //         };
+    //         console.log("Sending error response:", errorResponse);
+    //         return res.status(500).json(errorResponse2);
+    //         // return res.status(500).json({
+    //         //     error: e.message || String(e)
+    //         // });
+    //     })
+    
+    // }
+    
+
+    status: async (req,res) => {
+        console.debug("status() - Headers:", req.headers);
         
+        // ... existing role check ...
+    
+        return tasks.get({taskId:req.params.taskId})
+        .then(result => {
+            console.debug("status() - OK");
+            return res.status(200).json(result)
+        })
+        .catch(async(e) => {
+            console.error("status Error:", e);
+            const errorResponse2 = {
+                status: 500,
+                error: "Static error message for testing frontend",
+                details: "Task status could not be retrieved"
+            };
+            console.log("Full response being sent:", {
+                status: 500,
+                headers: res.getHeaders(),
+                body: errorResponse2
+            });
+            
+            // Set explicit headers
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(500).json(errorResponse2);
+        })
+    }
+    
+    
+    ,
+
+    // run: async (req,res) => {
+    //     console.log("run",req.body);
+        
+    //     if ( !isRoleAllowed(req)){
+    //         return res.status(401).send("You are not authorized to access this resource")
+    //     }
+
+    //     const authHeader = req.headers.authorization;
+    //     console.debug("*********************************************");
+    //     console.debug("authHeader", authHeader);
+    //     console.debug("*********************************************");
+
+    //     return tasks.run(req.body,authHeader)
+    //     .then(result => {
+    //         console.log("OK", result) 
+    //         return res.status(200).json(result)
+    //     })
+    //     .catch(async(e) => {
+    //         console.debug("Error to run task:",e )
+    //         console.error("Error:",e )
+    //         return res.status(500).json({error:e})
+    //     })
+
+    // },
+
+    // run: async (req, res) => {
+    //     console.log("run", req.body);
+    
+    //     if (!isRoleAllowed(req)) {
+    //         return res.status(401).json({
+    //             error: "Unauthorized access"
+    //         });
+    //     }
+    
+    //     const authHeader = req.headers.authorization;
+    
+    //     try {
+    //         const result = await tasks.run(req.body, authHeader);
+    //         console.log("OK", result);
+    //         return res.status(200).json(result);
+    //     } catch (error) {
+    //         console.error("Error running task:", error);
+    //         return res.status(500).json({
+    //             error: error.message || "Failed to run task",
+    //             details: error
+    //         });
+    //     }
+    // },
+    
+
+
+    run: async (req, res) => {
+        console.log("run", req.body);
+    
+        if (!isRoleAllowed(req)) {
+            return res.status(401).json({
+                error: "You are not authorized to access this resource"
+            });
+        }
+    
+        const authHeader = req.headers.authorization;
+    
+        // try {
+        //     const result = await tasks.run(req.body, authHeader);
+        //     return res.status(200).json(result);
+        // } catch (error) {
+        //     // Extract the specific error message about missing background
+        //     const errorMessage = error.message || "Task processing failed";
+        //     console.error("Error running task:", error);
+        //     return res.status(500).json({
+        //         error: errorMessage,
+        //         taskId: req.body.taskId
+        //     });
+        // }
+
+        // try {
+        //     const result = await tasks.run(req.body, authHeader);
+        //     return Response.json(result);
+        // } catch (error) {
+        //     return Response.json({
+        //         error: {
+        //             message: error.message || "Task processing failed",
+        //             code: "TASK_PROCESS_ERROR",
+        //             taskId: req.body.taskId
+        //         }
+        //     }, { status: 500 });
+        // }
+
+        try {
+            const result = await tasks.run(req.body, authHeader);
+            return res.status(200).json(result);
+        } catch (error) {
+            console.error("Task::run() Error:", error);
+            return res.status(500).json({error: error.message || error});
+        }
+   
+    },
+
+    delete: async (req,res) => {
+        console.log("deleteTask body:",req.body);
+        console.log("deleteTask params.projectId:",req.params.projectId);
+        console.debug("deleteTask params:",req.params);
+        console.debug("deleteTask query:",req.query);
+
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        const authHeader = req.headers.authorization;
-        console.debug("*********************************************");
-        console.debug("authHeader", authHeader);
-        console.debug("*********************************************");
+        projectId = req.query.projectId
+        if ( projectId == "all") {
+            if ( !isRoleAllowed(req)){
+                return res.status(401).send("You are not authorized to access this resource")
+            }
+        }
 
-        return tasks.run(req.body,authHeader)
+        return tasks.delete({projectId})
         .then(result => {
-            console.log("OK", result) 
-            return res.status(200).json(result)
+            console.log("OK", result)
+            return res.status(200).json("done")
         })
         .catch(async(e) => {
             console.error("Error:",e )
             return res.status(500).json({error:e})
         })
-
     },
 
     deleteAllTaskOfProcess: async (req,res) => {

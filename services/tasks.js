@@ -35,6 +35,10 @@ class Tasks {
     }
 
     async get({taskId}) {
+        if (taskId == undefined) {
+            throw new Error("taskId is undefined")
+        }
+        console.log("Tasks::get(taskId= ", taskId)
         return this.prisma.task.findUnique({
             where:{
                 id: taskId
@@ -158,6 +162,23 @@ class Tasks {
         })
     }
 
+    async delete({projectId}){
+        console.log("Task::delete(projectId=", projectId)
+
+        if ( projectId == undefined) {
+            throw new Error("projectId is undefined")
+        }
+
+        if ( projectId == "all") {
+            return this.prisma.task.deleteMany({})
+        }
+
+        return this.prisma.task.deleteMany({
+            where:{
+                projectId: projectId
+            }
+        })
+    }
 
 
 
