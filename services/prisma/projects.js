@@ -3,6 +3,7 @@
 const instrument = require('../../routes/instrument');
 const { Prisma } = require('../client');
 const { Instrument } = require('../instrument');
+const { Qc } = require('../qc');
 // const { Prisma } = require("@prisma/client");
 
 module.exports.Projects = class {
@@ -129,6 +130,9 @@ module.exports.Projects = class {
       //     driveId:driveid
       // }
 
+    
+
+
       let data = {
         name:project.name,
         driveId:driveid
@@ -136,6 +140,15 @@ module.exports.Projects = class {
       if (project.description){data['description'] = project.description;}
       if (project.ecotaxaId){data['ecotaxaId'] = project.ecotaxa;}
       if (project.acronym){data['acronym'] = project.acronym;}
+
+      if ( project.QCState == undefined){
+        const qc = new Qc()
+        const qcState = await qc.create({})
+        console.log("qCStateId: ", qcState);
+        data['qCStateId'] = qcState.id;
+      } else {
+        data['qCStateId'] = project.QCState.id;
+      }
 
       console.log("data: ", data);
 
@@ -166,6 +179,8 @@ module.exports.Projects = class {
         },
         include:{
           drive: true,
+          qc: true,
+
           // samples: true,
           samples: {
             include: {

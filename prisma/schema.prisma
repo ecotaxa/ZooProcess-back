@@ -92,10 +92,12 @@ model Project {
 
   // qc        QCState? @relation(fields: [qCStateId], references: [id])
   // qCStateId String?  @db.ObjectId
-  qc        QCState? @relation(fields: [qCStateId], references: [id])
+  qc   QCState? @relation(fields: [qCStateId], references: [id])
   // Ecotaxa   Ecotaxa[]
-  scan      Scan[]
-  qCStateId String?  @db.ObjectId
+  scan Scan[]
+  task Task[]
+
+  qCStateId String? @db.ObjectId
 }
 
 enum InstrumentModel {
@@ -416,4 +418,7 @@ model Task {
   status    TaskStatus @default(PENDING)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?  @db.ObjectId
 }

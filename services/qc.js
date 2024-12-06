@@ -24,6 +24,18 @@ module.exports.Qc = class {
     //     })
     // }
 
+    async find(qcId) {
+        return this.prisma.qCState.findFirst({
+            where:{
+                id:qcId
+            }
+        })
+    }
+
+    async findAll() {
+        return this.prisma.qCState.findMany({})
+    }
+
     async create(qc) {
 
         console.log("QC create", qc);
