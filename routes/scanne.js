@@ -124,13 +124,13 @@ addurl: async (req,res) => {
         return res.status(401).send("You are not authorized to access this resource")
     }
 
-    console.log("req.jwt: ", req.jwt);
+    // console.log("req.jwt: ", req.jwt);
     const userID = req.jwt.id
 
     if ( req.body.url == undefined){
         return res.status(400).json({error:"URL is required"})
     }
-    console.log("req.body: ", req.body);
+    // console.log("req.body: ", req.body);
     console.log("req.body.url: ", req.body.url);
 
     return scan.addurl({

@@ -1053,6 +1053,10 @@ paths:
       security:
         - BearerAuth: [ ]
 
+  # put:
+  #   summary: add a background (medium)
+  #   description: Add a background to use with share folder,
+  #   operationId: Background.addurl
 
   # /scan/{instrumentId}/url:
   /scan/{subSampleId}/url:
@@ -1291,7 +1295,7 @@ paths:
         - BearerAuth: [ ]
 
     post:
-      description: Change task informtion
+      description: Change task information
       operationId: Task.update
       responses:
         '200':

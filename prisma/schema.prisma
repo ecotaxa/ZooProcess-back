@@ -332,6 +332,7 @@ enum ScanType {
   MASK
   RAW_BACKGROUND
   VIS
+  MEDIUM_BACKGROUND
   OUT
 }
 

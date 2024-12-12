@@ -15,6 +15,9 @@ const { SubSamples } = require("./prisma/subSample");
 
 module.exports.Background = class {
 
+  zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"
+  happyPipelineUrl = 'http://zooprocess.imev-mer.fr:8000/'
+
   constructor() {
     // const background = true
 
@@ -282,6 +285,7 @@ module.exports.Background = class {
 
     }
         
+    // used by POST /background/{instrumentId}/url?projectId={projectId}
     async addurl({ instrumentId , url , userId , projectId /*, type*/}) {
 
       console.log("background::addurl")
@@ -604,6 +608,97 @@ async addurl3({ url , userId , subsampleId, type, move}) {
   console.log("data: ", data)
 
   return this.scans.add(data)
+}
+
+
+async medium(data, bearer, taskInstance){
+  console.log("tasks::medium()")
+  console.debug("tasks::process data:", data)
+  console.debug("tasks::process bearer:", bearer)
+
+  const taskId = data.id
+  console.debug("process - taskId:",taskId)
+  taskInstance.setTaskStatus(taskId, {status:"ANALYSING",log:"analysing"})
+
+  taskInstance.setTaskStatus(taskId, {status:"RUNNING",log:"running"})
+
+  const body = {
+
+    taskId: data.id,
+    instrumentId: data.params.instrumentId,
+    // src: "srcpath",
+    // dst: "dstpath",
+    // back1: data.params.background[0],
+    // back2: data.params.background[1],
+    projectId: data.params.project,
+    background:data.params.background,
+
+    // scanId: data.params.scanId,
+    // taskId: taskId,
+    bearer: bearer,
+    db: "http://zooprocess.imev-mer.fr:8081/v1/",
+}
+
+
+console.debug("body:", body)
+
+
+  const processUrl = `${this.happyPipelineUrl}background/`
+  console.debug("processUrl:",processUrl)
+//   fetch(processUrl, {
+//     method: 'POST',
+//     body: JSON.stringify(body),
+//     headers: { 
+//         'Content-type': 'application/json; charset=UTF-8',
+//         "Accept": "application/json",
+//         "User-Agent": "Zooprocess v10",
+//         "Authorization": bearer
+
+//     },
+// })
+// .then(async (response) => {
+//     console.debug("---------> response", response)
+//     if (! response.ok) {
+//         console.debug("Happy reponse:",response.status)
+//         // const text = await response.text();
+//         try {
+//           const text = response.text();
+//           console.error("Error details:", text);
+//           return Promise.reject(`Cannot launch the task ${taskId} - Error: ${response.status}`);
+//           // throw Error(`Cannot launch the task ${taskId} - Error: ${response.status}`);
+//         }
+//         catch (error) {
+//           // console.error("Error details:", error);
+//           // return Promise.reject(`Cannot launch the task ${taskId} - Error: ${error}`);
+//           return Promise.reject(error);
+
+//         }
+//     }
+//   return response.json()
+// })
+try {
+  const response = await fetch(processUrl, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+          "User-Agent": "Zooprocess v10",
+          "Authorization": bearer
+      },
+  });
+
+  if (!response.ok) {
+      const text = await response.text();
+      console.error("Error details:", text);
+      throw new Error(`Cannot launch the task ${taskId} - Error: ${response.status}`);
+  }
+
+  return await response.json();
+} catch (error) {
+  throw error;
+}
+
 }
 
 }

@@ -260,9 +260,10 @@ module.exports = {
 
     addurl: async (req,res) => {
         console.log("------------------------------------------");
-        console.log("addurl",req);
+        console.log("route/background/addurl");
+        // console.log("route/background/addurl",req);
         // console.log("create files",req.files);
-        console.log("addurl Req", req.query);
+        console.log("addurl Req.query", req.query);
         console.log("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
@@ -283,15 +284,46 @@ module.exports = {
         }
         console.log("req.query.projectId: ", req.query.projectId);
 
-    try {
-        return await background.addurl({
+        let params = {
             userId:id,
             //image:req.body, 
             url: req.body.url,
             instrumentId:req.params.instrumentId,
             projectId: req.query.projectId
             /*, type:BackgroundType.BACKGROUND*/
-        })
+        }
+
+
+        if ( req.body.taskId ){
+            params = {
+                ...params,
+                taskId: req.body.taskId
+            }
+        } else {
+            params = {
+                ...params,
+                taskId: "RAW_BACKGROUND"
+            }
+        }
+
+        if ( req.body.type && req.body.type == "MEDIUM_BACKGROUND+"){
+            params = {
+                ...params,
+                type: req.body.type
+            }
+        }
+
+
+    try {
+        // return await background.addurl({
+        //     userId:id,
+        //     //image:req.body, 
+        //     url: req.body.url,
+        //     instrumentId:req.params.instrumentId,
+        //     projectId: req.query.projectId
+        //     /*, type:BackgroundType.BACKGROUND*/
+        // })
+        return await background.addurl(params)
         .then(result => {
             // console.log("OK", res) 
             return res.status(200).json(result)
@@ -321,6 +353,7 @@ module.exports = {
 
     addurl2: async (req,res) => {
         console.log("------------------------------------------");
+        console.log("route/background/addurl2");
         // console.log("create",req);
         // console.log("create files",req.files);
         console.log("------------------------------------------");
@@ -329,7 +362,7 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        console.log("req.jwt: ", req.jwt)
+        // console.log("req.jwt: ", req.jwt)
         const userID = req.jwt.id
 
         // plus besoin géré dans openapi
@@ -340,7 +373,7 @@ module.exports = {
         // if ( req.body.subSampleId == undefined) {
         //     return res.status(400).json({error:"subsampleId is required"})
         // }
-        console.log("req.body: ", req.body);
+        // console.log("req.body: ", req.body);
         console.log("req.body.url: ", req.body.url);
         console.log("req.params: ", req.params);
 

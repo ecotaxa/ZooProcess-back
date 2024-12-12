@@ -121,7 +121,7 @@ const handlers = {
     
 
     status: async (req,res) => {
-        console.debug("status() - Headers:", req.headers);
+        console.debug("route Task status() - Headers:", req.headers);
         
         // ... existing role check ...
     
@@ -204,7 +204,7 @@ const handlers = {
 
 
     run: async (req, res) => {
-        console.log("run", req.body);
+        console.log("route Task.run()", req.body);
     
         if (!isRoleAllowed(req)) {
             return res.status(401).json({
@@ -240,14 +240,26 @@ const handlers = {
         //     }, { status: 500 });
         // }
 
-        try {
-            const result = await tasks.run(req.body, authHeader);
-            return res.status(200).json(result);
-        } catch (error) {
-            console.error("Task::run() Error:", error);
-            return res.status(500).json({error: error.message || error});
-        }
+        // try {
+        //     const result = await tasks.run(req.body, authHeader);
+        //     return res.status(200).json(result);
+        // } catch (error) {
+        //     console.error("Task::run() Error:", error);
+        //     return res.status(500).json({error: error.message || error});
+        // }
    
+        tasks.run({taskId: req.params.taskId}, req.headers.authorization)
+            .then(result => {
+
+                console.log("route Task run() OK", result)
+
+                return res.status(200).json(result);
+            })
+            .catch(error => {
+                console.error('route Task run error:', error);
+                return res.status(500).json({error: error.toString()});
+            });
+
     },
 
     delete: async (req,res) => {

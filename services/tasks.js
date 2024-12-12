@@ -1,5 +1,6 @@
 // const background = require('../routes/background');
 // const { update } = require('../routes/task');
+const background = require('../routes/background');
 const { Background } = require('./background');
 const { Prisma } = require('./client');
 const { Process } = require('./process');
@@ -189,9 +190,11 @@ class Tasks {
 
         // taskId = data.taskId
 
-        console.log("Task::run(taskId=", taskId)
+        console.log("Service Task::run(taskId=", taskId)
         console.log("Task::run(authHeader=", authHeader)
+        console.trace()
 
+        try {
         const bearer = authHeader.split(" ")[1]
 
         const task = await this.prisma.task.findFirst({
@@ -225,18 +228,27 @@ class Tasks {
 
                 const process = new Process()
                 // return await this.process(task, bearer)
-                return await process.process(task, bearer,this)
+                return await process.process(task, bearer, this)
 
                 //TODO change the promise with code to do the processing job
                 // return Promise(function(resolve, reject) {
                 //     return resolve({taskId})
                 // })
 
+            case TaskType.background.toUpperCase():
+
+            const background = new Background()
+                return await background.medium(task, bearer, this)
+
+
             default:
 
                 throw new Error("TaskType not valid")
 
         }
+    } catch (error) {
+        throw error; // This will be caught by the route handler's try/catch
+    }
 
     }
 

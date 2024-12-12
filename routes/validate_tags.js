@@ -1,6 +1,6 @@
 
 module.exports = {
-    isRoleAllowed : (req) => {
+    isRoleAllowed : (req, forcedRole) => {
         const allowedRoles = req.openapi.schema.tags;
         if ( req.jwt && req.jwt.role){
             const role = req.jwt.role
