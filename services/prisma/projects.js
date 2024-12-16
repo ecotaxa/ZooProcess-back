@@ -346,19 +346,33 @@ module.exports.Projects = class {
 
 
     async deleteid(id){
-      const project = await this.prisma.project.delete({
+      console.debug("Project::deleteid: ", id)
+      //const project = 
+      await this.prisma.project.delete({
         where:{
           id:id
         }
       })
-      return project
+
+      // return project
+      console.log( "" + id + "deleted")
+      return {}
+    }
+
+    async deletename(name){
+      await this.prisma.project.delete({
+        where:{
+          name:id
+        }
+      })
     }
 
     async delete({params}){
       console.log("projects:delete:",params);
       const {id} = params;
 
-      return this.deleteid(+id)
+      // return this.deleteid(+id)
+      return this.deletename(string(id))
         .then(res => {
             console.log("rrrr",res);
             // this.prisma.$disconnect()

@@ -119,7 +119,7 @@ paths:
     parameters:
     - name: projectId
       in: path
-      description: The project id
+      description: The project name or the project id
       example: "42"
       explode: false
       required: true
@@ -166,6 +166,16 @@ paths:
         - BearerAuth: [ ]
 
     delete:
+      parameters:
+      - name: by
+        in: query
+        description: use field to choose which method to delete (id or name(default))
+        required: false
+        schema:
+          type: string
+          # default: false
+          nullable: true
+        allowEmptyValue: true
       description: Delete the project
       operationId: Projects.delete
     

@@ -95,17 +95,36 @@ module.exports = {
 
     delete: async (req,res) => {
         console.log("Projects::delete");
-        console.log("id: ", req.params.projectId);
 
-        return projects.deleteid(req.params.projectId)
-        .then(project => {
-            return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
-        })
-        .catch(async(e) =>{
-            console.error("Error:",e );
-            return res.status
-         })
-    },
+        const type = req.query.by || "name"        
+        switch ( type ) {
+            case "name":
+                console.log("name: ", req.params.projectId);
+                return projects.deletename(req.params.projectId)
+                .then(project => {
+                    return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
+                })
+                .catch(async(e) =>{
+                    console.error("Error:",e );
+                    return res.status(500).json({error:e});
+                })
+                break;
+            case "id":
+                console.log("id: ", req.params.projectId);
+                return projects.deleteid(req.params.projectId)
+                .then(project => {
+                    return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
+                })
+                .catch(async(e) =>{
+                    console.error("Error:",e );
+                    return res.status(500).json({error:e});
+                })
+                break;
+            default:
+                // return projects.deleteByName(req.params.projectId)
+                return res.status(500).json({error:"unknown field" + type});
+        }
+    }
 
  }
 
