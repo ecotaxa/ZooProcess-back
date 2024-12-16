@@ -182,6 +182,10 @@ paths:
       responses:
         '200':
           description: Returned is project deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '404':
@@ -1718,6 +1722,11 @@ components:
       bearerFormat: JWT 
 
   schemas:
+
+    Message:
+      properties:
+        message:
+          type: string
 
     Drive:
       required:

@@ -96,13 +96,15 @@ module.exports = {
     delete: async (req,res) => {
         console.log("Projects::delete");
 
+        const ref = req.params.projectId
+
         const type = req.query.by || "name"        
         switch ( type ) {
             case "name":
-                console.log("name: ", req.params.projectId);
-                return projects.deletename(req.params.projectId)
-                .then(project => {
-                    return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
+                console.log("name: ", ref);
+                return projects.deletename(ref)
+                .then(() => {
+                    return res.status(200).json({message:"Project " + ref + " deleted"})
                 })
                 .catch(async(e) =>{
                     console.error("Error:",e );
@@ -110,10 +112,10 @@ module.exports = {
                 })
                 break;
             case "id":
-                console.log("id: ", req.params.projectId);
-                return projects.deleteid(req.params.projectId)
-                .then(project => {
-                    return res.status(200).json({message:"Project " + string(req.params.projectId) + " deleted"})
+                console.log("id: ", ref);
+                return projects.deleteid(ref)
+                .then(() => {
+                    return res.status(200).json({message:"Project " + ref + " deleted"})
                 })
                 .catch(async(e) =>{
                     console.error("Error:",e );

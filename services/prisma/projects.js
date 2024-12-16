@@ -355,16 +355,19 @@ module.exports.Projects = class {
       })
 
       // return project
-      console.log( "" + id + "deleted")
+      console.log( id + " deleted")
       return {}
     }
 
     async deletename(name){
+      console.debug("Project::deletename: ", name)
       await this.prisma.project.delete({
         where:{
-          name:id
+          name
         }
       })
+      console.log( name + " deleted")
+      return {}
     }
 
     async delete({params}){

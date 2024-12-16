@@ -291,9 +291,9 @@ module.exports.Projects = class {
       return this.projects.deleteid(id)
     }
 
-    async deletename(id){
-      console.debug("Project deleteid: ", id)
-      return this.projects.deletename(id)
+    async deletename(name){
+      console.debug("Project deletename: ", name)
+      return this.projects.deletename(name)
     }
 
     async delete({params}){
