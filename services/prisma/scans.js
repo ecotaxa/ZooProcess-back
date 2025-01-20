@@ -1,5 +1,5 @@
 
-const subsamples = require('../../routes/subsamples');
+// const subsamples = require('../../routes/subsamples');
 const { Prisma } = require('../client')
 
 
@@ -171,6 +171,14 @@ module.exports.Scans = class {
 
         const scan = this.prisma.scan.create({data})
         return scan
+    }
+
+    async deleteAll(sampleID){
+
+        console.debug("Scans deleteAll TODO")
+
+
+
     }
 
 }
