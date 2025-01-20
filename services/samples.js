@@ -1,6 +1,9 @@
 // const { PrismaClient } = require("@prisma/client");
+const subsamples = require("../routes/subsamples");
 const { Prisma } = require("./client");
 // var flatMap = require('array.prototype.flatmap');
+
+const { SubSamples } = require("./subsamples");
 
 module.exports.Samples = class {
 
@@ -12,6 +15,62 @@ module.exports.Samples = class {
         // this.prisma = new PrismaClient()
         
         this.prisma = new Prisma().client;
+    }
+
+    async deleteAll(projectId) {
+
+        console.debug("Samples deleteAll")
+
+        ///TODE need to remove the subsample
+
+
+        const samples = await this.prisma.sample.findMany({
+            // const samples = await this.prisma.sampleview.findMany({
+                where:{
+                    projectId:projectId
+                },
+                include:{
+                    metadata:true,
+                    metadataModel:true,
+                    subsample:true
+                }
+            })
+
+            // console.debug("samples:", samples)
+
+            await this.prisma.metadata.deleteMany({
+                where:{
+                    sampleId:{
+                        in:samples.map(sample => sample.id)
+                    }
+                }
+            })
+
+
+            const subSamples = new SubSamples()
+
+            const sampleIDs = samples.map(sample => { return sample.id })
+            
+            await subSamples.deleteAll(sampleIDs)
+
+            await  this.prisma.subSample.deleteMany({
+                where:{
+                    sampleId:{
+                        in:samples.map(sample => sample.id)
+                    }
+                }
+            })
+
+        console.debug("Samples deleteAll")
+        
+        await this.prisma.sample.deleteMany({
+            where:{
+                projectId:projectId
+            } 
+        })
+
+        console.debug("Samples deleteAll")
+
     }
 
     async findAll(projectId) {

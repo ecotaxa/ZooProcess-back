@@ -6,6 +6,8 @@ const { Instrument } = require('../instrument');
 const { Qc } = require('../qc');
 // const { Prisma } = require("@prisma/client");
 
+const { Sample, Samples } = require ('../samples')
+
 module.exports.Projects = class {
 
     constructor() {
@@ -89,6 +91,7 @@ module.exports.Projects = class {
     async getInstrumentId(project) {
       let instrumentId = undefined;
       if (project.instrumentId == null && project.instrument ){
+        console.debug("getInstrumentId: search instrument using Id: project.instrument.name: ", project.instrument.name);
         const instrument = await this.prisma.instrument.findFirstOrThrow(
         {
           where:{
@@ -107,7 +110,7 @@ module.exports.Projects = class {
 
       let driveid = undefined;
       if (project.driveid == null && project.drive){
-        const drive = await this.prisma.drive.findFirstOrThrow(
+        const drive = await this.prisma.drive.findFirstOrThrow (
         {
           where:{
             name:project.drive.name
@@ -135,13 +138,14 @@ module.exports.Projects = class {
 
       let data = {
         name:project.name,
-        driveId:driveid
+        driveId:driveid,
+        instrumentId:project.instrumentId,
       }
       if (project.description){data['description'] = project.description;}
       if (project.ecotaxaId){data['ecotaxaId'] = project.ecotaxa;}
       if (project.acronym){data['acronym'] = project.acronym;}
 
-      if ( project.QCState == undefined){
+      if ( project.QCState == undefined ){
         const qc = new Qc()
         const qcState = await qc.create({})
         console.log("qCStateId: ", qcState);
@@ -361,6 +365,20 @@ module.exports.Projects = class {
 
     async deletename(name){
       console.debug("Project::deletename: ", name)
+
+
+      const project = await this.prisma.project.findFirst(
+        {
+          where:{
+            name
+          }
+        }
+      )
+
+      const samples = new Samples()
+
+      await samples.deleteAll(project.id)
+
       await this.prisma.project.delete({
         where:{
           name
