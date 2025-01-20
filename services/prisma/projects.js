@@ -375,7 +375,15 @@ module.exports.Projects = class {
         }
       )
 
+      if ( !project ) {
+        console.log("project not found: ", name)
+        return {}
+      }
+
+      console.log("project: ", project)
       const samples = new Samples()
+
+      if (samples.length === 0) return {}
 
       await samples.deleteAll(project.id)
 
