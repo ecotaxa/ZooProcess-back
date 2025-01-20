@@ -225,6 +225,7 @@ module.exports.Projects = class {
     }
 
     async getInstrumentId(project){
+      console.debug("getInstrumentId")
       return this.projects.getInstrumentId(project)
     }
 
@@ -234,15 +235,19 @@ module.exports.Projects = class {
     async add(project) {
 
       project.driveid = await this.getDriveID(project)
-      project.getInstrumentId = await this.getInstrumentId(project)
+      project.instrumentId = await this.getInstrumentId(project)
+      console.debug("got project.driveid", project.driveid)
+      console.debug("got project.instrumentId", project.instrumentId)
 
       if ( project.drive && project.drive.name) {
         const folderName = path.join(process.env.DRIVES_PATH, project.drive.name , project.name)
         if (!fs.existsSync(folderName)) 
-            fs.mkdirSync(folderName,'0777', true)
+          console.debug("Creating folderName", folderName)
+        fs.mkdirSync(folderName,'0777', true)
       }
 
 
+      console.debug("project to add:", project)
       return this.projects.add(project)
     }
   
