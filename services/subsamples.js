@@ -1,5 +1,7 @@
 // const { PrismaClient } = require("@prisma/client");
 const { Prisma } = require("./client");
+const { Scans } = require("./prisma/scans");
+// const { Scans } = require("./scans");
 
 module.exports.SubSamples = class {
 
@@ -121,7 +123,7 @@ module.exports.SubSamples = class {
 
 
         let userId = undefined;
-        if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator){
+        if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator ){
             const user = await this.prisma.user.findFirstOrThrow(
             {
             where:{
@@ -174,6 +176,39 @@ module.exports.SubSamples = class {
                 //projectId:projectId
             }
         });
+    }
+
+
+    async deleteAll({sampleId}) {
+
+        console.debug("SubSamples deleteAll")
+
+        // delete associated scans
+        const scan = new Scans()
+        await scan.deleteAll({sampleId})
+
+        const samples = await this.prisma.subSample.findMany({
+            where:{
+                sampleId
+            }
+        })
+
+        // delete the metadata
+        await this.prisma.metadata.deleteMany({
+            where:{
+                subSampleId:{
+                    in:samples.map(sample => sample.id)
+                }
+            }
+        })
+
+        // delete itself
+        await  this.prisma.subSample.deleteMany({
+            where:{
+                sampleId
+            }
+        })
+
     }
 
     // async process(){

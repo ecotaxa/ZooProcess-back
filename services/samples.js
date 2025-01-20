@@ -53,13 +53,13 @@ module.exports.Samples = class {
             
             await subSamples.deleteAll(sampleIDs)
 
-            await  this.prisma.subSample.deleteMany({
-                where:{
-                    sampleId:{
-                        in:samples.map(sample => sample.id)
-                    }
-                }
-            })
+            // await  this.prisma.subSample.deleteMany({
+            //     where:{
+            //         sampleId:{
+            //             in:samples.map(sample => sample.id)
+            //         }
+            //     }
+            // })
 
         console.debug("Samples deleteAll")
         
@@ -426,9 +426,10 @@ stringify = (value,type) => {
 
 
 
-    async deleteSample({projectId, sampleId}) {
+    async deleteSample(sampleId) {
 
-        console.log("deleteSample: ", {projectId, sampleId});
+        // console.log("deleteSample: ", {projectId, sampleId});
+        console.debug("deleteSample: ", sampleId);
 
         // need to delete scan before
 
