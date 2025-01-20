@@ -1,5 +1,6 @@
 
 // const subsamples = require('../../routes/subsamples');
+// const { scan } = require('../../routes/background');
 const { Prisma } = require('../client')
 
 
@@ -173,12 +174,55 @@ module.exports.Scans = class {
         return scan
     }
 
-    async deleteAll(sampleID){
+    // async deleteAll(subSampleID){
 
-        console.debug("Scans deleteAll TODO")
+    //     console.debug("Scans deleteAll TODO")
 
+    //     const scans = await this.prisma.scan.findMany({
+    //         where: {
+    //             subSampleId: subSampleID
+    //         }
 
+    //     })
 
-    }
+    //     scans.forEach(scan => {
+
+    //         console.debug("scan to remove : ", scan.id)
+    //     //     // if ( scan.type != Prisma.ScanType.RAW_BACKGROUND && scan.type != Prisma.ScanType.RAW_BACKGROUND ) {
+    //     //         this.prisma.scan.delete({
+    //     //             where: {
+    //     //                 id: scan.id,
+    //     //                 type: this.prisma.scanType.RAW_BACKGROUND
+    //     //             }
+    //     //         })
+
+    //     //     // } else {
+    //     //     //     console.debug
+    //     //     //     ("Not deleting scan: ", scan.id)
+    //     //     // }
+
+    //     //     this.prisma.scan.delete({
+    //     //         where: {
+    //     //             id: scan.id
+    //     //         }
+    //     //     })
+            
+    //     // });
+    // }
+// }
+
+async deleteAll(subSampleID) {
+    console.debug("Scans deleteAll")
+
+    await this.prisma.scan.deleteMany({
+        where: {
+            subSampleId: subSampleID,
+            type: {
+                notIn: ['RAW_BACKGROUND', 'BACKGROUND']
+            }
+        }
+    });
+}
+
 
 }
