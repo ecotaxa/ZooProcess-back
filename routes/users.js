@@ -52,7 +52,7 @@ module.exports = {
 
             if (e.name == Prisma.PrismaClientKnownRequestError.name ){ //"PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
-                    const txt = "Project with name '"+ req.body.name +"' already exist";
+                    const txt = "User with name '"+ req.body.name +"' already exist";
                     const message = { message:txt };
                     console.log("Error 409: ",{error:message})
                     return res.status(409).send(txt) //.json({error:message});
