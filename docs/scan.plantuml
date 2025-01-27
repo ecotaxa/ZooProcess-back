@@ -1,0 +1,16 @@
+@startuml
+(*)  --> "Preview" as preview
+    if "preview OK" then
+      --> [30s]  "Scan" as scan
+      if "preview OK" then
+        --> "Process"
+        --> (*)
+      else 
+        -> [false] "move organism " 
+        --> scan
+      endif
+    else 
+       -> [false] "move organism" 
+       --> preview
+    endif
+@enduml
