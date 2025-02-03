@@ -382,6 +382,41 @@ module.exports.Background = class {
       return this.scans.add(data)
   }
       
+  async importurl({ /*instrumentId ,*/ url , userId , subsampleId /*, type*/}) {
+    console.log("background:importurl")
+    console.log("url: ", url)
+    // console.log("instrumentId: ", instrumentId)
+    console.log("userId: ", userId)
+    console.log("subsampleId: ", subsampleId)
+
+    const subSamples = new SubSamples()
+    const subSample = await subSamples.find({subSampleId:subsampleId})
+    console.log("subSample", subSample)
+
+    if ( ! subSample ){
+      return Promise.reject("Can't find the subsample")
+    }
+    const project = subSample.sample.project
+    console.log("project: ", project)
+    console.log("project.id: ", project.id)
+
+    // add in DB
+
+    console.log("project.id: ", project.id)
+
+    const data = {
+        instrumentId: project.instrumentId,
+        userId,
+        subsampleId,
+        src: url,
+        url: url,
+        background: false,
+        projectId: project.id
+    }
+
+    console.log("data: ", data)
+    return this.scans.add(data)
+  }
 
   async addurl2({ /*instrumentId ,*/ url , userId , subsampleId/*, type*/}) {
 
@@ -483,6 +518,14 @@ module.exports.Background = class {
 
 
     function renameSubSampleSync(oldPath, newPath) {
+      console.debug("renameSubSampleSync")
+      console.debug("oldPath: ", oldPath)
+      console.debug("newPath: ", newPath)
+      if ( oldPath == newPath) {
+        console.log('Old and new paths are the same. No need to rename.');
+        return true;
+      }
+
       try {
         fs.renameSync(oldPath, newPath);
         console.log('SubSample renamed successfully');
@@ -490,7 +533,7 @@ module.exports.Background = class {
       } catch (error) {
         console.error('Error renaming subSample:', error);
         // throw error;
-        throw new Error('Cannot save the scan in the project folder: ' +  error);
+        throw new Error('addurl2 - Cannot save the scan in the project folder: ' +  error);
       }
     }
     
@@ -564,7 +607,7 @@ async addurl3({ url , userId , subsampleId, type, move}) {
 
     // move file from url to urlnew
     // make path
-    console.debug("moving file from url to urlnew")
+    console.debug("moving file from url to urlnew 2")
     if (!fs.existsSync(projectPath)){
       fs.mkdirSync(projectPath, { recursive: true });
     }
@@ -576,6 +619,11 @@ async addurl3({ url , userId , subsampleId, type, move}) {
 
 
     function renameSubSampleSync(oldPath, newPath) {
+      if ( oldPath == newPath) {
+        console.log('Old and new paths are the same. No need to rename.');
+        return true;
+      }
+      
       try {
         fs.renameSync(oldPath, newPath);
         console.log('SubSample renamed successfully');
@@ -583,7 +631,7 @@ async addurl3({ url , userId , subsampleId, type, move}) {
       } catch (error) {
         console.error('Error renaming subSample:', error);
         // throw error;
-        throw new Error('Cannot save the scan in the project folder: ' +  error);
+        throw new Error('addurl3 - Cannot save the scan in the project folder: ' +  error);
       }
     }
     

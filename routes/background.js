@@ -350,6 +350,51 @@ module.exports = {
     }
     },
 
+    importurl: async (req,res) => {
+        console.log("------------------------------------------")
+        console.log("route/background/importurl");
+        console.log("------------------------------------------");
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+        const userID = req.jwt.id
+        if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
+            return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
+        }
+        if ( req.body.subSampleId && req.body.subSampleId != req.params.subSampleId ){
+            return res.status(500).json({error:"the subSampleId defined in body is different from the subsampleId defined in the url"})
+        }
+
+        return background.importurl({
+            userId:id,
+            //image:req.body, 
+            url: req.body.url,
+            subsampleId:req.params.subSampleId,
+            // subsampleId:req.body.subSampleId,
+            // instrumentId:req.params.instrumentId // got from the project
+            /*, type:BackgroundType.BACKGROUND*/
+        })
+        .then(result => {
+            // console.log("OK", res) 
+            return res.status(200).json(result)
+        })
+        .catch(async(e) => {
+            console.error("Error:",e )
+
+            if (e.name == "PrismaClientKnownRequestError"){
+                if (e.code == "P2002"){
+                    const txt = "Drive with name '"+ req.body.name +"' already exist";
+                    const message = { error:txt };
+                    return res.status(500).json({error:message});
+                }
+                else {
+                    return res.status(500).json({error:e})
+                }
+            }
+            return res.status(500).json({error:e})
+        })
+
+    },
 
     addurl2: async (req,res) => {
         console.log("------------------------------------------");
