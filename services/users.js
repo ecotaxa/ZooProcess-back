@@ -5,6 +5,7 @@ const { Prisma } = require('./client');
 module.exports.Users = class {
 
     constructor() {
+      console.debug("Users.constructor()");
       // this.prisma = new PrismaClient()
       this.prisma = new Prisma().client;
     }
@@ -138,5 +139,28 @@ module.exports.Users = class {
       return samples
     }
 
+    async search(name){
+      console.debug("User.search(name: ", name, ")")
+
+      // userFound = false
+
+      try {
+        const user = await this.prisma.user.findFirstOrThrow(
+        {
+          where:{
+              name
+          }
+        });
+          console.debug("user: ", user);
+          return user.id;
+      } catch (error) {
+        console.error(error);
+        if ( error.code == 'P2025' ){
+          throw ("User not found")
+        } else {
+          throw error
+        }
+      }
+    }
 
 }

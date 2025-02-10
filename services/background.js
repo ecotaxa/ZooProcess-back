@@ -7,10 +7,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Projects } = require("./projects");
 const { SubSamples } = require("./prisma/subSample");
+const { type } = require("node:os");
 // const { rejects } = require("assert");
 
 // const { Projects } = require("./prisma/projects");
 // const background = require("../routes/background");
+// const { Prisma } = require('./client')
+
+
+const { isScanType } = require('./prisma/type')
 
 
 module.exports.Background = class {
@@ -286,13 +291,27 @@ module.exports.Background = class {
     }
         
     // used by POST /background/{instrumentId}/url?projectId={projectId}
-    async addurl({ instrumentId , url , userId , projectId /*, type*/}) {
+    async addurl({ instrumentId , url , userId , projectId , type}) {
 
       console.log("background::addurl")
       console.log("url: ", url)
       console.log("instrumentId: ", instrumentId)
       console.log("userId: ", userId)
       console.log("projectId: ", projectId)
+      console.log("type: ", type)
+
+
+      if (! isScanType(type)){
+        return Promise.reject(`Invalid type ${type}`)
+      }
+      console.log("type OK: ", type)
+
+      if ( projectId == undefined){
+        console.error("projectId is undefined")
+        return Promise.reject("projectId is required")
+      }
+      console.debug("projectId: ", projectId)
+
 
       // save image in folder : Background/{instrumentId}
       // const filename = "2024_02_07_08_52_10_0001.jpg"
@@ -307,8 +326,10 @@ module.exports.Background = class {
 
       // l'url est locale, il faut le changer en url du project
 
+
+
       const projects = new Projects()
-      const project = await projects.get(projectId)
+      const project = await projects.get(id)
       console.log("project: ", project)
 
       let drive = project.drive.url
@@ -318,10 +339,15 @@ module.exports.Background = class {
       }
       console.log("drive: ", drive)
 
+
+
       const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+
+      console.debug("root: ", root)
 
       const date /*: string*/ = new Date().toISOString().split("T")[0]
       const filename = date + "_" + path.basename(url)
+      console.debug("date: ", date) 
       console.log("filename: ", filename)
       const projectPath = path.join( root , drive, project.name , "Zooscan_back")
       console.log("projectPath:", projectPath)
@@ -377,6 +403,7 @@ module.exports.Background = class {
           userId : userId,
           url: newurl,
           background: true,
+          type: type
       }
 
       return this.scans.add(data)
@@ -479,7 +506,7 @@ module.exports.Background = class {
 
     // move file from url to urlnew
     // make path
-    console.debug("moving file from url to urlnew")
+    console.debug("addurl2 - moving file from url to urlnew")
     if (!fs.existsSync(projectPath)){
       fs.mkdirSync(projectPath, { recursive: true });
     }
@@ -594,7 +621,7 @@ async addurl3({ url , userId , subsampleId, type, move}) {
   console.log("drive: ", drive)
 
 
-  const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+  const root = process.env.ROOT_PATH || "/app/public"
 
   let newurl = url
   if ( move){
@@ -607,7 +634,7 @@ async addurl3({ url , userId , subsampleId, type, move}) {
 
     // move file from url to urlnew
     // make path
-    console.debug("moving file from url to urlnew 2")
+    console.debug("addurl3 -- moving file from url to urlnew 2")
     if (!fs.existsSync(projectPath)){
       fs.mkdirSync(projectPath, { recursive: true });
     }

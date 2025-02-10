@@ -306,10 +306,15 @@ module.exports = {
             }
         }
 
-        if ( req.body.type && req.body.type == "MEDIUM_BACKGROUND+"){
+        if ( req.body.type ){//&& req.body.type == "MEDIUM_BACKGROUND"){
             params = {
                 ...params,
                 type: req.body.type
+            } 
+        } else {
+            params = {
+                ...params,
+                type: "MEDIUM_BACKGROUND"
             }
         }
 

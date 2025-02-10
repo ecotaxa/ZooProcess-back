@@ -145,7 +145,8 @@ module.exports.Scans = class {
     }
 
 
-    async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
+    // async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
+    async add({url, subsampleId, userId, instrumentId, projectId, type}) {
 
         console.log("Prisma Scans add")
         console.log("Scan::add")
@@ -153,13 +154,13 @@ module.exports.Scans = class {
         console.log("userId: ", userId)
         console.log("instrumentId: ", instrumentId)
         console.log("subsampleId: ", subsampleId)
-        console.log("background: ", background)
+        // console.log("background: ", background)
         console.log("type: ", type) 
 
         let data = {
             url,
             userId,
-            background,
+            // background,
             instrumentId,
             projectId,
             type

@@ -3,6 +3,8 @@ const { Prisma } = require("./client");
 const { Scans } = require("./prisma/scans");
 // const { Scans } = require("./scans");
 
+const {Users} = require("./users");
+
 module.exports.SubSamples = class {
 
     constructor(){
@@ -115,6 +117,9 @@ module.exports.SubSamples = class {
         return metadataArray
     }
 
+
+
+
     async add({projectId, sampleId, subsample}) {
 
         console.log("add subsample: ", {projectId, sampleId, subsample});
@@ -123,19 +128,83 @@ module.exports.SubSamples = class {
 
 
         let userId = undefined;
-        if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator ){
-            const user = await this.prisma.user.findFirstOrThrow(
-            {
-            where:{
-                name: subsample.data.scanning_operator
-            }
-            });
-            userId = user.id;
-        } else {
+        if ( subsample.user_id != null){
             userId = subsample.user_id;
+        } else {
+            let userFound = false
+            console.debug("No user_id, searching user by scanning_operator")
+            if ( !subsample.data || !subsample.data.scanning_operator ){
+                    // need to go out the function
+                    throw ("Error: the data have no operator")
+            }
+            const userInst = new Users();
+            try {
+                if ( subsample.data && subsample.data.scanning_operator ){
+                    console.debug("Call Users(", subsample.data.scanning_operator, ")")
+                    console.debug("Users instanciated")
+                    userId = await userInst.search(subsample.data.scanning_operator)
+                } 
+                // else {
+                //     // need to go out the function
+                //     throw ("Error: the data have no operator")
+                // }
+            }
+            catch ( error ) {
+            //     console.error("Error during searching user: ", e)
+            //     // IDEA use the user ID stored in the bearer token
+            //     throw e
+            // }    
+
+                console.error(error);
+                userFound = false
+            }
+
+            const split = subsample.data.scanning_operator.split('_')
+            if ( split.length > 1 ){
+                try {
+                    userId = await userInst.search(split[0])
+                    // return userId
+                    userFound = true
+                }
+                catch ( error ) {
+                    console.error(error);
+                    userFound = false
+                }
+
+                if ( userFound == false ){
+                    try {
+                        userId = await userInst.search(split[1])
+                        // return userId
+                        userFound = true
+                    }
+                    catch (error) {
+                        console.error(error);
+                        if ( error.code == 'P2025' ){
+                                // throw ("User not found")
+                            throw ("Error: Cannot determine the operator")
+                        } else {
+                            throw error
+                        }
+                    }
+                }
+            } // split.length > 1
+            else {
+            const message = "User not found: " + subsample.data.scanning_operator
+                throw (message)
+            }
+
+        // if ( subsample.user_id == null && subsample.data && subsample.data.scanning_operator ){
+        //     const user = await this.prisma.user.findFirstOrThrow(
+        //     {
+        //     where:{
+        //         name: subsample.data.scanning_operator
+        //     }
+        //     });
+        //     userId = user.id;
+        // } else {
+        //     userId = subsample.user_id;
+        // }
         }
-
-
 
         const data = {
             // name:sample.name,

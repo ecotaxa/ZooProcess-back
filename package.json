@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon --watch . -e js,mjs,json,prisma app.js",
     "dev:watch": "nodemon app.js",
-    "test": "jest"
+    "test": "jest",
+    "start": "node app.js",
+    "db:deploy": "npx prisma migrate deploy && npx prisma generate"
   },
   "keywords": [],
   "author": "",
