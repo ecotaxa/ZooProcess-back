@@ -13,3 +13,15 @@ npm run deps && npm i
 ```bash
 npm start
 ```
+
+
+# docker
+
+## build
+
+docker build -t zooprocess-back .
+
+## run
+
+docker run -p 8081:8081  --name zooprocess-back zooprocess-back
+
