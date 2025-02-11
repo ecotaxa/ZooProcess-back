@@ -84,9 +84,13 @@ module.exports.Samples = class {
                 projectId:projectId
             },
             include:{
-                metadata:true,
+                // metadata:true,
                 metadataModel:true,
-                subsample:true
+                subsample:{
+                    include:{
+                        scan:true
+                    }
+                }
             }
         })
 
@@ -105,9 +109,14 @@ module.exports.Samples = class {
             // }
 
             if ( nbFractions > 0 ) {
-                nbScans = sample.subsample
-                .flatMap((subsample) => { if (subsample.scans !== undefined ) return 1; return 0;})
-                .reduce((a, b)=> a + b, 0);
+                // nbScans = sample.subsample
+                // .flatMap((subsample) => { if (subsample.scans !== undefined ) return 1; return 0;})
+                // .reduce((a, b)=> a + b, 0);
+
+                const flattenedData = sample.subsample.flatMap(subsample => subsample.scan);
+                nbScans = flattenedData.length;
+
+
             }
          
             const ns = {

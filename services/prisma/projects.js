@@ -190,6 +190,11 @@ module.exports.Projects = class {
             include: {
               // count: {
                 subsample: true,
+                subsample: {
+                  include: {
+                    scan:true
+                  }
+                },
                 // _count: {
                 //   subsample: true
                 // }, 
