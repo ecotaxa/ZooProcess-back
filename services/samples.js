@@ -102,27 +102,39 @@ module.exports.Samples = class {
 
             const nbFractions = sample.subsample.length;
             let nbScans = 0
-            // if ( nbFractions > 0 ) {
-            //     nbScans = sample.subsample
-            //     .flatMap((subsample) => subsample.scans.length )
-            //     .reduce((a, b)=> a + b, 0);
-            // }
 
             if ( nbFractions > 0 ) {
-                // nbScans = sample.subsample
-                // .flatMap((subsample) => { if (subsample.scans !== undefined ) return 1; return 0;})
-                // .reduce((a, b)=> a + b, 0);
-
+                //  determine the number of scans
                 const flattenedData = sample.subsample.flatMap(subsample => subsample.scan);
                 nbScans = flattenedData.length;
-
-
             }
-         
+
+            const oldestCreatedAt = sample.subsample.reduce((acc, item) => {
+                if (item.createdAt && acc < item.createdAt) {
+                  return item.createdAt;
+                }
+                return acc;
+              }, new Date("1970-01-01T00:00:00Z"));
+
+              const mostRecentCreatedAt = sample.subsample.reduce((acc, item) => {
+                if (item.scan && item.scan.length > 0) {
+                  const latestScan = item.scan.reduce((latest, scanItem) => {
+                    if (scanItem.createdAt && latest < scanItem.createdAt) {
+                      return scanItem.createdAt;
+                    }
+                    return latest;
+                  }, new Date("1970-01-01T00:00:00Z"));
+                  return latestScan > acc ? latestScan : acc;
+                }
+                return acc;
+              }, new Date("1970-01-01T00:00:00Z"));
+
             const ns = {
                 ...sample,
                 nbFractions,
-                nbScans
+                nbScans,
+                createdAt : oldestCreatedAt,
+                updatedAt: mostRecentCreatedAt
             }
             return ns;
         })
