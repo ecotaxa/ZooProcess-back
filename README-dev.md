@@ -138,3 +138,11 @@ db.ZooscanCalibration.updateMany(
   { $set: { frame: "LARGE", instrumentId: ObjectId("65c4e0994653afb2f69b11ce") } }
 )
 ```
+
+
+# Prisma tips
+
+## Visual DB Editor
+```bash
+npx prisma studio
+```
