@@ -129,7 +129,8 @@ model ZooscanCalibration {
   instrumentId String?     @db.ObjectId
 
   frame String
-
+  archived Boolean @default(false)
+  
   xOffset Int
   yOffset Int
   xSize   Int

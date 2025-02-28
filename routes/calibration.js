@@ -71,14 +71,34 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        return calibration.update({data:req.body, calibrationId:req.params.calibrationId})
-        .then(project => {
-            return res.status(200).json(project)
+        
+        calibration.get(req.params.calibrationId)
+        .then( async (calibrationData) => {
+            if (calibrationData == null){
+                return  res.status(404).send("Calibration not found")
+            }
+            let calibrationUpdated = {...calibrationData, ...req.body };
+            return calibrationUpdated;        
+        })
+        .then( async (calibrationData) => {
+            return calibration.update({data:calibrationData, calibrationId:req.params.calibrationId})
+        })
+        .then(calibrationData => {
+            return res.status(200).json(calibrationData)
         })
         .catch(async(e) =>{
             console.error("Error:",e );
             return res.status(500).json({error:e});
         }) 
+
+        // return calibration.update({data:req.body, calibrationId:req.params.calibrationId})
+        // .then(calib => {
+        //     return res.status(200).json(calib)
+        // })
+        // .catch(async(e) =>{
+        //     console.error("Error:",e );
+        //     return res.status(500).json({error:e});
+        // }) 
 
     }
 

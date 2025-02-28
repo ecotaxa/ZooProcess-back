@@ -884,6 +884,23 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    patch:
+      description: Update the instrument
+      summary: Update the instrument
+      operationId: instrument.update
+      responses:
+        '200':
+          description: return the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrumentModel'
+
+      tags:
+        - Manager
+      security:
+        - BearerAuth: [ ]
+
   /instruments/{instrumentId}/calibration/{calibrationId}:
     parameters:
       - description: the instrument ID
