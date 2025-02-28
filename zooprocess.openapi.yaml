@@ -821,6 +821,16 @@ paths:
 
   /instruments:
     get:
+      parameters:
+        - description: if true get the instrument list with settings
+          name: full 
+          in: query
+          required: false
+          # default: false
+          # nullable: true
+          allowEmptyValue: true
+          schema:
+            type: boolean
       description: return the list of instrument
       summary: the instruments
       operationId: instrument.list
