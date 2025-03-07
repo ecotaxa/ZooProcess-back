@@ -24,6 +24,7 @@ enum UserRole {
   ADMIN
   MANAGER
   USER
+  INACTIVE_USER
 }
 
 model User {
