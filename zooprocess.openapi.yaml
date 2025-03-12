@@ -259,6 +259,8 @@ paths:
                   $ref: '#/components/schemas/ImageModel'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/ProjectNotFoundError'
       tags:
         - User
         - Manager
@@ -342,6 +344,8 @@ paths:
           description: Duplicate entry
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: SubSample not found     
       tags:
         - User
       security:
@@ -2087,3 +2091,9 @@ components:
 
     # MissingParameter:
     #   description: Missing parameter in the query
+
+    ProjectNotFoundError:
+      description: Project not found
+
+    SubSampleNotFoundError:
+      description: SubSample not found
