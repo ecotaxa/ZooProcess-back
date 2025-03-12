@@ -146,3 +146,53 @@ db.ZooscanCalibration.updateMany(
 ```bash
 npx prisma studio
 ```
+
+
+
+
+# Mongo change admin password
+```bash
+mongosh -u root -p example
+```
+
+```mongosh
+use admin
+db.changeUserPassword("root", "your_new_password")
+```
+
+then update your .env file with the new password
+DATABASE_URL="mongodb://root:your_new_password@localhost/zooProcess?authSource=admin"
+
+
+
+
+# Create a DB
+
+To create a new MongoDB database for this project:
+
+Start MongoDB shell:
+```bash
+mongosh
+```
+
+Create and switch to your new database:
+```mongosh
+use zooprocess_db
+db.createCollection("users")
+```
+
+Update your DATABASE_URL in .env file:
+DATABASE_URL="mongodb://localhost:27017/zooprocess_db"
+
+
+Run Prisma migration to create the collections:
+```bash
+npx prisma db push
+```
+
+The database is now ready to use with all the models defined in your schema.prisma file.
+
+
+# run in docker
+docker-compose up -d --build
+
