@@ -60,15 +60,31 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        return projects.get(req.params.projectId)
-        .then(project => {
-            return res.status(200).json(project)
-        })
-        .catch(async(e) =>{
-            console.error("Error:",e );
-            return res.status(500).json({error:e});
-        }) 
-
+        // return projects.get(req.params.projectId)
+        // .then(project => {
+        //     return res.status(200).json(project)
+        // })
+        // .catch(async(e) =>{
+        //     console.error("Error:",e );
+        //     return projects.getUsingName(req.params.projectId)
+        // })
+        // .catch(async(e) =>{
+        //     console.error("Error:",e );
+        //     return res.status(500).json({error:e});
+        // }) 
+        try {
+            const project = await projects.get(req.params.projectId);
+            return res.status(200).json(project);
+        } catch(e) {
+            console.error("Error:", e);
+            try {
+                const project = await projects.getUsingName(req.params.projectId);
+                return res.status(200).json(project);
+            } catch(e) {
+                console.error("Error:", e);
+                return res.status(500).json({error: e});
+            }
+        }
     },
 
     update: async (req, res) => {

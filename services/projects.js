@@ -271,6 +271,10 @@ module.exports.Projects = class {
       return this.projects.get(projectId)
     }
 
+    async getUsingName(projectName){
+      console.debug("projectId(): ", projectName)
+      return this.projects.getUsingName(projectName)
+    }
 
     async updateid(id, data) {
       return this.projects.updateid(id, data)
