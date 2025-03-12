@@ -129,9 +129,9 @@ model ZooscanCalibration {
   instrument   Instrument? @relation(fields: [instrumentId], references: [id])
   instrumentId String?     @db.ObjectId
 
-  frame String
+  frame    String
   archived Boolean @default(false)
-  
+
   xOffset Int
   yOffset Int
   xSize   Int
@@ -218,7 +218,9 @@ model SubSample {
   name String
 
   // scan      Scan[] //    @relation(fields: [scanId], references: [id])
-  scan Scan[] // @relation(fields: [scanId], references: [id], name: "scan")
+  // scan Scan[] // @relation(fields: [scanId], references: [id], name: "scan")
+  scanSubsamples SubsampleScan[]
+
   // scanId          String?        @db.ObjectId
   // background1 Scan? @relation(fields: [background1Id], references: [id], name: "playbackground1er1")
   // background1Id          String?        @db.ObjectId
@@ -348,10 +350,10 @@ model Scan {
   // scanningOptions ScanningOptionnnj
 
   // Link
-  user         User        @relation(fields: [userId], references: [id])
-  userId       String      @db.ObjectId
-  instrument   Instrument? @relation(fields: [instrumentId], references: [id])
-  instrumentId String?     @db.ObjectId
+  user           User            @relation(fields: [userId], references: [id])
+  userId         String          @db.ObjectId
+  instrument     Instrument?     @relation(fields: [instrumentId], references: [id])
+  instrumentId   String?         @db.ObjectId
   // Sample      Samplwe?    @relation(fields: [sampleId], references: [id])
   // sampleId    String?    @db.ObjectId
   // SubSample   SubSample? @relation(fields: [subSampleId], references: [id])
@@ -360,8 +362,10 @@ model Scan {
   // subSample    SubSample[]
   //  @relation(fields: [subSampleId], references: [id])
   // subSampleId  String?     @db.ObjectId
-  SubSample    SubSample?  @relation(fields: [subSampleId], references: [id])
-  subSampleId  String?     @db.ObjectId
+  // SubSample    SubSample?  @relation(fields: [subSampleId], references: [id])
+  // subSampleId  String?     @db.ObjectId
+  // SubSample    SubSample[]  //@relation(fields: [subSampleId], references: [id])
+  scanSubsamples SubsampleScan[]
 
   background Boolean? // to remove use type ScanType
   archived   Boolean?  @default(false)
@@ -369,6 +373,17 @@ model Scan {
   deletedAt  DateTime? //@db.Timestamp()
   Project    Project?  @relation(fields: [projectId], references: [id])
   projectId  String?   @db.ObjectId
+}
+
+// ARG with mongo I need to do the link table to do a m to n relation :( , prisma can manage itself
+model SubsampleScan {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  scan        Scan      @relation(fields: [scanId], references: [id])
+  scanId      String    @db.ObjectId
+  subsample   SubSample @relation(fields: [subsampleId], references: [id])
+  subsampleId String    @db.ObjectId
+
+  @@unique([scanId, subsampleId])
 }
 
 enum VignetteType {
