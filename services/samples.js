@@ -88,23 +88,38 @@ module.exports.Samples = class {
                 metadataModel:true,
                 subsample:{
                     include:{
+                        metadata:true,
                         scan:true
                     }
                 }
             }
         })
 
-        // console.log("Sample:", samples)
+        console.log("Sample:", samples)
+
+        // return samples
 
         const nsamples = samples.map((sample) => {
 
             // console.log("MAP sample: ", sample);
 
-            const nbFractions = sample.subsample.length;
+            // make an array of all the  the suffix formed by the subsample names where i remove the sample name
+            const fracids = sample.subsample.map(subsample => {
+                const name = subsample.name;
+                const suffix = name.replace(sample.name, "");
+                const fracid = suffix.split("_")[1];
+                return fracid;
+            });
+            // const subsampleNames = sample.subsample.map(subsample => subsample.name);
+
+
+            // const nbFractions = "d1,d2 todo" // sample.subsample.length; // doit etre du style d1, d2
+            // const nbFractions = fracids
             let nbScans = 0
 
-            if ( nbFractions > 0 ) {
-                //  determine the number of scans
+            // if ( nbFraction > 0 ) {
+            if ( fracids.length > 0 ) {
+                    //  determine the number of scans
                 const flattenedData = sample.subsample.flatMap(subsample => subsample.scan);
                 nbScans = flattenedData.length;
             }
@@ -131,7 +146,7 @@ module.exports.Samples = class {
 
             const ns = {
                 ...sample,
-                nbFractions,
+                nbFractions: fracids.join(", "),
                 nbScans,
                 createdAt : oldestCreatedAt,
                 updatedAt: mostRecentCreatedAt
