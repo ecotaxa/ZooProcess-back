@@ -100,7 +100,25 @@ module.exports = {
             return res.status(200).json(scans);
         })
         .catch(async(e) => {
-            console.error("Error:",e );
+            // console.error("Error toto:", e );
+            console.error("Error message:",e.message );
+            console.error("Error name:",e.name );
+            if (e.name == 'NotFoundException') {
+            // // if (e.message == 'Project not found') {
+            //     console.debug("qaaaaaaaaaaaaaaa")
+            //     const j = {
+            //         message: 'Project not found',
+            //         errors:[{
+            //             path: 'projectId',
+            //             message: e.message
+            //         }]
+            //     }
+            //     console.debug("j",j)
+            //     // return res.status(404).json(j);
+                return res.status(404).json({error:"Project not found"});
+            }
+            
+            // console.debug("sdfskdjbfsdkjhfksdjhfksdjfhk")
             return res.status(500).json({error:e});
         })
     },
@@ -362,43 +380,68 @@ module.exports = {
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
-        const userID = req.jwt.id
+        const userID = req.body.userId || req.jwt.id
+        console.debug("userID", userID)
         if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
             return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
         }
-        if ( req.body.subSampleId && req.body.subSampleId != req.params.subSampleId ){
-            return res.status(500).json({error:"the subSampleId defined in body is different from the subsampleId defined in the url"})
-        }
+        if ( req.body.subsampleId         ){
+            return background.importurl({
+                userId:userID,
+                //image:req.body, 
+                url: req.body.url,
+                subsampleId:req.params.subSampleId,
+                // subsampleId:req.body.subSampleId,
+                // instrumentId:req.params.instrumentId // got from the project
+                /*, type:BackgroundType.BACKGROUND*/
+            })
+            .then(result => {
+                // console.log("OK", res) 
+                return res.status(200).json(result)
+            })
+            .catch(async(e) => {
+                console.error("Error:",e )
 
-        return background.importurl({
-            userId:id,
-            //image:req.body, 
-            url: req.body.url,
-            subsampleId:req.params.subSampleId,
-            // subsampleId:req.body.subSampleId,
-            // instrumentId:req.params.instrumentId // got from the project
-            /*, type:BackgroundType.BACKGROUND*/
-        })
-        .then(result => {
-            // console.log("OK", res) 
-            return res.status(200).json(result)
-        })
-        .catch(async(e) => {
-            console.error("Error:",e )
-
-            if (e.name == "PrismaClientKnownRequestError"){
-                if (e.code == "P2002"){
-                    const txt = "Drive with name '"+ req.body.name +"' already exist";
-                    const message = { error:txt };
-                    return res.status(500).json({error:message});
+                if (e.name == "PrismaClientKnownRequestError"){
+                    if (e.code == "P2002"){
+                        const txt = "Drive with name '"+ req.body.name +"' already exist";
+                        const message = { error:txt };
+                        return res.status(500).json({error:message});
+                    }
+                    else {
+                        return res.status(500).json({error:e})
+                    }
                 }
-                else {
-                    return res.status(500).json({error:e})
-                }
+                return res.status(500).json({error:e})
+            })
+        } else {
+            // some background are not linked to any scan
+            // then we can't have the subsampleId            
+            if ( ! req.body.instrumentId){
+                return res.status(500).json({error:"The instrumentId is required"})
             }
-            return res.status(500).json({error:e})
-        })
 
+            // return res.status(500).json({error:"subsampleId is required"})
+            return background.importurl2({
+                instrumentId:req.body.instrumentId,
+                userId : req.jwt.id, // we don't know the user too
+                //image:req.body,
+                url: req.body.url,
+                // subsampleId:req.params.subSampleId,
+                projectId: req.body.projectId, // but you know the project as we import it
+                // instrumentId:req.params.instrumentId // got from the project
+                /*, type:BackgroundType.BACKGROUND*/
+                type:req.body.type
+            })
+            .then(result => {
+                // console.log("OK", res)
+                return res.status(200).json(result)
+            })
+            .catch(async(e) => {
+                console.debug("i am here")
+                console.error("Error:",e )
+            })
+        }
     },
 
     addurl2: async (req,res) => {

@@ -50,7 +50,7 @@ module.exports = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
-        // console.log("create",req.body);
+        console.log("create", req.body);
         console.log("Subsample create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
 
         return subsamples.add({projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body})

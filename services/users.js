@@ -1,6 +1,7 @@
 
 // const {PrismaClient} = require('@prisma/client');
 const { Prisma } = require('./client');
+// const { UserRole } = require('@prisma/client')
 
 module.exports.Users = class {
 

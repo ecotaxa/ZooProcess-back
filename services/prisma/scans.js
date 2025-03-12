@@ -1,8 +1,12 @@
 
 // const subsamples = require('../../routes/subsamples');
 // const { scan } = require('../../routes/background');
-const { Prisma } = require('../client')
+// const { default: NotFoundException } = require('../../exceptions/NotFoundException');
+const NotFoundException = require('../../exceptions/NotFoundException');
 
+
+const { Prisma } = require('../client')
+// const NotFoundException = require('../../exceptions/NotFoundException')
 
 module.exports.Scans = class {
 
@@ -73,25 +77,48 @@ module.exports.Scans = class {
         // console.log("Prisma Scans findAll - background: ", background)
         console.log("Prisma Scans findAllBackground - projectId:", projectId)
 
+        let where;
+        if (projectId.match(/^[0-9a-fA-F]{24}$/)) {
+            // It's an ObjectId
+            where = { id: projectId };
+        } else {
+            // It's a name
+            where = { name: projectId };
+        }
+
         const project = await this.prisma.project.findFirst({
-            where:{
-                id:projectId
-            }
+            // where:{
+            //     id:projectId
+            // }
+            // where:{
+            //     OR: [
+            //         {
+            //             id: projectId
+            //         },
+            //         {
+            //             name: projectId
+            //         }
+            //     ]
+            // }
+            where
         })
 
         if ( project == null ) {
             console.log("project is null")
-            throw Error("Project not found")
+            // throw Error("Project not found")
+            throw new NotFoundException("Project not found");
+
             // return {}
         }
 
         console.log("project: ", project)
+        
 
-        if ( project.instrumentId == null ) {
-            console.log("instrumentId is null")
-            throw new Error("Project has no instrument assigned")
-            // return []
-        }
+        // if ( project.instrumentId == null ) {
+        //     console.log("instrumentId is null")
+        //     throw new Error("Project has no instrument assigned")
+        //     // return []
+        // }
 
         // let where = {
         //     background: background,
@@ -104,7 +131,7 @@ module.exports.Scans = class {
         const scans = await this.prisma.scan.findMany({
             where: {
                 background: background,
-                instrumentId: project.instrumentId
+                projectId: project.id
             },
             include:{
                 instrument: true,
@@ -146,9 +173,11 @@ module.exports.Scans = class {
 
 
     // async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
-    async add({url, subsampleId, userId, instrumentId, projectId, type}) {
+    async add(params) {
 
+        const {url, subsampleId, userId, instrumentId, projectId, type} = params
         console.log("Prisma Scans add")
+        console.trace("Prisma Scans add")
         console.log("Scan::add")
         console.log("projectId: ", projectId)
         console.log("userId: ", userId)
@@ -157,21 +186,52 @@ module.exports.Scans = class {
         // console.log("background: ", background)
         console.log("type: ", type) 
 
-        let data = {
-            url,
-            userId,
-            // background,
-            instrumentId,
-            projectId,
-            type
-        }
+        // let data = {
+        //     url,
+        //     userId,
+        //     // background,
+        //     instrumentId,
+        //     projectId,
+        //     type
+        // }
 
+        console.trace("Scan::add")
+
+        // change field name
+        let data = params
+        // rename the field name
         if (subsampleId != undefined) {
-            // data['sample'] = subsampleId
-            data['subSampleId'] = subsampleId
+            // Take care - Need to reformat the field name subSampleId != subsampleId
+            data['subSampleId'] = subsampleId // add new the new field
+            data['subsampleId'] = undefined // remove the old field
         }      
 
         const scan = this.prisma.scan.create({data})
+
+        // need to change to upsert
+        // const scan = await prisma.scan.upsert({
+        //     where: { url: url },
+        //     update: {
+        //       subsampleScans: {
+        //         create: [
+        //           { subsampleId: subsampleId }
+        //         ]
+        //       }
+        //     },
+        //     create: {
+        //       url: url,
+        //       type: type,
+        //       userId: userId,
+        //       instrumentId: instrumentId,
+        //       projectId: projectId,
+        //       subsampleScans: {
+        //         create: [
+        //           { subsampleId: subsampleId }
+        //         ]
+        //       }
+        //     }
+        //   });
+
         return scan
     }
 

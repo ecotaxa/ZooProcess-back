@@ -341,7 +341,10 @@ module.exports.Background = class {
 
 
 
-      const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+      const root = process.env.ROOT_PATH //|| "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+      if ( root == undefined){
+        throw ("ROOT_PATH is undefined")
+      }
 
       console.debug("root: ", root)
 
@@ -408,8 +411,36 @@ module.exports.Background = class {
 
       return this.scans.add(data)
   }
-      
-  async importurl({ /*instrumentId ,*/ url , userId , subsampleId /*, type*/}) {
+
+  async importurl2({ instrumentId,  url , projectId, userId, type}) {
+    console.log("background:importurl2")
+    console.log("url: ", url)
+    console.log("instrumentId: ", instrumentId)
+    console.log("userId: ", userId)
+    console.log("projectId: ", projectId)
+
+    const data = {
+      instrumentId,
+      //filename,
+      //image,
+      userId,
+      // src: url,
+      url,
+      background: true,
+      type: type,
+      projectId,
+      // subsampleId: Null,
+      createdAt: "9999-03-07T08:26:38.988Z"
+  }
+  console.log("data: ", data)
+  return this.scans.add(data)
+
+    // return Promise.reject("to implement")
+
+  }
+
+  
+  async importurl({ /*instrumentId ,*/ url , userId = undefined , subsampleId /*, type*/}) {
     console.log("background:importurl")
     console.log("url: ", url)
     // console.log("instrumentId: ", instrumentId)
@@ -435,7 +466,7 @@ module.exports.Background = class {
         instrumentId: project.instrumentId,
         userId,
         subsampleId,
-        src: url,
+        // src: url,
         url: url,
         background: false,
         projectId: project.id
@@ -493,7 +524,10 @@ module.exports.Background = class {
     console.log("drive: ", drive)
 
 
-    const root = process.env.ROOT_PATH || "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+    const root = process.env.ROOT_PATH //|| "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+    if ( root == undefined){
+      throw ("addurl2 ROOT_PATH is undefined")
+    }
 
     // const date /*: string*/ = new Date().toISOString().split("T")[0]
     // const filename = date + "_" + path.basename(url)
@@ -578,7 +612,7 @@ module.exports.Background = class {
         //image,
         userId,
         subsampleId,
-        src: url, // pq c'est  pas newurl ??
+        // src: url, // pq c'est  pas newurl ??
         //url,
         url: newurl,
         background: false,
@@ -673,7 +707,7 @@ async addurl3({ url , userId , subsampleId, type, move}) {
       instrumentId: project.instrumentId,
       userId,
       subsampleId,
-      src: url,
+      // src: url,
       url: newurl,
       type,
 

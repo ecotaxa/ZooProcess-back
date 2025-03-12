@@ -174,13 +174,20 @@ module.exports.Projects = class {
     //   return project 
     // }
 
-    async get(projectId){
-      console.log("projectId:", projectId);
+    // i found this query in the prisma documentation
+    // then i can simply the code by using the following query
+    // where: {
+    //   OR: [
+    //     { id: searchValue },
+    //     { name: searchValue }
+    //   ]
+    // }
+
+    async getProject(where){
+      console.log("getProject where:", where);
 
       const project = await this.prisma.project.findFirst({
-        where:{
-          id: projectId
-        },
+        where: where,
         include:{
           drive: true,
           qc: true,
@@ -244,6 +251,23 @@ module.exports.Projects = class {
       return projectWithCalibration
     }
 
+
+    async getUsingName(projectName){
+      console.log("projectName:", projectName);
+      const where = {
+        name: projectName
+      }
+      return await this.getProject(where)
+    }
+
+    async get(projectId){
+      console.log("projectId:", projectId);
+      const where = {
+        id: projectId
+      }
+      console.debug("where:", where);
+      return await this.getProject(where)
+    }
 
     async updateid(id, data) {
       const project = await this.prisma.project.update({
