@@ -72,7 +72,7 @@ model Project {
   description     String?
   // sample      Int       @default(0)
   // scan        Int       @default(0)
-  samples         Sample[]
+  samples         Sample[] //@relation( onDelete: Cascade)
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   // metadata    Metadata  @relation(fields: [metadataId], references: [id])
   ecotaxa         Ecotaxa?    @relation(fields: ecotaxaId, references: id)
@@ -93,7 +93,7 @@ model Project {
 
   // qc        QCState? @relation(fields: [qCStateId], references: [id])
   // qCStateId String?  @db.ObjectId
-  qc   QCState? @relation(fields: [qCStateId], references: [id])
+  qc   QCState? @relation(fields: [qCStateId], references: [id], onDelete: Cascade)
   // Ecotaxa   Ecotaxa[]
   scan Scan[]
   task Task[]
@@ -129,9 +129,9 @@ model ZooscanCalibration {
   instrument   Instrument? @relation(fields: [instrumentId], references: [id])
   instrumentId String?     @db.ObjectId
 
-  frame String
+  frame    String
   archived Boolean @default(false)
-  
+
   xOffset Int
   yOffset Int
   xSize   Int
@@ -205,7 +205,7 @@ model Sample {
   subsample       SubSample[]
   // scans          Scan[]
   // metadata   Metadata    @relation(fields: [metadataId], references: [id])
-  project         Project        @relation(fields: [projectId], references: [id])
+  project         Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId       String         @db.ObjectId
   // metadataId String      @db.ObjectId
   metadata        Metadata[]
@@ -240,7 +240,7 @@ model SubSample {
 
   // qc        QCState? @relation(fields: [qCStateId], references: [id])
   // qCStateId String?  @db.ObjectId
-  qc QCState? @relation(fields: [qCStateId], references: [id])
+  qc QCState? @relation(fields: [qCStateId], references: [id], onDelete: Cascade)
   // qc  QCStatus @default(PENDING)
   // fraction    String
   // fractionMin Ints
@@ -256,7 +256,7 @@ model SubSample {
   metadata        Metadata[]
   metadataModel   MetadataModel? @relation(fields: [metadataModelId], references: [id])
   metadataModelId String?        @db.ObjectId
-  sample          Sample         @relation(fields: [sampleId], references: [id])
+  sample          Sample         @relation(fields: [sampleId], references: [id], onDelete: Cascade)
   user            User           @relation(fields: [userId], references: [id])
   // Scan            Scan?          @relation(fields: [scanId], references: [id])
   // scanId          String?        @db.ObjectId
@@ -290,11 +290,11 @@ model Metadata {
   value String
 
   // Link
-  sample      Sample?    @relation(fields: [sampleId], references: [id])
+  sample      Sample?    @relation(fields: [sampleId], references: [id], onDelete: Cascade)
   sampleId    String?    @db.ObjectId
   // SampleView   SampleView? @relation(fields: [sampleViewId], references: [id])
   // sampleViewId String?     @db.ObjectId
-  subSample   SubSample? @relation(fields: [subSampleId], references: [id])
+  subSample   SubSample? @relation(fields: [subSampleId], references: [id], onDelete: Cascade)
   subSampleId String?    @db.ObjectId
 }
 
@@ -360,14 +360,14 @@ model Scan {
   // subSample    SubSample[]
   //  @relation(fields: [subSampleId], references: [id])
   // subSampleId  String?     @db.ObjectId
-  SubSample    SubSample?  @relation(fields: [subSampleId], references: [id])
+  SubSample    SubSample?  @relation(fields: [subSampleId], references: [id], onDelete: Cascade)
   subSampleId  String?     @db.ObjectId
 
   background Boolean? // to remove use type ScanType
   archived   Boolean?  @default(false)
   deleted    Boolean   @default(false)
   deletedAt  DateTime? //@db.Timestamp()
-  Project    Project?  @relation(fields: [projectId], references: [id])
+  Project    Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId  String?   @db.ObjectId
 }
 
