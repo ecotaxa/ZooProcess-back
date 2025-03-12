@@ -23,6 +23,6 @@ it('login a user', async () => {
        
     expect(response.statusCode).toEqual(200);
   
-  });
+});
   
   
