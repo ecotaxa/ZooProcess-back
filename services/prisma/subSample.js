@@ -9,21 +9,45 @@ module.exports.SubSamples = class {
 
     async find({subSampleId}) {
 
-        const subSample = this.prisma.subSample.findFirst({
+        // const subSample = this.prisma.subSample.findFirst({
+        //     where:{
+        //         id:subSampleId
+        //       },
+        //       include:{
+        //         sample:{
+        //           include:{
+        //             project:{
+        //                 include:{
+        //                     drive:true
+        //                     }
+        //                 }
+        //             }
+        //         }//,
+        //         //scan:true
+        //     }
+        // }
+        // )
+
+        const subSample = this.prisma.subSample.findMany({
             where:{
                 id:subSampleId
-              },
-              include:{
+            },
+            include:{
                 sample:{
-                  include:{
-                    project:{
-                        include:{
-                            drive:true
+                    include:{
+                        project:{
+                            include:{
+                                drive:true
                             }
                         }
                     }
-                }//,
+                },//,
                 //scan:true
+                scanSubsamples:{
+                    include:{
+                        scan:true
+                    }
+                }
             }
         }
         )

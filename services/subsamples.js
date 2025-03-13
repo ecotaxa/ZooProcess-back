@@ -275,6 +275,25 @@ module.exports.SubSamples = class {
         console.log("Create: ", data);
 
         return await this.prisma.subSample.create({data})
+
+        // totally stupid way to do it
+        // return await this.prisma.subSample.upsert({
+        //     where: {
+        //         id: subsample.id
+        //     },
+        //     update: {
+        //         sampleId: sampleId,
+        //         // userId: userId, // user already affected
+        //         metadata:{
+        //             // create: metadataArray // simplement ou en desctructurer ci-dessous
+        //             create: [
+        //                     ...metadataArray
+        //                 ]
+        //         }
+        //     },
+        //     create: data
+
+        // })
       }
     
 
@@ -283,11 +302,23 @@ module.exports.SubSamples = class {
 
         console.log("deleteSubSample: ", {projectId, sampleId, subSampleId});
 
+        // remove linked scans
+        const scan = new Scans()
+        await scan.deleteAll({subSampleId})
+
         return await this.prisma.subSample.delete({
             where:{
                 id:subSampleId,
                 //projectId:projectId
-            }
+            },
+            // include: {
+            //     scans: {
+            //         include: {
+            //             scan: true
+            //         }
+            //     }
+            // }
+
         });
     }
 
@@ -296,9 +327,9 @@ module.exports.SubSamples = class {
 
         console.debug("SubSamples deleteAll")
 
-        // delete associated scans
-        const scan = new Scans()
-        await scan.deleteAll({sampleId})
+        // // delete associated scans
+        // const scan = new Scans()
+        // await scan.deleteAll({sampleId})
 
         const samples = await this.prisma.subSample.findMany({
             where:{
@@ -306,6 +337,22 @@ module.exports.SubSamples = class {
             }
         })
 
+        // Delete all non-background scans
+        await this.prisma.scan.deleteMany({
+            where: {
+                scanSubsamples: {
+                    some: {
+                        subsampleId: {
+                            in: samples.map(sample => sample.id)
+                        }
+                    }
+                },
+                type: {
+                    notIn: ['RAW_BACKGROUND', 'BACKGROUND']
+                }
+            }
+        })
+    
         // delete the metadata
         await this.prisma.metadata.deleteMany({
             where:{
@@ -318,7 +365,14 @@ module.exports.SubSamples = class {
         // delete itself
         await  this.prisma.subSample.deleteMany({
             where:{
-                sampleId
+                sampleId,
+                // include: {
+                //     scans: {
+                //         include: {
+                //             scan: true
+                //         }
+                //     }
+                // }
             }
         })
 
