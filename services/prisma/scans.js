@@ -214,15 +214,63 @@ module.exports.Scans = class {
         console.trace("Scan::add")
 
         // change field name
-        let data = params
-        // rename the field name
-        if (subsampleId != undefined) {
-            // Take care - Need to reformat the field name subSampleId != subsampleId
-            data['subSampleId'] = subsampleId // add new the new field
-            data['subsampleId'] = undefined // remove the old field
-        }      
+        // let data = params
+        // // rename the field name
+        // if (subsampleId != undefined) {
+        //     // Take care - Need to reformat the field name subSampleId != subsampleId
+        //     data['subSampleId'] = subsampleId // add new the new field
+        //     data['subsampleId'] = undefined // remove the old field
+        // }
 
-        const scan = this.prisma.scan.create({data})
+        let data = params
+        if (subsampleId != undefined) {
+            data['subsampleId'] = undefined // remove the old field
+        }
+
+
+        // let scandata = {
+        //     ...data,
+        //     scanSubsamples:{
+        //         create: [
+        //             {
+        //                 connect: {id : subsampleId}
+        //             }
+        //         ]
+        //     }
+        // }
+
+
+        const scan = this.prisma.scan.upsert({
+            where: {
+                url: data.url
+          },
+          update: {
+            ...data,
+            scans: {
+              create: {
+                scanSubsamples: {
+                  connect: { id: subsampleId }
+                }
+              }
+            }
+          },
+          create: {
+            ...data,
+            scanSubsamples: {
+              create: {
+                subsample: {
+                  connect: { id: subsampleId }
+                }
+              }
+            }
+          }
+        })
+
+
+
+
+
+        // const scan = this.prisma.scan.create({data})
 
         // need to change to upsert
         // const scan = await prisma.scan.upsert({
@@ -291,14 +339,28 @@ module.exports.Scans = class {
 async deleteAll(subSampleID) {
     console.debug("Scans deleteAll")
 
-    await this.prisma.scan.deleteMany({
+    // await this.prisma.scan.deleteMany({
+    //     where: {
+    //         subSampleId: subSampleID,
+    //         type: {
+    //             notIn: ['RAW_BACKGROUND', 'BACKGROUND']
+    //         }
+    //     }
+    // });
+
+    await prisma.scan.deleteMany({
         where: {
-            subSampleId: subSampleID,
+            scanSubsamples: {
+                some: {
+                    subsampleId: subSampleID
+                }
+            },
             type: {
                 notIn: ['RAW_BACKGROUND', 'BACKGROUND']
             }
         }
-    });
+      })
+      
 }
 
 
