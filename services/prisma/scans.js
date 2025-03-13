@@ -3,6 +3,7 @@
 // const { scan } = require('../../routes/background');
 // const { default: NotFoundException } = require('../../exceptions/NotFoundException');
 const NotFoundException = require('../../exceptions/NotFoundException');
+const samples = require('../../routes/samples');
 
 
 const { Prisma } = require('../client')
@@ -40,7 +41,12 @@ module.exports.Scans = class {
             // SubSample: true
             SubSample: {
                 include: {
-                    scan: true,
+                    // scan: true,
+                    scanSubsamples:{
+                        include: {
+                            subsample: true
+                        }
+                    }
                 }
             }
         }
@@ -61,8 +67,13 @@ module.exports.Scans = class {
             include: {
                 // SubSample: true
                 SubSample: {
-                include: {
-                        scan: true,
+                    include: {
+                        // scan: true,
+                        scanSubsamples:{
+                            include: {
+                                subsample: true
+                            }
+                        }
                     }
                 }
             }
@@ -147,7 +158,12 @@ module.exports.Scans = class {
                         //         // state : true
                         //     }
                         // }
-                        scan: true
+                        // scan: true,
+                        scanSubsamples:{
+                            include: {
+                                subsample: true
+                            }
+                        }
                     }
                 },
                 user: true

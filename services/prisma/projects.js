@@ -26,7 +26,12 @@ module.exports.Projects = class {
               include:{
                 subsample: {
                   include: {
-                    scan: true,
+                    // scan: true,
+                    scanSubsamples: {
+                      include: {
+                          scan: true
+                      }
+                    }
                   }
                 }
               }

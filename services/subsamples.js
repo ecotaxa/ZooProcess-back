@@ -34,7 +34,12 @@ module.exports.SubSamples = class {
                 metadata:true,
                 metadataModel:true,
                 // metadataModelId:false,
-                scan:true,
+                // scan: true,
+                scanSubsamples:{
+                    include: {
+                        subsample: true
+                    }
+                },
                 user:true,
             }
         })
@@ -84,7 +89,12 @@ module.exports.SubSamples = class {
                 //projectId:projectId
             },
             include:{
-                scan:true,
+                // scan: true,
+                scanSubsamples:{
+                    include: {
+                        subsample: true
+                    }
+                },
                 metadata:true,
                 metadataModel:true,
                 user:true,
