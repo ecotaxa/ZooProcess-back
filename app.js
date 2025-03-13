@@ -99,12 +99,12 @@ async function getRole(req, res, next){
   if ( req.jwt ){
 
     id = req.jwt.id
-    // console.log("getRole id: ", id)
+    console.debug("getRole id: ", id)
     const users = new Users();
     await users.get(id)
     .then( user => {
-      // console.log("user:", user)
-      // console.log("user.role: ", user.role)
+      console.debug("user:", user)
+      console.debug("user.role: ", user.role)
 
       //req.jwt.role = user.role
       switch (user.role) {
@@ -120,7 +120,7 @@ async function getRole(req, res, next){
         default:
           req.jwt.role = "User"
       }
-      // console.log("user.role mapped: ", req.jwt.role)
+      console.debug("user.role mapped: ", req.jwt.role)
 
       next()
     })
@@ -137,7 +137,7 @@ async function getRole(req, res, next){
     })
   }
   else { // else is neccessary to avoid error
-    // console.log("getRole - no token")
+    console.debug("getRole - no token")
     next()
   }
 }
