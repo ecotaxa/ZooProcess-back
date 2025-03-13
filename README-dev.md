@@ -159,6 +159,9 @@ mongosh -u root -p example
 use admin
 db.changeUserPassword("root", "your_new_password")
 ```
+<!-- db.updateUser("admin", {pwd: "docker1234", roles: ["root"]}) -->
+
+remplace with docker1234 your password
 
 then update your .env file with the new password
 DATABASE_URL="mongodb://root:your_new_password@localhost/zooProcess?authSource=admin"
@@ -178,11 +181,11 @@ mongosh
 Create and switch to your new database:
 ```mongosh
 use zooprocess_db
-db.createCollection("users")
 ```
 
 Update your DATABASE_URL in .env file:
-DATABASE_URL="mongodb://localhost:27017/zooprocess_db"
+<!-- DATABASE_URL="mongodb://localhost:27017/zooprocess_db" -->
+DATABASE_URL="mongodb://admin:your_new_password@localhost:27017/zooProcess?authSource=root"
 
 
 Run Prisma migration to create the collections:
@@ -195,4 +198,30 @@ The database is now ready to use with all the models defined in your schema.pris
 
 # run in docker
 docker-compose up -d --build
+
+Update your DATABASE_URL in .env file:
+<!-- DATABASE_URL="mongodb://localhost:27017/zooprocess_db" -->
+DATABASE_URL="mongodb://admin:your_new_password@localhost:27017/zooProcess?authSource=root"
+
+
+```mongosh
+db.User.insertOne({ "name": "admin", "email": "admin@invalid.com", "password": "docker1234", "role": "ADMIN" })
+````
+
+<!--
+```mongosh
+db.User.insertOne({
+  "name": "admin",
+  "email": "admin@invalid.com",
+  "password": "$2b$10$rG4FZ1WoYoVD.r5a5H5YwuHEkXgMvZ8vNe.9tQcq9gLYfHHtCK33O", // this is "docker1234" hashed with bcrypt
+  "role": "ADMIN"
+})
+```
+-->
+
+```js
+const bcrypt = require('bcrypt');
+const hashedPassword = bcrypt.hashSync('docker1234', 10);
+console.log(hashedPassword);
+```
 

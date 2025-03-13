@@ -1,33 +1,25 @@
 const { Login } = require("../services/login")
 const jwt  = require("jsonwebtoken")
+const bcrypt = require('bcrypt')
 
 const login = new Login();
 
 module.exports = {
-
+    
     login: async (req,res) => {
-
-        console.log("Route login:", JSON.stringify(req.body))
-
         const { email, password } = req.body
 
         return login.login({email})
-        .then(payload => {
-
-            console.log("paylod: ", payload)
-
-            if ( payload.password == password ){
-
-                //TODO build token here
-                //store it in Session
-                // const token = payload.id
-
+        .then(async payload => {
+            // Compare hashed password
+            const passwordMatch = await bcrypt.compare(password, payload.password)
+            
+            if (passwordMatch) {
                 const token = jwt.sign({
-                      id : payload.id,
-                    },
-                    process.env.JWT_SECRET,
-                    // { expiresIn: '3d'}  // TOKEN expire
-                    { expiresIn: '30d' }  // TOKEN expire
+                    id: payload.id,
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: '30d' }
                 );
 
                 console.log(`User ${email} logged with token: ${token}`)
@@ -41,7 +33,7 @@ module.exports = {
             console.error("Error:", e);
             return res.status(500).json({error:e});
         })
-    },
+    },    
 
     logout: async (req,res) => {
         console.log("logout",req.body);

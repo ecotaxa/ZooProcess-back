@@ -33,7 +33,7 @@ module.exports.Users = class {
 
 
     async get(userId){
-      // console.log("userId:", userId);
+      console.debug("userId:", userId);
 
       const user = await this.prisma.user.findFirst({
         where:{
@@ -45,7 +45,7 @@ module.exports.Users = class {
           subSample: true
         }
       })
-      // console.debug("user: ", user);
+      console.debug("user: ", user);
       return user
     }
 
