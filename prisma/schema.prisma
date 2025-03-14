@@ -342,7 +342,7 @@ enum ScanType {
 
 model Scan {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  url       String
+  url       String   @unique
   type      ScanType @default(SCAN)
   createdAt DateTime @default(now())
 
@@ -371,6 +371,7 @@ model Scan {
   archived   Boolean?  @default(false)
   deleted    Boolean   @default(false)
   deletedAt  DateTime? //@db.Timestamp()
+  // arg need to fix this typing bug
   Project    Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId  String?   @db.ObjectId
 }
