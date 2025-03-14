@@ -223,9 +223,9 @@ module.exports.Scans = class {
         // }
 
         let data = params
-        if (subsampleId != undefined) {
-            data['subsampleId'] = undefined // remove the old field
-        }
+        // if (subsampleId != undefined) {
+        //     data['subsampleId'] = undefined // remove the old field
+        // }
 
 
         // let scandata = {
@@ -279,7 +279,7 @@ module.exports.Scans = class {
             scanSubsamples: {
                 create: {
                     subsample: {
-                        connect: { id: subsampleId }
+                        connect: { id: data['subsampleId'] }
                     }
                 }
             }
@@ -289,7 +289,7 @@ module.exports.Scans = class {
             scanSubsamples: {
               create: {
                 subsample: {
-                  connect: { id: subsampleId }
+                  connect: { id: data['subsampleId'] }
                 }
               }
             }
