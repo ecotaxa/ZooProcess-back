@@ -239,21 +239,51 @@ module.exports.Scans = class {
         //     }
         // }
 
-
-        const scan = this.prisma.scan.upsert({
+        const scanFound = await this.prisma.scan.findFirst({
             where: {
                 url: data.url
+            }
+        })
+        console.debug("scanFound: ", scanFound)
+
+        data['instrument']= {
+            connect: {
+                id: data['instrumentId']
+            }
+        }
+        data['instrumentId'] = undefined
+
+        data['user'] = {
+            connect: {
+                id: data['userId']
+            }
+        }
+        data['userId'] = undefined
+
+        data['Project'] = {
+            connect: {
+                id: data['projectId']
+            }
+        }
+        data['projectId'] = undefined
+
+        console.debug("data: ", data)
+
+        const scan = await this.prisma.scan.upsert({
+            where: {
+                url: url,
+                // id: scanFound?.id
           },
           update: {
             ...data,
-            scans: {
-              create: {
-                scanSubsamples: {
-                  connect: { id: subsampleId }
+            scanSubsamples: {
+                create: {
+                    subsample: {
+                        connect: { id: subsampleId }
+                    }
                 }
-              }
             }
-          },
+        },
           create: {
             ...data,
             scanSubsamples: {

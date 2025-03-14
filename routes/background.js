@@ -380,6 +380,9 @@ module.exports = {
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
+
+        console.debug("req.body:", req.body)
+
         const userID = req.body.userId || req.jwt.id
         console.debug("userID", userID)
         if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
@@ -400,7 +403,7 @@ module.exports = {
                 return res.status(200).json(result)
             })
             .catch(async(e) => {
-                console.error("Error:",e )
+                console.error("Error (background.importurl):",e )
 
                 if (e.name == "PrismaClientKnownRequestError"){
                     if (e.code == "P2002"){
@@ -445,11 +448,11 @@ module.exports = {
     },
 
     addurl2: async (req,res) => {
-        console.log("------------------------------------------");
-        console.log("route/background/addurl2");
-        // console.log("create",req);
-        // console.log("create files",req.files);
-        console.log("------------------------------------------");
+        console.debug("------------------------------------------");
+        console.debug("route/background/addurl2");
+        // console.debug("create",req);
+        // console.debug("create files",req.files);
+        console.debug("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
@@ -466,9 +469,9 @@ module.exports = {
         // if ( req.body.subSampleId == undefined) {
         //     return res.status(400).json({error:"subsampleId is required"})
         // }
-        // console.log("req.body: ", req.body);
-        console.log("req.body.url: ", req.body.url);
-        console.log("req.params: ", req.params);
+        console.debug("req.body: ", req.body);
+        console.debug("req.body.url: ", req.body.url);
+        console.debug("req.params: ", req.params);
 
         if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
             return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
@@ -477,7 +480,7 @@ module.exports = {
             return res.status(500).json({error:"the subSampleId defined in body is different from the subsampleId defined in the url"})
         }
 
-        return background.addurl2({
+        let params = {
             userId:id,
             //image:req.body, 
             url: req.body.url,
@@ -485,7 +488,12 @@ module.exports = {
             // subsampleId:req.body.subSampleId,
             // instrumentId:req.params.instrumentId // got from the project
             /*, type:BackgroundType.BACKGROUND*/
-        })
+        }
+        if (req.body.type){
+            params.type = req.body.type
+        }
+
+        return background.addurl2(params)
         .then(result => {
             // console.log("OK", res) 
             return res.status(200).json(result)

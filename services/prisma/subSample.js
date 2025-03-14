@@ -27,8 +27,8 @@ module.exports.SubSamples = class {
         //     }
         // }
         // )
-
-        const subSample = this.prisma.subSample.findMany({
+        console.debug("findMany")
+        const subSample = await this.prisma.subSample.findMany({
             where:{
                 id:subSampleId
             },
@@ -52,6 +52,7 @@ module.exports.SubSamples = class {
         }
         )
 
+        console.debug("subSample: ", subSample)
         return subSample
     }
     

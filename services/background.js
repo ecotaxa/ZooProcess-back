@@ -476,13 +476,21 @@ module.exports.Background = class {
     return this.scans.add(data)
   }
 
-  async addurl2({ /*instrumentId ,*/ url , userId , subsampleId/*, type*/}) {
+  /**
+   * url
+   * userId
+   * subsampleId
+   * type
+   */
+  async addurl2(params) {
 
-    console.log("background:addurl2")
-    console.log("url: ", url)
+    const { /*instrumentId ,*/ url , userId , subsampleId, type = undefined} = params
+    console.debug("service::background:addurl2")
+    console.debug("url: ", url)
     // console.log("instrumentId: ", instrumentId)
-    console.log("userId: ", userId)
-    console.log("subsampleId: ", subsampleId)
+    console.debug("userId: ", userId)
+    console.debug("subsampleId: ", subsampleId)
+    console.debug("type: ", type)
 
     // if ( !subsampleId) {
     //   return Promise.reject("subsampleId is not defined")
@@ -495,7 +503,7 @@ module.exports.Background = class {
 
     const subSamples = new SubSamples()
     const subSample = await subSamples.find({subSampleId:subsampleId})
-    console.log("subSample", subSample)
+    console.debug("subSample", subSample)
 
     if ( ! subSample ){
       return Promise.reject("Can't find the subsample")
@@ -513,15 +521,15 @@ module.exports.Background = class {
 
     // const projects = new Projects()
     // const project = await projects.get(projectId)
-    const project = subSample.sample.project
-    console.log("project: ", project)
+    const project = subSample[0].sample.project
+    console.debug("project: ", project)
 
     let drive = project.drive.url
-    console.log("drive: ", drive)
+    console.debug("drive: ", drive)
     if ( drive.substring(0, "file://".length) == "file://"){
       drive = drive.substring("file://".length)
     }
-    console.log("drive: ", drive)
+    console.debug("drive: ", drive)
 
 
     const root = process.env.ROOT_PATH //|| "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
@@ -532,11 +540,11 @@ module.exports.Background = class {
     // const date /*: string*/ = new Date().toISOString().split("T")[0]
     // const filename = date + "_" + path.basename(url)
     const filename = path.basename(url)
-    console.log("filename: ", filename)
+    console.debug("filename: ", filename)
     const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
-    console.log("projectPath:", projectPath)
+    console.debug("projectPath:", projectPath)
     const newurl = path.join(projectPath, filename).toString()
-    console.log("url: ", newurl)
+    console.debug("url: ", newurl)
 
     // move file from url to urlnew
     // make path
@@ -606,7 +614,7 @@ module.exports.Background = class {
 
     console.log("project.id: ", project.id)
 
-    const data = {
+    let data = {
         instrumentId: project.instrumentId,
         //filename,
         //image,
@@ -618,6 +626,9 @@ module.exports.Background = class {
         background: false,
 
         projectId: project.id
+    }
+    if ( type ){
+      data.type = type
     }
 
     console.log("data: ", data)
