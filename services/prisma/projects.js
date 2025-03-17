@@ -221,12 +221,14 @@ module.exports.Projects = class {
         }
       })
 
-      let subsample_count = 0
-      if (project){
-        project.samples.forEach( (sample) => {
-          
-        })
+      if (!project) {
+        return null;
       }
+      // let subsample_count = 0
+      // if (project){
+      //   project.samples.forEach( (sample) => {
+        //  })
+      // }
 
       let projectWithCalibration = project
       try {
