@@ -89,7 +89,7 @@ module.exports.Samples = class {
                 subsample:{
                     include:{
                         metadata:true,
-                        scan:true
+                        // scan:true # with m2n can do that , need to use scanSubsamples
                     }
                 }
             }
