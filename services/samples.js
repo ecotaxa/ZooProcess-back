@@ -181,10 +181,16 @@ module.exports.Samples = class {
                 // subsample:true
                 subsample: {
                     include:{
-                        scan:true,
+                        // scan:true,
                         metadata:true,
                         user:true,
                         qc:true,
+                        scanSubsamples: {
+                            include:{
+                                scan: true
+                            }
+                        
+                        }
                     }
                 }
             }
