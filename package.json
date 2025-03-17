@@ -8,6 +8,10 @@
     "dev:watch": "nodemon app.js",
     "test": "jest",
     "start": "node app.js",
+    "trace": "DEBUG=app:* node --trace-warnings app.js",
+    "patterntrace": "DEBUG=app:app:scans --trace-warnings app.js",
+    "filetrace": "DEBUG=app:services/background.js,app:routes/samples.js --trace-warnings app.js",
+    "nodetrace": "NODE_DEBUG=*node --trace-warnings app.js",
     "db:deploy": "npx prisma migrate deploy && npx prisma generate"
   },
   "keywords": [],
