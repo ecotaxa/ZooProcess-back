@@ -1,0 +1,1479 @@
+nsamples:  [
+    {
+      "id": "67d7a84fff15a5db7ee64fa1",
+      "name": "apero2023_pp_wp2_001_st01_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a850ff15a5db7ee64fc3",
+          "name": "apero2023_pp_wp2_001_st01_d_d1_1",
+          "createdAt": "2025-03-17T04:42:56.021Z",
+          "sampleId": "67d7a84fff15a5db7ee64fa1",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee64fc4",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_001_st01_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fc5",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_001_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fc6",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fc7",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fc8",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fc9",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fca",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fcb",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fcc",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fcd",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fce",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fc3"
+            }
+          ]
+        },
+        {
+          "id": "67d7a850ff15a5db7ee64fd5",
+          "name": "apero2023_pp_wp2_001_st01_d_d2_1",
+          "createdAt": "2025-03-17T04:42:56.169Z",
+          "sampleId": "67d7a84fff15a5db7ee64fa1",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee64fd6",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_001_st01_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fd7",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_001_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fd8",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fd9",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fda",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fdb",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fdc",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fdd",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fde",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fdf",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee64fe0",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee64fd5"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:56.169Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a850ff15a5db7ee64fe6",
+      "name": "apero2023_pp_wp2_002_st01_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a850ff15a5db7ee65007",
+          "name": "apero2023_pp_wp2_002_st01_d_d1_1",
+          "createdAt": "2025-03-17T04:42:56.308Z",
+          "sampleId": "67d7a850ff15a5db7ee64fe6",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee65008",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_002_st01_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65009",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_002_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500a",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500b",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500c",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500d",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500e",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6500f",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65010",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65011",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65012",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65007"
+            }
+          ]
+        },
+        {
+          "id": "67d7a850ff15a5db7ee65018",
+          "name": "apero2023_pp_wp2_002_st01_d_d2_1",
+          "createdAt": "2025-03-17T04:42:56.430Z",
+          "sampleId": "67d7a850ff15a5db7ee64fe6",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee65019",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_002_st01_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501a",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_002_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501b",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501c",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501d",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501e",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6501f",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65020",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65021",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65022",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65023",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee65018"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:56.430Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a850ff15a5db7ee65029",
+      "name": "apero2023_pp_wp2_003_st01_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a850ff15a5db7ee6504a",
+          "name": "apero2023_pp_wp2_003_st01_d_d1_1",
+          "createdAt": "2025-03-17T04:42:56.564Z",
+          "sampleId": "67d7a850ff15a5db7ee65029",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee6504b",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_003_st01_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6504c",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_003_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6504d",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6504e",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6504f",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65050",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65051",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65052",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65053",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65054",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65055",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6504a"
+            }
+          ]
+        },
+        {
+          "id": "67d7a850ff15a5db7ee6505b",
+          "name": "apero2023_pp_wp2_003_st01_d_d2_1",
+          "createdAt": "2025-03-17T04:42:56.704Z",
+          "sampleId": "67d7a850ff15a5db7ee65029",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a850ff15a5db7ee6505c",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_003_st01_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6505d",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_003_st01_d",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6505e",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee6505f",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65060",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65061",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65062",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65063",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65064",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65065",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            },
+            {
+              "id": "67d7a850ff15a5db7ee65066",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a850ff15a5db7ee6505b"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:56.704Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a850ff15a5db7ee6506c",
+      "name": "apero2023_pp_wp2_005_st11_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a851ff15a5db7ee6508d",
+          "name": "apero2023_pp_wp2_005_st11_d_d1_1",
+          "createdAt": "2025-03-17T04:42:57.036Z",
+          "sampleId": "67d7a850ff15a5db7ee6506c",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee6508e",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_005_st11_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6508f",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_005_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65090",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65091",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65092",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65093",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65094",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65095",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65096",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65097",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65098",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6508d"
+            }
+          ]
+        },
+        {
+          "id": "67d7a851ff15a5db7ee6509e",
+          "name": "apero2023_pp_wp2_005_st11_d_d2_1",
+          "createdAt": "2025-03-17T04:42:57.134Z",
+          "sampleId": "67d7a850ff15a5db7ee6506c",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee6509f",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_005_st11_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a0",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_005_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a1",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a2",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a3",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a4",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a5",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a6",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a7",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a8",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650a9",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee6509e"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:57.134Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a851ff15a5db7ee650af",
+      "name": "apero2023_pp_wp2_007_st11_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a851ff15a5db7ee650d0",
+          "name": "apero2023_pp_wp2_007_st11_d_d1_1",
+          "createdAt": "2025-03-17T04:42:57.270Z",
+          "sampleId": "67d7a851ff15a5db7ee650af",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee650d1",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_007_st11_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d2",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_007_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d3",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d4",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d5",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d6",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d7",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d8",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650d9",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650da",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650db",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650d0"
+            }
+          ]
+        },
+        {
+          "id": "67d7a851ff15a5db7ee650e1",
+          "name": "apero2023_pp_wp2_007_st11_d_d2_1",
+          "createdAt": "2025-03-17T04:42:57.380Z",
+          "sampleId": "67d7a851ff15a5db7ee650af",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee650e2",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_007_st11_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e3",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_007_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e4",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e5",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e6",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e7",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e8",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650e9",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650ea",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650eb",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee650ec",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee650e1"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:57.380Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a851ff15a5db7ee650f2",
+      "name": "apero2023_pp_wp2_008_st11_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a851ff15a5db7ee65113",
+          "name": "apero2023_pp_wp2_008_st11_d_d1_1",
+          "createdAt": "2025-03-17T04:42:57.517Z",
+          "sampleId": "67d7a851ff15a5db7ee650f2",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee65114",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_008_st11_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65115",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_008_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65116",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65117",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65118",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65119",
+              "name": "observation",
+              "type": "string",
+              "value": "poor_in_plankton",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6511a",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6511b",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6511c",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6511d",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6511e",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65113"
+            }
+          ]
+        },
+        {
+          "id": "67d7a851ff15a5db7ee65124",
+          "name": "apero2023_pp_wp2_008_st11_d_d2_1",
+          "createdAt": "2025-03-17T04:42:57.613Z",
+          "sampleId": "67d7a851ff15a5db7ee650f2",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee65125",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_008_st11_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65126",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_008_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65127",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65128",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "8",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65129",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512a",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512b",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512c",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512d",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512e",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6512f",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65124"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:57.613Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "67d7a851ff15a5db7ee65135",
+      "name": "apero2023_pp_wp2_009_st11_d",
+      "projectId": "67d7a84fff15a5db7ee64f9e",
+      "metadataModelId": "6565df171af7a84541c48b20",
+      "metadataModel": null,
+      "subsample": [
+        {
+          "id": "67d7a851ff15a5db7ee65156",
+          "name": "apero2023_pp_wp2_009_st11_d_d1_1",
+          "createdAt": "2025-03-17T04:42:57.746Z",
+          "sampleId": "67d7a851ff15a5db7ee65135",
+          "userId": "67d2f61ab9c27832838594af",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee65157",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_009_st11_d_d1_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65158",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_009_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65159",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515a",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515b",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "hugo_berrenger",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515c",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515d",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515e",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "999999",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6515f",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65160",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65161",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65156"
+            }
+          ]
+        },
+        {
+          "id": "67d7a851ff15a5db7ee65167",
+          "name": "apero2023_pp_wp2_009_st11_d_d2_1",
+          "createdAt": "2025-03-17T04:42:57.944Z",
+          "sampleId": "67d7a851ff15a5db7ee65135",
+          "userId": "67d3f117793be51285d87a0b",
+          "metadataModelId": null,
+          "qCStateId": null,
+          "metadata": [
+            {
+              "id": "67d7a851ff15a5db7ee65168",
+              "name": "scan_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_009_st11_d_d2_1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65169",
+              "name": "sample_id",
+              "type": "string",
+              "value": "apero2023_pp_wp2_009_st11_d",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516a",
+              "name": "fraction_id",
+              "type": "string",
+              "value": "d2",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516b",
+              "name": "fraction_number",
+              "type": "string",
+              "value": "16",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516c",
+              "name": "scanning_operator",
+              "type": "string",
+              "value": "camille_merland",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516d",
+              "name": "observation",
+              "type": "string",
+              "value": "no",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516e",
+              "name": "fraction_min_mesh",
+              "type": "string",
+              "value": "100",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee6516f",
+              "name": "fraction_max_mesh",
+              "type": "string",
+              "value": "1000",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65170",
+              "name": "spliting_ratio",
+              "type": "number",
+              "value": "1",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65171",
+              "name": "remark_on_fraction",
+              "type": "string",
+              "value": "",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            },
+            {
+              "id": "67d7a851ff15a5db7ee65172",
+              "name": "submethod",
+              "type": "string",
+              "value": "motoda",
+              "sampleId": null,
+              "subSampleId": "67d7a851ff15a5db7ee65167"
+            }
+          ]
+        }
+      ],
+      "nbFractions": "d1, d2",
+      "nbScans": 2,
+      "createdAt": "2025-03-17T04:42:57.944Z",
+      "updatedAt": "1970-01-01T00:00:00.000Z"
+    }
+  ]

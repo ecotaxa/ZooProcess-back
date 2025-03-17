@@ -1,0 +1,304 @@
+{
+    id: '67d7a84fff15a5db7ee64fa1',
+    name: 'apero2023_pp_wp2_001_st01_d',
+    projectId: '67d7a84fff15a5db7ee64f9e',
+    metadataModelId: '6565df171af7a84541c48b20',
+    metadata: [
+      {
+        id: '67d7a84fff15a5db7ee64fa2',
+        name: 'sample_id',
+        type: 'string',
+        value: 'apero2023_pp_wp2_001_st01_d',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa3',
+        name: 'ship_name',
+        type: 'string',
+        value: 'pourquoipas',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa4',
+        name: 'scientific_program',
+        type: 'string',
+        value: 'apero',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa5',
+        name: 'station_id',
+        type: 'string',
+        value: '1',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa6',
+        name: 'date',
+        type: 'string',
+        value: '20230610-1303',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa7',
+        name: 'latitude_start',
+        type: 'number',
+        value: '48.4527',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa8',
+        name: 'longitude_start',
+        type: 'number',
+        value: '-22.5006',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fa9',
+        name: 'bottom_depth',
+        type: 'string',
+        value: '4107',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64faa',
+        name: 'ctd_reference',
+        type: 'string',
+        value: 'nan',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fab',
+        name: 'other_reference',
+        type: 'string',
+        value: 'nan',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fac',
+        name: 'number_of_tow',
+        type: 'string',
+        value: '1',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fad',
+        name: 'tow_type',
+        type: 'string',
+        value: '3',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fae',
+        name: 'net_sampling_type',
+        type: 'string',
+        value: 'wp2',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64faf',
+        name: 'net_mesh',
+        type: 'string',
+        value: '200',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb0',
+        name: 'net_opening_surface',
+        type: 'string',
+        value: '99999',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb1',
+        name: 'maximum_depth',
+        type: 'string',
+        value: '200',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb2',
+        name: 'minimum_depth',
+        type: 'string',
+        value: '0',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb3',
+        name: 'vol',
+        type: 'string',
+        value: '20.2875',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb4',
+        name: 'sample_comment',
+        type: 'string',
+        value: 'nan',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb5',
+        name: 'vol_qc',
+        type: 'string',
+        value: '1',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb6',
+        name: 'quality_flag_for_depth_measurement',
+        type: 'string',
+        value: '2',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb7',
+        name: 'sample_qc',
+        type: 'string',
+        value: '1111',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb8',
+        name: 'barcode',
+        type: 'string',
+        value: 'ape000000659',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fb9',
+        name: 'latitude_end',
+        type: 'number',
+        value: '48.4527',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fba',
+        name: 'longitude_end',
+        type: 'number',
+        value: '-22.50065',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fbb',
+        name: 'sampling_duration',
+        type: 'string',
+        value: '17',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fbc',
+        name: 'ship_speed',
+        type: 'string',
+        value: '0',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fbd',
+        name: 'cable_length',
+        type: 'string',
+        value: '99999',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fbe',
+        name: 'cable_angle_from_vertical',
+        type: 'string',
+        value: '99999',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fbf',
+        name: 'cable_speed',
+        type: 'string',
+        value: '0.5',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      },
+      {
+        id: '67d7a84fff15a5db7ee64fc0',
+        name: 'number_of_jars',
+        type: 'string',
+        value: '1',
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        subSampleId: null
+      }
+    ],
+    metadataModel: null,
+    project: {
+      id: '67d7a84fff15a5db7ee64f9e',
+      name: 'Zooscan_apero_pp_2023_wp2_sn002',
+      acronym: null,
+      description: null,
+      ecotaxaId: null,
+      updatedAt: 2025-03-17T04:42:55.668Z,
+      createdAt: 2025-03-17T04:42:55.668Z,
+      driveId: '67d2f553b9c278328385947b',
+      instrumentId: '67d2e965b9c2783283859438',
+      scanningOptions: null,
+      qCStateId: '67d7a84fff15a5db7ee64f9d',
+      instrument: {
+        id: '67d2e965b9c2783283859438',
+        model: 'Zooscan',
+        name: 'SN01',
+        sn: 'SN01'
+      }
+    },
+    subsample: [
+      {
+        id: '67d7a850ff15a5db7ee64fc3',
+        name: 'apero2023_pp_wp2_001_st01_d_d1_1',
+        createdAt: 2025-03-17T04:42:56.021Z,
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        userId: '67d2f61ab9c27832838594af',
+        metadataModelId: null,
+        qCStateId: null,
+        metadata: [Array],
+        user: [Object],
+        qc: null,
+        scanSubsamples: [Array]
+      },
+      {
+        id: '67d7a850ff15a5db7ee64fd5',
+        name: 'apero2023_pp_wp2_001_st01_d_d2_1',
+        createdAt: 2025-03-17T04:42:56.169Z,
+        sampleId: '67d7a84fff15a5db7ee64fa1',
+        userId: '67d2f61ab9c27832838594af',
+        metadataModelId: null,
+        qCStateId: null,
+        metadata: [Array],
+        user: [Object],
+        qc: null,
+        scanSubsamples: [Array]
+      }
+    ]
+  }

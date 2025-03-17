@@ -17,6 +17,25 @@ module.exports.Samples = class {
         this.prisma = new Prisma().client;
     }
 
+
+    remap_sample(sample) {
+        if (!sample) return null;
+
+
+        return {
+  
+              ...sample,
+              subsample: sample.subsample?.map(sub => {
+                  const { scanSubsamples, ...subsampleData } = sub;
+                  return {
+                      ...subsampleData,
+                      scan: scanSubsamples?.map(ss => ss.scan)
+                  }
+              }) || []
+      }
+    }
+
+
     async deleteAll(projectId) {
 
         console.debug("Samples deleteAll")
@@ -159,9 +178,12 @@ module.exports.Samples = class {
         //     count:3
         // }
 
-        // console.log("nsamples: ", nsamples);
+        console.debug("nsamples: ", JSON.stringify(nsamples,null,2));
 
-        return nsamples
+        // return nsamples
+        const transformedSamples = nsamples.map(this.remap_sample)
+        console.log("transformedSamples:",transformedSamples)
+        return transformedSamples
     }
 
     async get({projectId, sampleId}) {
@@ -195,7 +217,18 @@ module.exports.Samples = class {
                 }
             }
         })
-        return sample
+        // return sample
+
+        // console.debug("sample:",sample)
+        console.debug("sample", JSON.stringify(sample,null,2))
+        // console.debug("samples[0]:", sample.subsamples[0])
+        // console.debug("scanSubsamples:", sample.subsamples[0].scanSubsamples)
+
+        const transformedSample = this.remap_sample ( sample )
+
+        console.debug("transformedSample: ", JSON.stringify(transformedSample,null,2));
+
+        return transformedSample
     }
 
 
