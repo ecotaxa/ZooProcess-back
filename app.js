@@ -12,6 +12,18 @@ const {
   resolvers,
 } = require('express-openapi-validator');
 
+const container = require('./services/container');
+const {Background} = require('./services/background');
+const {Scans} = require('./services/prisma/scans');
+const {Tasks} = require('./services/Tasks/tasks');
+const { Samples } = require('./services/samples'); 
+
+container.register('background', new Background());
+container.register('scans', new Scans());
+container.register('tasks', new Tasks());
+container.register('samples', new Samples());
+
+
 const port = 8081;
 const app = express();
 // const apiSpec = path.join(__dirname, 'api.yaml');
