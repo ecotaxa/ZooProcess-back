@@ -1,9 +1,10 @@
 const { Prisma } = require("@prisma/client");
-const { Samples } = require("../services/samples");
+// const { Samples } = require("../services/samples");
 const { isRoleAllowed } = require("../routes/validate_tags");
 
-const samples = new Samples();
-
+// const samples = new Samples();
+const container = require('../services/container');
+const samples = container.get('samples');
 
 module.exports = {
 

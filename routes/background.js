@@ -1,8 +1,9 @@
 // const { Scan, BackgroundType } = require("../services/scan")
 
 // const { BackgroundType } = require("../services/type/background");
-const { Background } = require("../services/background");
+// const { Background } = require("../services/background");
 
+const container = require('../services/container');
 
 const { isRoleAllowed } = require("../routes/validate_tags");
 const { Tasks } = require("../services/Tasks/tasks");
@@ -11,7 +12,8 @@ const tasks = new Tasks();
 
 // const scan = new Scan();
 // const background = new Background();
-const background = new Background();
+// const background = new Background();
+const background = container.get('background');
 
 module.exports = {
 
@@ -83,15 +85,15 @@ module.exports = {
     },
 
     listFromProject: async (req,res) => {
-        console.log("background list fromProject")
+        console.log("background::listFromProject()")
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
-        console.log("authorized")
+        // console.log("authorized")
 
-        console.log("req.params", req.params );
-        console.log("req.params.projectId", req.params.projectId );
+        console.debug("req.params", req.params );
+        console.debug("req.params.projectId", req.params.projectId );
 
 
 
@@ -442,7 +444,7 @@ module.exports = {
             })
             .catch(async(e) => {
                 console.debug("i am here")
-                console.error("Error:",e )
+                console.error("Error (background.importurl2):",e )
             })
         }
     },

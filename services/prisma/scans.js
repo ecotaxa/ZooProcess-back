@@ -3,7 +3,22 @@
 // const { scan } = require('../../routes/background');
 // const { default: NotFoundException } = require('../../exceptions/NotFoundException');
 const NotFoundException = require('../../exceptions/NotFoundException');
-const samples = require('../../routes/samples');
+// const background = require('../../routes/background');
+// const samples = require('../../routes/samples');
+// const Background = require('./background').Background;
+
+const container = require('../container');
+
+
+function isBackground(type) {
+    return type in [ 
+         "BACKGROUND",
+        "RAW_BACKGROUND",
+        "MEDIUM_BACKGROUND"
+
+        ]
+}
+
 
 
 const { Prisma } = require('../client')
@@ -13,6 +28,7 @@ module.exports.Scans = class {
 
     constructor() {
         this.prisma = new Prisma().client;
+        this.samples = container.get('samples');
       } 
 
       async findAll({background /*:boolean*/, instrumentId}) {
@@ -82,11 +98,16 @@ module.exports.Scans = class {
         return scan
     }
 
+    /**
+     * return all the images associated with the project
+     * @param {background} obsolette 
+     * @returns 
+     */
     async findAllFromProject( {background /*:boolean*/, projectId} ) {
 
-        console.log("Prisma Scans findAllBackground " , background)
+        console.log("Prisma Scans findAllFromProject " , background)
         // console.log("Prisma Scans findAll - background: ", background)
-        console.log("Prisma Scans findAllBackground - projectId:", projectId)
+        console.log("Prisma Scans findAllFromProject - projectId:", projectId)
 
         let where;
         if (projectId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -96,6 +117,7 @@ module.exports.Scans = class {
             // It's a name
             where = { name: projectId };
         }
+        console.debug("where: ", where)
 
         const project = await this.prisma.project.findFirst({
             // where:{
@@ -139,59 +161,95 @@ module.exports.Scans = class {
         //     where.instrumentId = project.instrumentId
         // } 
 
-        const scans = await this.prisma.scan.findMany({
+        // const scans = await this.prisma.scan.findMany({
+        //     where: {
+        //         // background: background,
+        //         projectId: project.id
+        //     },
+        //     include:{
+        //         instrument: true,
+        //         // SubSample: true,
+        //         // SubSample: {
+        //         //     include: {
+        //         //         // user: true,
+        //         //         // user: false,
+        //         //         metadata: true,
+        //         //         qc: true ,
+        //         //         // qc: {
+        //         //         //     include: {
+        //         //         //         // state : true
+        //         //         //     }
+        //         //         // }
+        //         //         // scan: true,
+        //         //         scanSubsamples:{
+        //         //             include: {
+        //         //                 subsample: true
+        //         //             }
+        //         //         }
+        //         //     }
+        //         // },
+        //         scanSubsamples:{
+        //             include: {
+        //                 subsample: true
+        //             }
+        //         },
+        //         user: true
+        //     },
+        //     // allowNull: true,
+        //     orderBy:{
+        //         createdAt: 'desc'
+        //     }
+
+        // //   include:{
+        // //         background,
+        // //         // project: {
+        // //         //     include:{
+        // //         //         drive: true,
+        // //         //         ecotaxa: true,
+        // //         //         samples: true,
+        // //         //     }
+        // //         // }
+        // //     }
+        // })
+
+
+        const query = {
             where: {
-                background: background,
                 projectId: project.id
             },
             include:{
                 instrument: true,
-                // SubSample: true,
-                SubSample: {
+                scanSubsamples:{
                     include: {
-                        // user: true,
-                        // user: false,
-                        metadata: true,
-                        qc: true ,
-                        // qc: {
-                        //     include: {
-                        //         // state : true
-                        //     }
-                        // }
-                        // scan: true,
-                        scanSubsamples:{
-                            include: {
-                                subsample: true
-                            }
-                        }
+                        subsample: true
                     }
                 },
                 user: true
             },
-            // allowNull: true,
             orderBy:{
                 createdAt: 'desc'
             }
+        }
 
-        //   include:{
-        //         background,
-        //         // project: {
-        //         //     include:{
-        //         //         drive: true,
-        //         //         ecotaxa: true,
-        //         //         samples: true,
-        //         //     }
-        //         // }
-        //     }
-        })
+        console.debug("query: ", query)
+        const scans = await this.prisma.scan.findMany(query)
+
         return scans
     }
 
-
     // async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
+    /**
+     * add a scan/image to the database
+     */
     async add(params) {
-
+        console.log("Prisma::Scans:add()")
         const {url, subsampleId, userId, instrumentId, projectId, type} = params
+
+        if (!instrumentId || !userId || !projectId /*|| !subsampleId */) {
+            throw new Error("Missing required IDs for instrument, user or project");
+        }
+        console.debug("Params OK")
+
         console.log("Prisma Scans add")
         console.trace("Prisma Scans add")
         console.log("Scan::add")
@@ -246,59 +304,143 @@ module.exports.Scans = class {
         })
         console.debug("scanFound: ", scanFound)
 
-        data['instrument']= {
-            connect: {
-                id: data['instrumentId']
-            }
-        }
-        data['instrumentId'] = undefined
+        // data['instrument']= {
+        //     connect: {
+        //         id: data['instrumentId']
+        //     }
+        // }
+        // data['instrumentId'] = undefined
 
-        data['user'] = {
-            connect: {
-                id: data['userId']
-            }
-        }
-        data['userId'] = undefined
+        // data['user'] = {
+        //     connect: {
+        //         id: data['userId']
+        //     }
+        // }
+        // data['userId'] = undefined
 
-        data['Project'] = {
-            connect: {
-                id: data['projectId']
-            }
-        }
-        data['projectId'] = undefined
+        // data['Project'] = {
+        //     connect: {
+        //         id: data['projectId']
+        //     }
+        // }
+        // data['projectId'] = undefined
 
         console.debug("data: ", data)
 
+        // if (!data.instrumentId || !data.userId || !data.projectId) {
+ 
+
+        const backgnd = isBackground(type)
+        
+        // if (backgnd) {
+        if ( subsampleId == undefined) {
+            const scan = await this.prisma.scan.upsert({
+                where: {
+                    url: url
+                },
+                update: {
+                    type, //: "SCAN",
+                    background: backgnd, //: isBackground(type), //false,
+                    instrument: {
+                        connect: { id: instrumentId }
+                    },
+                    user: {
+                        connect: { id: userId }
+                    },
+                    Project: {
+                        connect: { id: projectId }
+                    },
+                    // scanSubsamples: {
+                    //     create: {
+                    //         subsample: {
+                    //             connect: { id: subsampleId }
+                    //         }
+                    //     }
+                    // }
+                },
+                create: {
+                    url: url,
+                    type, //: "SCAN",
+                    background: backgnd, // : isBackground(type), //false,
+                    instrument: {
+                        connect: { id: data.instrumentId }
+                    },
+                    user: {
+                        connect: { id: data.userId }
+                    },
+                    Project: {
+                        connect: { id: data.projectId }
+                    },
+                    // scanSubsamples: {
+                    //     create: {
+                    //         subsample: {
+                    //             connect: { id: subsampleId }
+                    //         }
+                    //     }
+                    // }
+                }
+            })
+
+            console.log("scan: ", scan)
+            return scan 
+        }
+
+        else {
+        // if ( subsampleId)
+
         const scan = await this.prisma.scan.upsert({
             where: {
+                url: url
+            },
+            update: {
+                type, //: "SCAN",
+                background: isBackground(type), //false,
+                instrument: {
+                    connect: { id: instrumentId }
+                },
+                user: {
+                    connect: { id: userId }
+                },
+                Project: {
+                    connect: { id: projectId }
+                },
+                scanSubsamples: {
+                    create: {
+                        subsample: {
+                            connect: { id: subsampleId }
+                        }
+                    }
+                }
+            },
+            create: {
                 url: url,
-                // id: scanFound?.id
-          },
-          update: {
-            ...data,
-            scanSubsamples: {
-                create: {
-                    subsample: {
-                        connect: { id: data['subsampleId'] }
+                type, //: "SCAN",
+                background: isBackground(type), //false,
+                instrument: {
+                    connect: { id: data.instrumentId }
+                },
+                user: {
+                    connect: { id: data.userId }
+                },
+                Project: {
+                    connect: { id: data.projectId }
+                },
+                scanSubsamples: {
+                    create: {
+                        subsample: {
+                            connect: { id: subsampleId }
+                        }
                     }
                 }
             }
-        },
-          create: {
-            ...data,
-            scanSubsamples: {
-              create: {
-                subsample: {
-                  connect: { id: data['subsampleId'] }
-                }
-              }
-            }
-          }
         })
 
+        console.log("scan: ", scan)
+        return scan
+    }
 
 
-
+    
 
         // const scan = this.prisma.scan.create({data})
 
@@ -326,7 +468,7 @@ module.exports.Scans = class {
         //     }
         //   });
 
-        return scan
+    
     }
 
     // async deleteAll(subSampleID){

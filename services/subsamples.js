@@ -337,6 +337,15 @@ module.exports.SubSamples = class {
             }
         })
 
+        // First delete the join table records
+        await this.prisma.subsampleScan.deleteMany({
+            where: {
+                subsampleId: {
+                    in: samples.map(sample => sample.id)
+                }
+            }
+        });
+
         // Delete all non-background scans
         await this.prisma.scan.deleteMany({
             where: {

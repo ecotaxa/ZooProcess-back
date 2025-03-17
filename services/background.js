@@ -413,11 +413,11 @@ module.exports.Background = class {
   }
 
   async importurl2({ instrumentId,  url , projectId, userId, type}) {
-    console.log("background:importurl2")
-    console.log("url: ", url)
-    console.log("instrumentId: ", instrumentId)
-    console.log("userId: ", userId)
-    console.log("projectId: ", projectId)
+    console.debug("service::background:importurl2")
+    console.debug("url: ", url)
+    console.debug("instrumentId: ", instrumentId)
+    console.debug("userId: ", userId)
+    console.debug("projectId: ", projectId)
 
     const data = {
       instrumentId,
@@ -454,7 +454,7 @@ module.exports.Background = class {
     if ( ! subSample ){
       return Promise.reject("Can't find the subsample")
     }
-    const project = subSample.sample.project
+    const project = subSample[0].sample.project
     console.log("project: ", project)
     console.log("project.id: ", project.id)
 
