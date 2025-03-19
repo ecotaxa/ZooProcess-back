@@ -18,6 +18,20 @@ module.exports.SubSamples = class {
         this.prisma = new Prisma().client;
     }
 
+
+    remap_subsample(subsample) {
+        if (!subsample) return null;
+
+        // const sc = subsample.scanSubsamples?.map(ss => ss.scan)
+        // console.log("sc", sc)
+
+        return {
+            ...subsample,
+            scan: subsample.scanSubsamples?.map(ss => ss.scan)
+        }
+    }
+
+
     async findAll({projectId, sampleId}) {
         // SampleView
 
@@ -74,7 +88,12 @@ module.exports.SubSamples = class {
         // console.log("nsamples: ", nsamples);
 
         // return nsamples
-        return samples
+        // return samples
+        console.debug("samples: ", samples)
+
+        const remaped = samples.map(this.remap_subsample)
+        console.debug("remaped: ", remaped)
+        return remaped
     }
 
     // async get({/*projectId, sampleId,*/ subSampleId}) {
@@ -92,7 +111,7 @@ module.exports.SubSamples = class {
                 // scan: true,
                 scanSubsamples:{
                     include: {
-                        subsample: true
+                        scan: true
                     }
                 },
                 metadata:true,
@@ -107,7 +126,12 @@ module.exports.SubSamples = class {
                 qc: true
             }
         })
-        return sample
+        // return sample
+        console.log("sample", JSON.stringify(sample,null,2))
+
+        const remaped = this.remap_subsample(sample)
+        console.log("remaped", JSON.stringify(remaped,null,2))
+        return remaped
     }
 
     
