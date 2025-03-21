@@ -1,4 +1,6 @@
 // const background = require('../routes/background');
+const DataNotValidException = require('../exceptions/DataNotValidException');
+const MissingDataException = require('../exceptions/MissingDataException');
 const { Background } = require('./background');
 
 
@@ -20,12 +22,14 @@ async process(data, bearer,taskInstance){
     console.debug("process - taskId:",taskId)
     taskInstance.setTaskStatus(taskId, {status:"ANALYSING",log:"analysing"})
 
-    const scanInfo = await new Background().findScan(data.params.scanId)
+    const scanInfo = await new Background().findScan(data.params.scanId,false)
 
     if ( scanInfo == null){
         console.log("scanInfo is null")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is null"})
-        return Promise.reject(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
+        // return Promise.reject(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
+        throw new MissingDataException(`Cannot launch the task ${taskId} | Error: there is no scan with id ${data.params.scanId}`)
+
     }
 
     console.debug("scanInfo", scanInfo)
@@ -33,15 +37,18 @@ async process(data, bearer,taskInstance){
     if ( scanInfo.type != "SCAN" ){
         console.log("scanInfo is not a scan")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"scanInfo is not a scan"})
-        return Promise.reject(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
+        // return Promise.reject(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
+        throw new DataNotValidException(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
     }
 
-    const background = scanInfo.SubSample.scan.find(scan => scan.type == "BACKGROUND")
+    const background = scanInfo.subsample.scan.find(scan => scan.type == "BACKGROUND")
     if ( background == null ){
         console.log("no background")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"no background"})
         // return Promise.reject(`Cannot launch the task ${taskId} - Error: there is no background - Error: ${JSON.stringify(scanInfo)}`)
-        return Promise.reject(`Cannot launch the task ${taskId} : there is no background associated to scan ${scanInfo.id}`)
+        // return Promise.reject(`Cannot launch the task ${taskId} : there is no background associated to scan ${scanInfo.id}`)
+        // throw new Error(`Cannot launch the task ${taskId} : there is no background associated to scan ${scanInfo.id}`)
+        throw new MissingDataException(`Cannot launch the task ${taskId} : there is no background associated to scan ${scanInfo.id}`)
 
     }
     

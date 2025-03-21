@@ -257,7 +257,23 @@ const handlers = {
             })
             .catch(error => {
                 console.error('route Task run error:', error);
-                return res.status(500).json({error: error.toString()});
+                // return res.status(500).json({error: error.toString()});
+                switch(error.name){
+                    case "MissingDataException":
+                        console.log("422 error.message", error.message)
+                        return res.status(422).json({error: error.message});
+                        break;
+        
+                    case "DataNotValidException":
+                        console.log("416 error.message", error.message)
+                        return res.status(416).json({error: error.message});
+                        break;
+                        
+                    default:
+                        console.log("Default error.message", error)
+                        return res.status(500).json({error: error.toString()});
+                        break;
+                }
             });
 
     },

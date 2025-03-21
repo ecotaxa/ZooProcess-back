@@ -35,7 +35,11 @@ class Tasks {
         return this.prisma.task.findMany({})
     }
 
-    async get({taskId}) {
+        /**
+         * @param taskId
+         */
+        async get(params) {
+        const {taskId} = params
         if (taskId == undefined) {
             throw new Error("taskId is undefined")
         }
@@ -84,10 +88,15 @@ class Tasks {
     zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"
     happyPipelineUrl = 'http://zooprocess.imev-mer.fr:8000/'
 
-    async put({taskId, newdata}){
-        console.log("Task::update(data=", data)
+        /**
+         * @param taskId
+         * @param newdata
+         */
+        async put(params){
+        const {taskId, newdata} = params
+        console.log(`Task::update(${taskId}, data=${newdata})`)
     
-        return await this.get({taskId})
+        return await this.get({taskId:taskId})
         .then(task => {
             console.log("task", task)
             let data = { ...task, ...newdata }
@@ -247,7 +256,29 @@ class Tasks {
 
         }
     } catch (error) {
+        console.debug("Exception catched")
+        console.error("error", error)
+
+        console.log(`Put the task ${taskId} as FAILED`)
+        // this.put({taskId, status:"FAILED"})
+        this.setTaskStatus(taskId, {status:"FAILED"})
+
+        // switch(error.name){
+        //     case "MissingDataException":
+        //         console.log("error.message", error.message)
+        //         break;
+
+        //         case "DataNotValidException":
+        //             console.log("error.message", error.message)
+        //             break;
+                
+        //     default:
+        //         console.log("error.message", error.message)
+        //         throw error; // This will be caught by the route handler's try/catch
+        //         break;
+        // }
         throw error; // This will be caught by the route handler's try/catch
+
     }
 
     }

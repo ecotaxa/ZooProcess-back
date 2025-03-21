@@ -1383,6 +1383,21 @@ paths:
       security:
         - BearerAuth: [ ]
 
+    # put:
+    #   description: Change task information
+    #   operationId: Task.update
+    #   responses:
+    #     '200':
+    #       description: Returned the task informtion updated
+    #       content:
+    #         application/json:
+    #           schema:
+    #               $ref: '#/components/schemas/TaskModel'
+    #   tags:
+    #     - User
+    #   security:
+    #     - BearerAuth: [ ]
+
     post:
       description: Change task information
       operationId: Task.update
@@ -1419,6 +1434,15 @@ paths:
               schema:
                 # $ref: '#/components/schemas/TaskModel'
                 $ref: '#/components/schemas/TaskStateModel'
+        '422':
+          description: Missing Data
+          # content:
+          #   application/json:
+          #     schema:
+          #       type: object
+          #       properties:
+        '416':
+          description: Data not valid
       tags:
         - User
       security:

@@ -31,6 +31,59 @@ module.exports.Scans = class {
         this.samples = container.get('samples');
       } 
 
+
+      remap_scan(scan) {
+        if (!scan) return null;
+
+        // const sc = subsample.scanSubsamples?.map(ss => ss.scan)
+        // console.log("sc", sc)
+
+        let subsample = null;
+        let scans = null;
+        // Get the subsample object from the first scanSubsamples entry
+        if ( scan.scanSubsamples && scan.scanSubsamples.length > 0 ) {
+            subsample = scan.scanSubsamples[0].subsample;
+    
+        // Extract all scans from the subsample's scanSubsamples
+            scans = subsample.scanSubsamples.map(ss => ss.scan);
+        }
+        // return {
+        //     ...scan,
+        //     // subsample: scan.scanSubsamples?.map(ss => ss.subsample)
+        //     subsampleold: scan.scanSubsamples[0].subsample,
+        //     subsample: scan.scanSubsamples[0].subsample.map(ss => ss.scan),
+
+        //     scanSubsamples: null
+        // }
+
+        let data = {
+            ...scan,
+        }
+        if (subsample) {
+            data.subsample = {
+                ...subsample,
+                scanSubsamples: null
+            };
+            if ( scans ) {
+                data.subsample.scan = scans;
+            }
+        }
+
+        // return {
+        //     ...scan,
+        //     subsample: {
+        //         ...subsample,
+        //         scan: scans,
+        //         scanSubsamples: null // Remove the scanSubsamples to avoid duplication
+        //     },
+        //     scanSubsamples: null // Remove the original scanSubsamples
+        // };
+
+        return data
+
+    }
+
+
       async findAll({background /*:boolean*/, instrumentId}) {
 
         console.log("Prisma Scans findAll")
@@ -67,7 +120,12 @@ module.exports.Scans = class {
             }
         }
         })
-        return scans
+        // return scans
+        console.debug("scans", scans)
+
+        const remapedScans = scans.map(scan => this.remap_scan(scan))
+        console.log("remapedScans", remapedScans)
+        return remapedScans
     }
 
 
@@ -80,22 +138,47 @@ module.exports.Scans = class {
             where: {
                 id: scanId
             },
+        //     include: {
+        //         // SubSample: true
+        //         SubSample: {
+        //             include: {
+        //                 // scan: true,
+        //                 scanSubsamples:{
+        //                     include: {
+        //                         subsample: true
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
             include: {
-                // SubSample: true
-                SubSample: {
+                // scanSubsamples: true
+                scanSubsamples:{
                     include: {
-                        // scan: true,
-                        scanSubsamples:{
-                            include: {
-                                subsample: true
-                            }
-                        }
+                //         subsample: {
+                //             include: {
+                                scan: false,
+                                subsample : {
+                                    include: {
+                                        // scanSubsamples: true
+                                        scanSubsamples:{
+                                            include: {
+                                                scan: true,
+                                            }
+                                        }
+                                    }
+                                }
+                //             }
+                //         }
                     }
                 }
             }
         })
 
-        return scan
+        // return scan
+        const remapedScan = this.remap_scan(scan)
+        console.log("remapedScan", remapedScan)
+        return remapedScan
     }
 
     /**
@@ -235,6 +318,9 @@ module.exports.Scans = class {
         const scans = await this.prisma.scan.findMany(query)
 
         return scans
+        const remapedScans = scans.map(scan => this.remap_scan(scan))
+        console.log("remapedScans: ", remapedScans)
+        return remapedScans
     }
 
     // async add({url, background, subsampleId, userId, instrumentId, projectId, type}) {
@@ -436,7 +522,11 @@ module.exports.Scans = class {
         })
 
         console.log("scan: ", scan)
-        return scan
+        // return scan
+
+        const remapedScan = this.remap_scan(scan)
+        console.log("remapedScan: ", remapedScan)
+        return remapedScan
     }
 
 
