@@ -166,7 +166,7 @@ module.exports.Background = class {
       })   
     }
 
-    async findScan(scanId, show){
+    async findScan(scanId, show=false){
       console.log("Background Service scan",scanId)
       // return await this.scans.findScan(scanId) // missing {} around scanId
       // return this.scans.findScan({scanId})
@@ -602,7 +602,17 @@ module.exports.Background = class {
       } catch (error) {
         console.error('Error renaming subSample:', error);
         // throw error;
-        throw new Error('addurl2 - Cannot save the scan in the project folder: ' +  error);
+        // throw new Error('addurl2 - Cannot save the scan in the project folder: ' +  error);
+
+        try{
+          fs.copyFileSync(oldPath, newPath);
+          fs.unlinkSync(oldPath);
+          console.log('File copied and original deleted successfully');
+        }
+        catch (error) {
+          console.error('Error copying file:', error);
+          throw new Error('addurl2 - Cannot save the scan in the project folder: ' +  error);
+        } 
       }
     }
     
