@@ -639,6 +639,29 @@ async linkToSubsample({ scanId, subSampleId }) {
       }
     });
     
+    // test if the ids exist
+    const scan = await this.prisma.scan.findUnique({
+      where: { id: scanId }
+    });
+    const subsample = await this.prisma.subSample.findUnique({
+      where: { id: subSampleId }
+    });
+    if (!scan) {
+      console.log("Scan not found, returning not found");
+      return {
+        notFound: true,
+        message: "Scan not found"
+      };
+    }
+
+    if (!subsample) {
+        console.log("Subsample not found, returning not found");
+        return {
+          notFound: true,
+          message: "Subsample not found"
+        };
+      }
+  
     if (existingLink) {
       console.log("Link already exists, returning conflict");
       return { 

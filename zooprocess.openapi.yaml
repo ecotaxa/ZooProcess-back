@@ -476,6 +476,19 @@ paths:
                     type: string
                   data:
                     type: object
+        '422':
+          # description: Duplicate entry
+          description:  A resource do not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+
       tags:
         - User
         - Manager

@@ -535,6 +535,13 @@ module.exports = {
             subSampleId 
           });
           
+          if (result.notFound) {
+            return res.status(422).json({
+              message: result.message,
+              data: result.data
+            });
+          }
+
           if (result.conflict) {
             return res.status(409).json({
               message: result.message,
