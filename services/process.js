@@ -41,7 +41,7 @@ async process(data, bearer,taskInstance){
         throw new DataNotValidException(`Cannot launch the task ${taskId} | Error: scanID ${scanInfo.id} is not a scan : ${scanInfo.type}`)
     }
 
-    const background = scanInfo.subsample.scan.find(scan => scan.type == "BACKGROUND")
+    const background = scanInfo.subsample.scan.find(scan => scan.type == "MEDIUM_BACKGROUND")
     if ( background == null ){
         console.log("no background")
         taskInstance.setTaskStatus(taskId, {status:"FAILED",log:"no background"})
