@@ -2,6 +2,7 @@
 
 const { Scans } = require ("./prisma/scans")
 // const { BackgroundType } = require("./type/background")
+// const { Prisma } = require('./prisma/client');
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -25,6 +26,7 @@ module.exports.Background = class {
 
   constructor() {
     // const background = true
+    // this.prisma = new Prisma().client;
 
     this.folderName = path.join( process.env.DRIVES_PATH , "Background")
 
@@ -257,6 +259,17 @@ module.exports.Background = class {
   }
 
 
+  async linkScanToSubsample({ scanId, subSampleId }) {
+    console.log("Background Service: linking scan to subsample");
+    console.log("scanId:", scanId);
+    console.log("subSampleId:", subSampleId);
+    
+    // Use the scans service that's already initialized in the constructor
+    return this.scans.linkToSubsample({ scanId, subSampleId });
+  }
+
+  
+
     ///TODO: function NOT WORKING (image is missing, name is a fake)
     async add({ instrumentId , image , userId /*, type*/}) {
 
@@ -484,22 +497,12 @@ module.exports.Background = class {
    */
   async addurl2(params) {
 
-    const { /*instrumentId ,*/ url , userId , subsampleId, type = undefined} = params
+    const { url , userId , subsampleId, type = undefined} = params
     console.debug("service::background:addurl2")
     console.debug("url: ", url)
-    // console.log("instrumentId: ", instrumentId)
     console.debug("userId: ", userId)
     console.debug("subsampleId: ", subsampleId)
     console.debug("type: ", type)
-
-    // if ( !subsampleId) {
-    //   return Promise.reject("subsampleId is not defined")
-    // }
-
-    // save image in folder : Background/{instrumentId}
-    // const filename = "2024_02_07_08_52_10_0001.jpg"
-
-    // const prisma = new Prisma().client;
 
     const subSamples = new SubSamples()
     const subSample = await subSamples.find({subSampleId:subsampleId})
@@ -509,18 +512,6 @@ module.exports.Background = class {
       return Promise.reject("Can't find the subsample")
     }
 
-
-
-    // const url = ""
-    // if ( background){
-
-    // }
-    // const url = path.join( this.folderName , filename)
-    // write image
-
-
-    // const projects = new Projects()
-    // const project = await projects.get(projectId)
     const project = subSample[0].sample.project
     console.debug("project: ", project)
 
@@ -537,8 +528,6 @@ module.exports.Background = class {
       throw ("addurl2 ROOT_PATH is undefined")
     }
 
-    // const date /*: string*/ = new Date().toISOString().split("T")[0]
-    // const filename = date + "_" + path.basename(url)
     const filename = path.basename(url)
     console.debug("filename: ", filename)
     const projectPath = path.join( root , drive, project.name , "Zooscan_scan" , "_raw" )
@@ -546,52 +535,35 @@ module.exports.Background = class {
     const newurl = path.join(projectPath, filename).toString()
     console.debug("url: ", newurl)
 
-    // move file from url to urlnew
-    // make path
-    console.debug("addurl2 - moving file from url to urlnew")
-    if (!fs.existsSync(projectPath)){
-      fs.mkdirSync(projectPath, { recursive: true });
-    }
-
-    // move file
+    // test if source file exist
     if ( !fs.existsSync(url)){
       return Promise.reject("File do not exist: " + url)
     }
 
-    // fs.rename(url, newurl, async (err) => {
-    //   if (err) {
-    //     console.error("rename error", err)
-    //     // throw err;
-    //     // throw Error(err);
-    //     // throw new Error("error moving file")
-    //     // reject()
-    //     // return Promise.reject( "error moving file" + JSON.stringify(err))
-    //     // return new Promise.reject( "error moving file")
-    //     // const error =  Error("error moving file")
-    //     // return Promise.reject( error )
-    //     return Promise.reject(err)
-    //   }
-    //   console.log("The file has been saved!");
-    // });
+    // move file from url to urlnew
+    console.debug("addurl2 - moving file from url to urlnew")
+    if (!fs.existsSync(projectPath)){ // if folder don't exist
+      fs.mkdirSync(projectPath, { recursive: true });
+    }
 
-    // try {
-    //   await fs.rename(ulr, newurl);
-    //   console.log('SubSample renamed successfully');
-    //   // You can add additional logic here if needed
-    // } catch (error) {
-    //   console.error('Error renaming subSample:', error);
-    //   // Handle the error appropriately, e.g., throw it or return an error response
-    //   // throw new Error('Failed to rename subSample');
-    //   throw new Error('Cannot save the scan in the project folder');
-    // }
-
-
+    /**
+     * rename file 
+     * @param {string} oldPath 
+     * @param {string} newPath 
+     * @returns 
+     */
     function renameSubSampleSync(oldPath, newPath) {
-      console.debug("renameSubSampleSync")
+      console.debug("addurl2 - renameSubSampleSync")
       console.debug("oldPath: ", oldPath)
       console.debug("newPath: ", newPath)
       if ( oldPath == newPath) {
         console.log('Old and new paths are the same. No need to rename.');
+        return true;
+      }
+
+      // test if newPath already exist
+      if (fs.existsSync(newPath)) {
+        console.log('New path already exists. No need to rename.');
         return true;
       }
 
@@ -605,6 +577,7 @@ module.exports.Background = class {
         // throw new Error('addurl2 - Cannot save the scan in the project folder: ' +  error);
 
         try{
+          console.debug("addurl2 - copy & delete file")
           fs.copyFileSync(oldPath, newPath);
           fs.unlinkSync(oldPath);
           console.log('File copied and original deleted successfully');

@@ -239,7 +239,7 @@ module.exports.Scans = class {
         // let where = {
         //     background: background,
         //     instrumentId: project.instrumentId
-        // }
+        // }    
         // if ( project.instrumentId ){
         //     where.instrumentId = project.instrumentId
         // } 
@@ -626,4 +626,44 @@ async deleteAll(subSampleID) {
 }
 
 
-}
+async linkToSubsample({ scanId, subSampleId }) {
+    console.log("Prisma Scans: linking scan to subsample");
+    console.log("scanId:", scanId);
+    console.log("subSampleId:", subSampleId);
+    
+    // Check if the link already exists
+    const existingLink = await this.prisma.subsampleScan.findFirst({
+      where: {
+        scanId: scanId,
+        subsampleId: subSampleId
+      }
+    });
+    
+    if (existingLink) {
+      console.log("Link already exists, returning conflict");
+      return { 
+        conflict: true, 
+        message: "Link already exists",
+        data: {
+          scanId: existingLink.scanId,
+          subSampleId: existingLink.subsampleId 
+        }
+      };
+    }
+    
+    const newLink = await this.prisma.subsampleScan.create({
+      data: {
+        scanId: scanId,
+        subsampleId: subSampleId
+      }
+    });
+    
+    // Transform the response to match API expectations
+    return {
+      scanId: newLink.scanId,
+      subSampleId: newLink.subsampleId // Note the capital 'S' to match API expectations
+    };
+  }
+  
+
+} // class Scans

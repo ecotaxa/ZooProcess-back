@@ -515,6 +515,42 @@ module.exports = {
             }
             return res.status(500).json({error:e})
         })
-    }
+    },
+
+    linkScanToSubsample: async (req,res) => {
+        console.debug("------------------------------------------");
+        console.debug("route/background/linkScanToSubsample");
+        console.debug("------------------------------------------");
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
+        console.log("req.body:",req.body)
+
+    try {
+        const { scanId, subSampleId } = req.body;;
+        const result = await background.linkScanToSubsample({ 
+            scanId, 
+            subSampleId 
+          });
+          
+          if (result.conflict) {
+            return res.status(409).json({
+              message: result.message,
+              data: result.data
+            });
+          }
+          
+          return res.status(200).json(result);
+        } catch (error) {
+          console.error("Error (background.linkScanToSubsample):", error);
+          return res.status(500).json({ error });
+        }
+    
+    
+    
+    },
+
 
 }
