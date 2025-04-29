@@ -1,6 +1,9 @@
 node_modules
-*.env
+#*.env
+.env
 Drives
 .DS_Store
 .vscode/settings.json
 .qodo/history.sqlite
+.qodo
+_* 

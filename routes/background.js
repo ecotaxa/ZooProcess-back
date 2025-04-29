@@ -1,8 +1,9 @@
 // const { Scan, BackgroundType } = require("../services/scan")
 
 // const { BackgroundType } = require("../services/type/background");
-const { Background } = require("../services/background");
+// const { Background } = require("../services/background");
 
+const container = require('../services/container');
 
 const { isRoleAllowed } = require("../routes/validate_tags");
 const { Tasks } = require("../services/Tasks/tasks");
@@ -11,7 +12,8 @@ const tasks = new Tasks();
 
 // const scan = new Scan();
 // const background = new Background();
-const background = new Background();
+// const background = new Background();
+// const background = container.get('background');
 
 module.exports = {
 
@@ -33,6 +35,8 @@ module.exports = {
         }
 
         // return scan.findAll(req.query, BackgrsoundType)
+        const background = container.get('background');
+
         return background.findAll(req.params.instrumentId,false)
         .then(scans => {
             return res.status(200).json(scans);
@@ -66,6 +70,7 @@ module.exports = {
         }
 
         console.debug("show", show);
+        const background = container.get('background');
 
         return background.findScan(req.params.scanId, show)
         .then(scan => {
@@ -83,17 +88,18 @@ module.exports = {
     },
 
     listFromProject: async (req,res) => {
-        console.log("background list fromProject")
+        console.log("background::listFromProject()")
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
-        console.log("authorized")
+        // console.log("authorized")
 
-        console.log("req.params", req.params );
-        console.log("req.params.projectId", req.params.projectId );
+        console.debug("req.params", req.params );
+        console.debug("req.params.projectId", req.params.projectId );
 
 
+        const background = container.get('background');
 
         return background.findAllfromProject(req.params.projectId)
         .then(scans => {
@@ -135,6 +141,7 @@ module.exports = {
         console.log("req.params.projectId", req.params.projectId );
 
 
+        const background = container.get('background');
 
         return background.findAllfromProject(req.params.projectId)
         .then(scans => {
@@ -205,6 +212,7 @@ module.exports = {
 
 
 
+        const background = container.get('background');
 
         return background.addurl3({
             // userId:id,
@@ -278,7 +286,7 @@ module.exports = {
 
     addurl: async (req,res) => {
         console.log("------------------------------------------");
-        console.log("route/background/addurl");
+        console.log("route/background/addurl()");
         // console.log("route/background/addurl",req);
         // console.log("create files",req.files);
         console.log("addurl Req.query", req.query);
@@ -336,6 +344,14 @@ module.exports = {
             }
         }
 
+        if ( req.body.subsampleId ){
+            params = {
+                ...params,
+                subsampleId: req.body.subsampleId
+            }
+        }
+        
+        console.debug("params: ", params);
 
     try {
         // return await background.addurl({
@@ -346,13 +362,14 @@ module.exports = {
         //     projectId: req.query.projectId
         //     /*, type:BackgroundType.BACKGROUND*/
         // })
+        const background = container.get('background');
         return await background.addurl(params)
         .then(result => {
-            // console.log("OK", res) 
+            console.debug("background.addurl -> OK", result) 
             return res.status(200).json(result)
         })
         .catch(async(e) => {
-            console.error("Error:",e )
+            console.error("Route background addurl Error:", e )
 
             if (e.name == "PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
@@ -364,11 +381,12 @@ module.exports = {
                     return res.status(500).json({error:e})
                 }
             }
+            console.debug("not PrismaClientKnownRequestError:",e)
             return res.status(500).json({error:e})
         })
     }
     catch(err){
-        console.error("Error:",e )
+        console.error("500 Error:",e )
         return res.status(500).json({error:e})
     }
     },
@@ -380,12 +398,16 @@ module.exports = {
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
         }
+
+        console.debug("req.body:", req.body)
+
         const userID = req.body.userId || req.jwt.id
         console.debug("userID", userID)
         if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
             return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
         }
         if ( req.body.subsampleId         ){
+            const background = container.get('background');
             return background.importurl({
                 userId:userID,
                 //image:req.body, 
@@ -400,7 +422,7 @@ module.exports = {
                 return res.status(200).json(result)
             })
             .catch(async(e) => {
-                console.error("Error:",e )
+                console.error("Error (background.importurl):",e )
 
                 if (e.name == "PrismaClientKnownRequestError"){
                     if (e.code == "P2002"){
@@ -422,6 +444,7 @@ module.exports = {
             }
 
             // return res.status(500).json({error:"subsampleId is required"})
+            const background = container.get('background');
             return background.importurl2({
                 instrumentId:req.body.instrumentId,
                 userId : req.jwt.id, // we don't know the user too
@@ -439,17 +462,17 @@ module.exports = {
             })
             .catch(async(e) => {
                 console.debug("i am here")
-                console.error("Error:",e )
+                console.error("Error (background.importurl2):",e )
             })
         }
     },
 
     addurl2: async (req,res) => {
-        console.log("------------------------------------------");
-        console.log("route/background/addurl2");
-        // console.log("create",req);
-        // console.log("create files",req.files);
-        console.log("------------------------------------------");
+        console.debug("------------------------------------------");
+        console.debug("route/background/addurl2");
+        // console.debug("create",req);
+        // console.debug("create files",req.files);
+        console.debug("------------------------------------------");
 
         if ( !isRoleAllowed(req)){
             return res.status(401).send("You are not authorized to access this resource")
@@ -466,9 +489,9 @@ module.exports = {
         // if ( req.body.subSampleId == undefined) {
         //     return res.status(400).json({error:"subsampleId is required"})
         // }
-        // console.log("req.body: ", req.body);
-        console.log("req.body.url: ", req.body.url);
-        console.log("req.params: ", req.params);
+        console.debug("req.body: ", req.body);
+        console.debug("req.body.url: ", req.body.url);
+        console.debug("req.params: ", req.params);
 
         if ( req.body.subsampleId && req.body.subsampleId != req.params.subSampleId ){
             return res.status(500).json({error:"the subsampleId defined in body is different from the subsampleId defined in the url"})
@@ -477,7 +500,7 @@ module.exports = {
             return res.status(500).json({error:"the subSampleId defined in body is different from the subsampleId defined in the url"})
         }
 
-        return background.addurl2({
+        let params = {
             userId:id,
             //image:req.body, 
             url: req.body.url,
@@ -485,7 +508,13 @@ module.exports = {
             // subsampleId:req.body.subSampleId,
             // instrumentId:req.params.instrumentId // got from the project
             /*, type:BackgroundType.BACKGROUND*/
-        })
+        }
+        if (req.body.type){
+            params.type = req.body.type
+        }
+
+        const background = container.get('background');
+        return background.addurl2(params)
         .then(result => {
             // console.log("OK", res) 
             return res.status(200).json(result)
@@ -505,6 +534,53 @@ module.exports = {
             }
             return res.status(500).json({error:e})
         })
-    }
+    },
+
+
+
+
+
+    linkScanToSubsample: async (req,res) => {
+        console.debug("------------------------------------------");
+        console.debug("route/background/linkScanToSubsample");
+        console.debug("------------------------------------------");
+
+        if ( !isRoleAllowed(req)){
+            return res.status(401).send("You are not authorized to access this resource")
+        }
+
+        console.log("req.body:",req.body)
+
+    try {
+        const { scanId, subSampleId } = req.body;
+        const params = {scanId, subSampleId}
+        console.debug("params:",params)
+        const background = container.get('background');
+        const result = await background.linkScanToSubsample(params);
+          
+          if (result.notFound) {
+            return res.status(422).json({
+              message: result.message,
+              data: result.data
+            });
+          }
+
+          if (result.conflict) {
+            return res.status(409).json({
+              message: result.message,
+              data: result.data
+            });
+          }
+          
+          return res.status(200).json(result);
+        } catch (error) {
+          console.error("Error (background.linkScanToSubsample):", error);
+          return res.status(500).json({ error });
+        }
+    
+    
+    
+    },
+
 
 }

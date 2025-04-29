@@ -18,6 +18,20 @@ module.exports.SubSamples = class {
         this.prisma = new Prisma().client;
     }
 
+
+    remap_subsample(subsample) {
+        if (!subsample) return null;
+
+        // const sc = subsample.scanSubsamples?.map(ss => ss.scan)
+        // console.log("sc", sc)
+
+        return {
+            ...subsample,
+            scan: subsample.scanSubsamples?.map(ss => ss.scan)
+        }
+    }
+
+
     async findAll({projectId, sampleId}) {
         // SampleView
 
@@ -34,7 +48,12 @@ module.exports.SubSamples = class {
                 metadata:true,
                 metadataModel:true,
                 // metadataModelId:false,
-                scan:true,
+                // scan: true,
+                scanSubsamples:{
+                    include: {
+                        subsample: true
+                    }
+                },
                 user:true,
             }
         })
@@ -69,7 +88,12 @@ module.exports.SubSamples = class {
         // console.log("nsamples: ", nsamples);
 
         // return nsamples
-        return samples
+        // return samples
+        console.debug("samples: ", samples)
+
+        const remaped = samples.map(this.remap_subsample)
+        console.debug("remaped: ", remaped)
+        return remaped
     }
 
     // async get({/*projectId, sampleId,*/ subSampleId}) {
@@ -84,7 +108,12 @@ module.exports.SubSamples = class {
                 //projectId:projectId
             },
             include:{
-                scan:true,
+                // scan: true,
+                scanSubsamples:{
+                    include: {
+                        scan: true
+                    }
+                },
                 metadata:true,
                 metadataModel:true,
                 user:true,
@@ -97,7 +126,12 @@ module.exports.SubSamples = class {
                 qc: true
             }
         })
-        return sample
+        // return sample
+        console.log("sample", JSON.stringify(sample,null,2))
+
+        const remaped = this.remap_subsample(sample)
+        console.log("remaped", JSON.stringify(remaped,null,2))
+        return remaped
     }
 
     
@@ -265,6 +299,25 @@ module.exports.SubSamples = class {
         console.log("Create: ", data);
 
         return await this.prisma.subSample.create({data})
+
+        // totally stupid way to do it
+        // return await this.prisma.subSample.upsert({
+        //     where: {
+        //         id: subsample.id
+        //     },
+        //     update: {
+        //         sampleId: sampleId,
+        //         // userId: userId, // user already affected
+        //         metadata:{
+        //             // create: metadataArray // simplement ou en desctructurer ci-dessous
+        //             create: [
+        //                     ...metadataArray
+        //                 ]
+        //         }
+        //     },
+        //     create: data
+
+        // })
       }
     
 
@@ -273,11 +326,23 @@ module.exports.SubSamples = class {
 
         console.log("deleteSubSample: ", {projectId, sampleId, subSampleId});
 
+        // remove linked scans
+        const scan = new Scans()
+        await scan.deleteAll({subSampleId})
+
         return await this.prisma.subSample.delete({
             where:{
                 id:subSampleId,
                 //projectId:projectId
-            }
+            },
+            // include: {
+            //     scans: {
+            //         include: {
+            //             scan: true
+            //         }
+            //     }
+            // }
+
         });
     }
 
@@ -286,9 +351,9 @@ module.exports.SubSamples = class {
 
         console.debug("SubSamples deleteAll")
 
-        // delete associated scans
-        const scan = new Scans()
-        await scan.deleteAll({sampleId})
+        // // delete associated scans
+        // const scan = new Scans()
+        // await scan.deleteAll({sampleId})
 
         const samples = await this.prisma.subSample.findMany({
             where:{
@@ -296,6 +361,31 @@ module.exports.SubSamples = class {
             }
         })
 
+        // First delete the join table records
+        await this.prisma.subsampleScan.deleteMany({
+            where: {
+                subsampleId: {
+                    in: samples.map(sample => sample.id)
+                }
+            }
+        });
+
+        // Delete all non-background scans
+        await this.prisma.scan.deleteMany({
+            where: {
+                scanSubsamples: {
+                    some: {
+                        subsampleId: {
+                            in: samples.map(sample => sample.id)
+                        }
+                    }
+                },
+                type: {
+                    notIn: ['RAW_BACKGROUND', 'BACKGROUND']
+                }
+            }
+        })
+    
         // delete the metadata
         await this.prisma.metadata.deleteMany({
             where:{
@@ -308,7 +398,14 @@ module.exports.SubSamples = class {
         // delete itself
         await  this.prisma.subSample.deleteMany({
             where:{
-                sampleId
+                sampleId,
+                // include: {
+                //     scans: {
+                //         include: {
+                //             scan: true
+                //         }
+                //     }
+                // }
             }
         })
 

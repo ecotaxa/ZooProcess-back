@@ -1,12 +1,16 @@
 // const { Tasks } = require("../services/Tasks/tasks");
-const { Tasks } = require("../services/tasks");
-console.log("import Tasks:", Tasks);
+// const { Tasks } = require("../services/tasks");
+const container = require('../services/container');
+
+
+// console.log("import Tasks:", Tasks);
 
 const { isRoleAllowed } = require("../routes/validate_tags");
 // const { Process } = require("../services/process");
 
-const tasks = new Tasks();
+// const tasks = new Tasks();
 // const process = new Process();
+const tasks = container.get("tasks")
 
 // module.exports = {
 const handlers = {
@@ -257,7 +261,24 @@ const handlers = {
             })
             .catch(error => {
                 console.error('route Task run error:', error);
-                return res.status(500).json({error: error.toString()});
+                // return res.status(500).json({error: error.toString()});
+                switch(error.name){
+                    case "MissingDataException":
+                        console.log("422 error.message", error.message)
+                        return res.status(422).json({message: error.message});
+                        // return res.status(422).text(error.toString());
+                        break;
+        
+                    case "DataNotValidException":
+                        console.log("416 error.message", error.message)
+                        return res.status(416).json({error: error.message});
+                        break;
+                    default:
+                        console.log("Default error.message", error)
+                        // return res.status(500).json({error: error.toString()});
+                        return res.status(500).json({stack: error, message: error.toString() });
+                        break;
+                }
             });
 
     },

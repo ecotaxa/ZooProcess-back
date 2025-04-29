@@ -1,0 +1,382 @@
+{
+	"id": "67d7a850ff15a5db7ee65007",
+	"name": "apero2023_pp_wp2_002_st01_d_d1_1",
+	"createdAt": "2025-03-17T04:42:56.308Z",
+	"sampleId": "67d7a850ff15a5db7ee64fe6",
+	"userId": "67d2f61ab9c27832838594af",
+	"metadataModelId": null,
+	"qCStateId": null,
+	"scanSubsamples": [
+		{
+			"id": "67d7a850ff15a5db7ee65016",
+			"scanId": "67d7a850ff15a5db7ee65015",
+			"subsampleId": "67d7a850ff15a5db7ee65007",
+			"subsample": {
+				"id": "67d7a850ff15a5db7ee65007",
+				"name": "apero2023_pp_wp2_002_st01_d_d1_1",
+				"createdAt": "2025-03-17T04:42:56.308Z",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"userId": "67d2f61ab9c27832838594af",
+				"metadataModelId": null,
+				"qCStateId": null
+			}
+		}
+	],
+	"metadata": [
+		{
+			"id": "67d7a850ff15a5db7ee65008",
+			"name": "scan_id",
+			"type": "string",
+			"value": "apero2023_pp_wp2_002_st01_d_d1_1",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee65009",
+			"name": "sample_id",
+			"type": "string",
+			"value": "apero2023_pp_wp2_002_st01_d",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500a",
+			"name": "fraction_id",
+			"type": "string",
+			"value": "d1",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500b",
+			"name": "fraction_number",
+			"type": "string",
+			"value": "1",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500c",
+			"name": "scanning_operator",
+			"type": "string",
+			"value": "hugo_berrenger",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500d",
+			"name": "observation",
+			"type": "string",
+			"value": "no",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500e",
+			"name": "fraction_min_mesh",
+			"type": "string",
+			"value": "1000",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee6500f",
+			"name": "fraction_max_mesh",
+			"type": "string",
+			"value": "999999",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee65010",
+			"name": "spliting_ratio",
+			"type": "number",
+			"value": "1",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee65011",
+			"name": "remark_on_fraction",
+			"type": "string",
+			"value": "",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		},
+		{
+			"id": "67d7a850ff15a5db7ee65012",
+			"name": "submethod",
+			"type": "string",
+			"value": "motoda",
+			"sampleId": null,
+			"subSampleId": "67d7a850ff15a5db7ee65007"
+		}
+	],
+	"metadataModel": null,
+	"user": {
+		"id": "67d2f61ab9c27832838594af",
+		"email": "hugo_berrenger@invalid.com",
+		"name": "hugo_berrenger",
+		"image": null,
+		"emailVerified": null,
+		"password": null,
+		"role": "USER"
+	},
+	"sample": {
+		"id": "67d7a850ff15a5db7ee64fe6",
+		"name": "apero2023_pp_wp2_002_st01_d",
+		"projectId": "67d7a84fff15a5db7ee64f9e",
+		"metadataModelId": "6565df171af7a84541c48b20",
+		"metadata": [
+			{
+				"id": "67d7a850ff15a5db7ee64fe7",
+				"name": "sample_id",
+				"type": "string",
+				"value": "apero2023_pp_wp2_002_st01_d",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fe8",
+				"name": "ship_name",
+				"type": "string",
+				"value": "pourquoipas",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fe9",
+				"name": "scientific_program",
+				"type": "string",
+				"value": "apero",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fea",
+				"name": "station_id",
+				"type": "string",
+				"value": "1",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64feb",
+				"name": "date",
+				"type": "string",
+				"value": "20230611-1158",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fec",
+				"name": "latitude_start",
+				"type": "number",
+				"value": "48.4521",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fed",
+				"name": "longitude_start",
+				"type": "number",
+				"value": "-22.50085",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fee",
+				"name": "bottom_depth",
+				"type": "string",
+				"value": "4104",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fef",
+				"name": "ctd_reference",
+				"type": "string",
+				"value": "nan",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff0",
+				"name": "other_reference",
+				"type": "string",
+				"value": "nan",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff1",
+				"name": "number_of_tow",
+				"type": "string",
+				"value": "1",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff2",
+				"name": "tow_type",
+				"type": "string",
+				"value": "3",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff3",
+				"name": "net_sampling_type",
+				"type": "string",
+				"value": "wp2",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff4",
+				"name": "net_mesh",
+				"type": "string",
+				"value": "200",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff5",
+				"name": "net_opening_surface",
+				"type": "string",
+				"value": "99999",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff6",
+				"name": "maximum_depth",
+				"type": "string",
+				"value": "200",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff7",
+				"name": "minimum_depth",
+				"type": "string",
+				"value": "0",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff8",
+				"name": "vol",
+				"type": "string",
+				"value": "17.55",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ff9",
+				"name": "sample_comment",
+				"type": "string",
+				"value": "nan",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ffa",
+				"name": "vol_qc",
+				"type": "string",
+				"value": "1",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ffb",
+				"name": "quality_flag_for_depth_measurement",
+				"type": "string",
+				"value": "2",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ffc",
+				"name": "sample_qc",
+				"type": "string",
+				"value": "1111",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ffd",
+				"name": "barcode",
+				"type": "string",
+				"value": "ape000000660",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64ffe",
+				"name": "latitude_end",
+				"type": "number",
+				"value": "48.4521",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee64fff",
+				"name": "longitude_end",
+				"type": "number",
+				"value": "-22.500833",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65000",
+				"name": "sampling_duration",
+				"type": "string",
+				"value": "17",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65001",
+				"name": "ship_speed",
+				"type": "string",
+				"value": "0",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65002",
+				"name": "cable_length",
+				"type": "string",
+				"value": "99999",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65003",
+				"name": "cable_angle_from_vertical",
+				"type": "string",
+				"value": "99999",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65004",
+				"name": "cable_speed",
+				"type": "string",
+				"value": "0.5",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			},
+			{
+				"id": "67d7a850ff15a5db7ee65005",
+				"name": "number_of_jars",
+				"type": "string",
+				"value": "1",
+				"sampleId": "67d7a850ff15a5db7ee64fe6",
+				"subSampleId": null
+			}
+		]
+	},
+	"qc": null
+}

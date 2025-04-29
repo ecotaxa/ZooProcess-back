@@ -14,6 +14,60 @@ module.exports.Projects = class {
       this.projects = new Projects()
     }
 
+
+
+    remap_project(project) {
+
+
+      return {
+        ...project,
+        samples: project.samples.map(sample => ({
+            ...sample,
+            subsample: sample.subsample.map(sub => {
+                const { scanSubsamples, ...subsampleData } = sub;
+                return {
+                    ...subsampleData,
+                    scan: scanSubsamples.map(ss => ss.scan)
+                }
+            })
+        }))
+    }
+
+      // ...project,
+      // samples: project.samples.map(sample => ({
+      //     ...sample,
+      //     subsample: sample.subsample.map(sub => {
+      //         const { scanSubsamples, ...subsampleData } = sub;
+      //         return {
+      //             ...subsampleData,
+      //             scan: scanSubsamples.map(ss => ss.scan)
+      //         }
+      //     })
+      // }))
+
+      // const { samples, ...rest } = project;
+      // return {
+      //   ...rest,
+      //   samples: samples.map(sample => {
+      //     const { subsample, ...sampleData } = sample;
+      //     return {
+      //       ...sampleData,
+      //       subsample: subsample.map(sub => {
+      //         const { scanSubsamples, ...subsampleData } = sub;
+      //         return {
+      //           ...subsampleData,
+      //           scan: scanSubsamples.map(ss => ss.scan)
+      //         };
+      //       })
+      //     };
+      //   })
+      // };
+
+
+    }
+
+
+
     async findAll() {
 
 
@@ -155,10 +209,56 @@ module.exports.Projects = class {
 
 
       console.debug("projectlist", projectlist)
+      // return projectlist
 
-      return projectlist
+      // const transformedProjects = projectlist.map(project => { this.remap_project(project)})
+      const transformedProjects = projectlist.map(this.remap_project);
+
+
+  // using m2n data for subsample change the json 
+      // then i need to transform the data to get the subsample and scan data like the old one
+    //   const transformedProjects = projectlist.map(project => {
+    //     return {
+    //         ...project,
+    //         samples: project.samples.map(sample => {
+    //             return {
+    //                 ...sample,
+    //                 subsample: sample.subsample.map(sub => {
+    //                     return {
+    //                         ...sub,
+    //                         scan: sub.scanSubsamples.map(scanSub => scanSub.scan)
+    //                     }
+    //                 }),
+    //                 scanSubsamples:undefined
+    //             }
+    //         })
+    //     }
+    // });
+
+    const transformedProjects2 = projectlist.map(project => ({
+      ...project,
+      samples: project.samples.map(sample => ({
+          ...sample,
+          subsample: sample.subsample.map(sub => {
+              const { scanSubsamples, ...subsampleData } = sub;
+              return {
+                  ...subsampleData,
+                  scan: scanSubsamples.map(ss => ss.scan)
+              }
+          })
+      }))
+  }));
+
+
+
+    console.log("transformedProjects",transformedProjects)
+
+
+      return transformedProjects
 
     }
+
+
 
     // async getInfo(projectlist) {
 
@@ -268,12 +368,25 @@ module.exports.Projects = class {
 
     async get(projectId){
       console.debug("projectId(): ", projectId)
-      return this.projects.get(projectId)
+      // return this.projects.get(projectId)
+
+      const project = await this.projects.get(projectId)
+
+      const transformedProject = this.remap_project(project)
+
+
+      return transformedProject
+
     }
 
     async getUsingName(projectName){
       console.debug("projectId(): ", projectName)
-      return this.projects.getUsingName(projectName)
+      // return this.projects.getUsingName(projectName)
+
+      const project = await this.projects.getUsingName(projectName)
+
+      const transformedProject = this.remap_project(project)
+      return transformedProject
     }
 
     async updateid(id, data) {

@@ -73,6 +73,7 @@ module.exports = {
         //     return res.status(500).json({error:e});
         // }) 
         try {
+             console.debug("Route::projects.get()")
             const project = await projects.get(req.params.projectId);
             return res.status(200).json(project);
         } catch(e) {

@@ -1,0 +1,67 @@
+{
+	"id": "67dbde1d930d77e3f5c50737",
+	"url": "/Volumes/sgalvagno/plankton/zooscan_zooprocess_test/Zooscan_apero_pp_2023_wp2_sn002/Zooscan_scan/_raw/apero2023_pp_wp2_002_st01_d_d1_1-1742461109622-810791084.tif",
+	"type": "SCAN",
+	"createdAt": "2025-03-20T09:21:32.998Z",
+	"userId": "67d2a8e28d769787349edfc2",
+	"instrumentId": "67d2e965b9c2783283859438",
+	"background": false,
+	"archived": false,
+	"deleted": false,
+	"deletedAt": null,
+	"projectId": "67d7a84fff15a5db7ee64f9e",
+
+    "subsample": {
+        "id": "67dbc19aabb4a97a2e17e167",
+        "name": "67d7a84fff15a5db7ee64f9e_undefined",
+        "createdAt": "2025-03-20T07:19:54.108Z",
+        "sampleId": "67d7a84fff15a5db7ee64fa1",
+        "userId": "67d2a8e28d769787349edfc2",
+        "metadataModelId": "6565df171af7a84541c48b20",
+        "qCStateId": null,
+        "scan": [
+            {
+                "id": "67dbde1d930d77e3f5c50737",
+                "url": "/Volumes/sgalvagno/plankton/zooscan_zooprocess_test/Zooscan_apero_pp_2023_wp2_sn002/Zooscan_scan/_raw/apero2023_pp_wp2_002_st01_d_d1_1-1742461109622-810791084.tif",
+                "type": "SCAN",
+                "createdAt": "2025-03-20T09:21:32.998Z",
+                "userId": "67d2a8e28d769787349edfc2",
+                "instrumentId": "67d2e965b9c2783283859438",
+                "background": false,
+                "archived": false,
+                "deleted": false,
+                "deletedAt": null,
+                "projectId": "67d7a84fff15a5db7ee64f9e"
+            },
+            {
+
+                "id": "67dbe46f79e637f92e74c3d3",
+                "url": "/Volumes/sgalvagno/plankton/zooscan_zooprocess_test/Zooscan_apero_pp_2023_wp2_sn002/Zooscan_scan/_raw/apero2023_pp_wp2_002_st01_d_d1_1-1742461109622-810791084-1742464076394-904913871.tif",
+                "type": "SCAN",
+                "createdAt": "2025-03-20T09:48:31.340Z",
+                "userId": "67d2a8e28d769787349edfc2",
+                "instrumentId": "67d2e965b9c2783283859438",
+                "background": false,
+                "archived": false,
+                "deleted": false,
+                "deletedAt": null,
+                "projectId": "67d7a84fff15a5db7ee64f9e"
+            },
+            {
+
+                "id": "67dbee9019815de4fe020646",
+                "url": "/Volumes/sgalvagno/plankton/zooscan_zooprocess_test/Zooscan_apero_pp_2023_wp2_sn002/Zooscan_scan/_raw/apero2023_pp_wp2_002_st01_d_d2_1-1742466659902-484295291.tif",
+                "type": "SCAN",
+                "createdAt": "2025-03-20T10:31:44.671Z",
+                "userId": "67d2a8e28d769787349edfc2",
+                "instrumentId": "67d2e965b9c2783283859438",
+                "background": false,
+                "archived": false,
+                "deleted": false,
+                "deletedAt": null,
+                "projectId": "67d7a84fff15a5db7ee64f9e"
+            }
+        ]
+    }
+
+}

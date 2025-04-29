@@ -26,7 +26,12 @@ module.exports.Projects = class {
               include:{
                 subsample: {
                   include: {
-                    scan: true,
+                    // scan: true,
+                    scanSubsamples: {
+                      include: {
+                          scan: true
+                      }
+                    }
                   }
                 }
               }
@@ -184,7 +189,7 @@ module.exports.Projects = class {
     // }
 
     async getProject(where){
-      console.log("getProject where:", where);
+      console.log("getProject(where:)", where);
 
       const project = await this.prisma.project.findFirst({
         where: where,
@@ -196,10 +201,13 @@ module.exports.Projects = class {
           samples: {
             include: {
               // count: {
-                subsample: true,
                 subsample: {
-                  include: {
-                    scan:true
+                  include:{
+                    scanSubsamples: {
+                      include: {
+                        scan:true
+                      }
+                    }
                   }
                 },
                 // _count: {
@@ -213,12 +221,14 @@ module.exports.Projects = class {
         }
       })
 
-      let subsample_count = 0
-      if (project){
-        project.samples.forEach( (sample) => {
-          
-        })
+      if (!project) {
+        return null;
       }
+      // let subsample_count = 0
+      // if (project){
+      //   project.samples.forEach( (sample) => {
+        //  })
+      // }
 
       let projectWithCalibration = project
       try {

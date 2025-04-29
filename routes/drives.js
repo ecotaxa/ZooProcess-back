@@ -39,8 +39,10 @@ module.exports = {
             if (e.name == "PrismaClientKnownRequestError"){
                 if (e.code == "P2002"){
                     const txt = "Drive with name '"+ req.body.name +"' already exist";
-                    const message = { error:txt };
-                    return res.status(500).json({error:message});
+                    const message = { message:txt };
+                    console.error("Error 409: ",{error:message})
+                    // return res.status(409).json({error:message});
+                    return res.status(409).send(txt) //.json({error:message});
                 }
                 else {
                     return res.status(500).json({error:e})

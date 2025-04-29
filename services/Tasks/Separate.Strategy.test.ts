@@ -3,7 +3,7 @@ import SeparateStrategy from './SeparateStrategy';
 
 describe('SeparateStrategy', () => {
     it('should execute task separation successfully with valid task and bearer', async () => {
-        const mockTask = {
+        const mockTask : any = {
             id: '1',
             name: 'Test Task',
             exec: 'SEPARATE' as const,
@@ -12,7 +12,8 @@ describe('SeparateStrategy', () => {
             percent: 0,
             status: 'PENDING' as const,
             createdAt: new Date(),
-            updatedAt: new Date()
+            updatedAt: new Date(),
+            projectId : '1'
         } as Task;
         const mockBearer = 'validBearerToken';
         const mockSeparate = jest.fn().mockResolvedValue('separationSuccess');
@@ -22,4 +23,5 @@ describe('SeparateStrategy', () => {
 
         expect(mockSeparate).toHaveBeenCalledWith(mockTask, mockBearer);
         expect(result).toBe('separationSuccess');
-    });});
+    });
+});

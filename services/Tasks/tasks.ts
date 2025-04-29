@@ -1,4 +1,8 @@
 // const background = require('../routes/background');
+
+// import { Prisma, PrismaClient } from "@prisma/client";
+// import { DefaultArgs } from "@prisma/client/runtime/library";
+
 // const { update } = require('../routes/task');
 const { Background } = require('../background');
 const { Prisma } = require('../client');
@@ -9,10 +13,22 @@ const { TaskStatus, TaskType } = require('@prisma/client');
 
 // const { strategies} = require("./strategies.js");
 // const { SeparateStrategy } = require('./SeparateStrategy.js');
+// const { SeparateStrategy } = require('./SeparateStrategy');
 // const { ProcessStrategy } = require("./ProcessStrategy");
 // const { BackgroundStrategy } = require("./BackgroundStrategy"); 
 // const { DetectiondStrategy } = require("./DetectiondStrategy");
 // const { VignetteStrategy } = require("./VignetteStrategy");
+// const  SeparateStrategy  = require('./SeparateStrategy');
+// const  ProcessStrategy  = require("./ProcessStrategy");
+// const  BackgroundStrategy  = require("./BackgroundStrategy"); 
+// const  DetectiondStrategy  = require("./DetectiondStrategy");
+// const  VignetteStrategy  = require("./VignetteStrategy");
+
+const  SeparateStrategy  = require('./SeparateStrategy').default;
+const  ProcessStrategy  = require("./ProcessStrategy").default;
+const  BackgroundStrategy  = require("./BackgroundStrategy").default;
+const  DetectiondStrategy  = require("./DetectiondStrategy").default;
+const  VignetteStrategy  = require("./VignetteStrategy").default;
 
 // const TaskType = require("./type/tasktype")
 
@@ -34,16 +50,16 @@ const { TaskStatus, TaskType } = require('@prisma/client');
 
 // module.exports.Tasks = class {
 class Tasks {
+    prisma: any; // PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>; //PrismaClient;
 
     constructor() {
         this.prisma = new Prisma().client;
     }
-
     async findAll() {
         return this.prisma.task.findMany({})
     }
 
-    async get({taskId}) {
+    async get({taskId}: {taskId: string}) {
         return this.prisma.task.findUnique({
             where:{
                 id: taskId
@@ -59,21 +75,22 @@ class Tasks {
     }
 
 
-    async add(data) {
+    async add(data:any) {
 
         console.log("Tasks::add(data= ", data)
 
         //if ( data ) 
         const exec = data.exec
+        console.debug("Add Tasks of type: ", exec)
 
 
         // (Object.values(TaskType)) as String[]).include(exec)
-        if ( exec != TaskType.separate
-            && exec != TaskType.background 
-            && exec != TaskType.vignette 
-            && exec != TaskType.process
+        if ( exec != TaskType.SEPARATE
+            && exec != TaskType.BACKGROUND 
+            && exec != TaskType.VIGNETTE 
+            && exec != TaskType.PROCESS
         ) {
-            throw new Error("TaskType not valid")
+            throw new Error("Tasks.Tasks.add - TaskType not valid")
         }
 
         if (!Object.values(TaskType).includes(exec.toUpperCase())) {
@@ -92,8 +109,8 @@ class Tasks {
     zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"
     happyPipelineUrl = 'http://zooprocess.imev-mer.fr:8000/'
 
-    async put({taskId, newdata}){
-        console.log("Task::update(data=", data)
+    async put({taskId, newdata}: {taskId: string, newdata: any}){
+        console.log("Task::put(taskId=",taskId, ", newdata=", newdata)
     
         return await this.get({taskId})
         .then(task => {
@@ -108,7 +125,7 @@ class Tasks {
         })
     }
 
-    async exist({data}){
+    async exist({data}: {data:any}){
         console.log("Task::exist(data=", data)
 
         const type = data.type
@@ -123,7 +140,7 @@ class Tasks {
         })
     }
 
-    async delete({taskId}){
+    async delete({taskId}: {taskId:string}){
         console.log("Task::delete(taskId=", taskId)
         return this.prisma.task.delete({
             where:{
@@ -147,7 +164,7 @@ class Tasks {
     // }
 
     ///TODO: A TESTER
-    async deleteAllByProject({projectId}){
+    async deleteAllByProject({projectId}:{projectId:string}){
 
         // launch stop tasks before deleting tasks
 
@@ -162,7 +179,7 @@ class Tasks {
         })
     }
 
-    async deleteAllByType({type}){
+    async deleteAllByType({type}: {type:string}){
         console.log("Task::deleteAllByType(type=", type)
         return this.prisma.task.deleteMany({
             where:{
@@ -235,7 +252,7 @@ class Tasks {
 
     // }
 
-    async run({taskId}, authHeader) {
+    async run({taskId}: {taskId:string}, authHeader:any) {
         const bearer = authHeader.split(" ")[1];
         const task = await this.prisma.task.findFirst({
             where: { id: taskId }
@@ -250,17 +267,30 @@ class Tasks {
         };
 
 
-        console.debug("which strategies ?")
+        console.debug("which strategies ?:" , task.exec )
+        console.debug("TaskType.SEPARATE", TaskType.SEPARATE)
+        console.debug("TaskType.PROCESS", TaskType.PROCESS)
+        console.debug("TaskType.BACKGROUND", TaskType.BACKGROUND)
+        console.debug("TaskType.DETECTION", TaskType.DETECTION)
+        console.debug("TaskType.VIGNETTE", TaskType.VIGNETTE)
+        
+        // const StrategyClass = strategies[task.exec];
+        // console.debug("",StrategyClass);
+        // if (!StrategyClass) {
+        //     throw new Error("Tasks.Tasks.run - TaskType not valid");
+        // }
+    
+
+
         const StrategyClass = strategies[task.exec];
-        console.debug("",StrategyClass);
+        console.debug("StrategyClass", StrategyClass);
         if (!StrategyClass) {
-            throw new Error("TaskType not valid");
+            throw new Error("Tasks.Tasks.run - TaskType not valid");
         }
-    
 
 
     
-        // const strategy = new StrategyClass(this);
+        const strategy = new StrategyClass(this);
         return strategy.execute(task, bearer);
     }
 
@@ -596,16 +626,17 @@ api -> python : ({scanPath, backPath, taskID, DB, Bearer})
     //     })
     // }
 
-    async update({taskId, data}){
+    async update({taskId, data}:{taskId:string, data:any}){
         console.log("Task::exist(taskId=",taskId," data=", data)
 
-        return {"OK": "OK"}
-        return this.setTaskStatus(taskId, stadatatus)
+        // return {"OK": "OK"}
+        // return this.setTaskStatus(taskId, stadatatus)
+        return this.setTaskStatus(taskId, data)
     }
 
 
-    setTaskStatus(taskId, data){
-        console.debug("setTaskStatus", data)
+    async setTaskStatus(taskId:string, data:any){
+        console.debug("Tasks/tasks.js setTaskStatus --->  ", data)
 
         // return this.prisma.task.upsert({
         //     where:{
@@ -622,15 +653,20 @@ api -> python : ({scanPath, backPath, taskID, DB, Bearer})
         //         }
         //     }
         // })
-        return this.prisma.task.update({
+        try {
+        return await this.prisma.task.update({
             where:{
                 id: taskId
             },
             data: {
                 status: data.status,
-                log: data.log
+                //log: data.log
             }
         })
+    }
+    catch ( error ){
+        console.error("prima error:", error)
+    }
         // console.debug("setTaskStatus",status)
     }
 

@@ -12,6 +12,23 @@ const {
   resolvers,
 } = require('express-openapi-validator');
 
+const container = require('./services/container');
+const {Background} = require('./services/background');
+const {Scans} = require('./services/prisma/scans');
+const {Tasks} = require('./services/Tasks/tasks');
+const { Samples } = require('./services/samples'); 
+const { SubSamples } = require('./services/subsamples');
+// const errorHandler = require('./middleware/errorHandler');
+//const DriveAccessException = require('./exceptions/DriveAccessException');
+
+
+container.register('samples', new Samples());
+container.register('background', new Background());
+container.register('scans', new Scans());
+container.register('tasks', new Tasks());
+container.register('subsamples', new SubSamples());
+
+
 const port = 8081;
 const app = express();
 // const apiSpec = path.join(__dirname, 'api.yaml');
@@ -61,7 +78,12 @@ function extractJWT(req, res, next){
         if (err.name == "TokenExpiredError" ) {
           console.error("Error Token", err)
           // res.status(498).send("Token expired") // 498 used by Nginx
-          res.status(401).send("Token expired")
+          // res.status(401).send("Token expired")
+          res.status(401).json({
+            error: true,
+            message: "Your session has expired. Please log in again.",
+            code: "AUTH_TOKEN_EXPIRED"
+          })
           // next()
           /*
           Missing token <=> Missing identity card <=> Rejected because of identity card check <=> 401
@@ -72,7 +94,12 @@ function extractJWT(req, res, next){
           */
         }
         else {
-          res.sendStatus(403)
+          // res.sendStatus(403)
+          res.status(403).json({
+            error: true,
+            message: "You don't have permission to access this resource.",
+            code: "AUTH_FORBIDDEN"
+          })
           // next(); // pas le next sinon passe au midleware suivant et l'erreur n'est pas traité
         }
       }
@@ -269,6 +296,28 @@ app.use((err, req, res, next) => {
     errors: err.errors,
   });
 });
+// app.use(errorHandler);
+// app.use((err, req, res, next) => {
+//   const statusCode = err.status || 500;
+  
+//   // Create response object
+//   const errorResponse = {
+//     message: err.message,
+//     errors: err.errors
+//   };
+  
+//   // Add specific properties for custom error types
+//   if (err instanceof DriveAccessException) {
+//     errorResponse.url = err.url;
+    
+//     // Include stack trace in development or when debug is requested
+//     if (process.env.NODE_ENV !== 'production' || req.query.debug === 'true') {
+//       errorResponse.stack = err.stack;
+//     }
+//   }
+  
+//   res.status(statusCode).json(errorResponse);
+// });
 
 http.createServer(app).listen(port);
 console.log(`Listening on port ${port}`);

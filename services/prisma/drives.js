@@ -46,8 +46,9 @@ module.exports.Drives = class {
 
     async add(data) {
         console.log("Prisma Drives add")
-        const drive = this.prisma.drive.create({data:data})
-        return drive
+        // const drive = await this.prisma.drive.create({data:data})
+        // return drive
+        return await this.prisma.drive.create({data:data})
     }
 
 }
