@@ -110,7 +110,7 @@ module.exports.Background = class {
 
     async converttiff2jpg(pathl/*:string*/,pathd/*:string*/) {
       const server = "http://zooprocess.imev-mer.fr:8000"
-      const url = server + "/convert"
+      const url = server + "/convert/"
       console.debug("converttiff2jpg path: ", path)
       let body = {
         src: pathl,
