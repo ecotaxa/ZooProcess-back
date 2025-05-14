@@ -24,11 +24,11 @@ const { TaskStatus, TaskType } = require('@prisma/client');
 // const  DetectiondStrategy  = require("./DetectiondStrategy");
 // const  VignetteStrategy  = require("./VignetteStrategy");
 
-const  SeparateStrategy  = require('./SeparateStrategy').default;
+const  SeparateStrategy  = require('./SeparateStrategy') //.default;
 const  ProcessStrategy  = require("./ProcessStrategy").default;
-const  BackgroundStrategy  = require("./BackgroundStrategy").default;
-const  DetectiondStrategy  = require("./DetectiondStrategy").default;
-const  VignetteStrategy  = require("./VignetteStrategy").default;
+const  BackgroundStrategy  = require("./BackgroundStrategy") //.default;
+const  DetectiondStrategy  = require("./DetectiondStrategy") //.default;
+const  VignetteStrategy  = require("./VignetteStrategy") //.default;
 
 // const TaskType = require("./type/tasktype")
 
@@ -253,27 +253,59 @@ class Tasks {
     // }
 
     async run({taskId}: {taskId:string}, authHeader:any) {
-        const bearer = authHeader.split(" ")[1];
-        const task = await this.prisma.task.findFirst({
-            where: { id: taskId }
-        });
+        // const bearer = authHeader.split(" ")[1];
+        // const task = await this.prisma.task.findFirst({
+        //     where: { id: taskId }
+        // });
+        const task = await this.get({taskId});
 
-        const strategies = {
-            [TaskType.SEPARATE]: SeparateStrategy,
-            [TaskType.PROCESS]: ProcessStrategy,
-            [TaskType.BACKGROUND]: BackgroundStrategy,
-            [TaskType.DETECTION]: DetectiondStrategy,
-            [TaskType.VIGNETTE]: VignetteStrategy,
+        if (!task) {
+            throw new Error(`Task with ID ${taskId} not found`);
+        }
+
+        if (!task.exec) {
+            console.error("Task exec is undefined!", task);
+            throw new Error("Tasks.Tasks.run - Task exec is undefined!");
+        }
+
+        // const strategies: Record<string, any> = {
+        //     [TaskType.SEPARATE]: SeparateStrategy,
+        //     [TaskType.PROCESS]: ProcessStrategy,
+        //     [TaskType.BACKGROUND]: BackgroundStrategy,
+        //     [TaskType.DETECTION]: DetectiondStrategy,
+        //     [TaskType.VIGNETTE]: VignetteStrategy,
+        // };
+        const strategies: Record<string, any> = {
+            // "SEPARATE": SeparateStrategy,
+            // "PROCESS": ProcessStrategy,
+            // "BACKGROUND": BackgroundStrategy,
+            // "DETECTION": DetectiondStrategy,
+            // "VIGNETTE": VignetteStrategy,
         };
 
-
+        // console.trace("Task::run Trace")
         console.debug("which strategies ?:" , task.exec )
-        console.debug("TaskType.SEPARATE", TaskType.SEPARATE)
-        console.debug("TaskType.PROCESS", TaskType.PROCESS)
-        console.debug("TaskType.BACKGROUND", TaskType.BACKGROUND)
-        console.debug("TaskType.DETECTION", TaskType.DETECTION)
-        console.debug("TaskType.VIGNETTE", TaskType.VIGNETTE)
+        // console.debug("TaskType.SEPARATE", TaskType.SEPARATE)
+        // console.debug("TaskType.PROCESS", TaskType.PROCESS)
+        // console.debug("TaskType.BACKGROUND", TaskType.BACKGROUND)
+        // console.debug("TaskType.DETECTION", TaskType.DETECTION)
+        // console.debug("TaskType.VIGNETTE", TaskType.VIGNETTE)
         
+        if ("PROCESS" != TaskType.PROCESS){
+           throw new Error("funcking test")
+        }
+        task.exec
+        if (task.exec != TaskType.PROCESS){
+            throw new Error("funcking task.exec")
+         }
+         if ("PROCESS" !== TaskType.PROCESS){
+            throw new Error("funcking test")
+         }
+         task.exec
+         if (task.exec !== TaskType.PROCESS){
+             throw new Error("funcking task.exec")
+          }
+
         // const StrategyClass = strategies[task.exec];
         // console.debug("",StrategyClass);
         // if (!StrategyClass) {
@@ -282,17 +314,39 @@ class Tasks {
     
 
 
-        const StrategyClass = strategies[task.exec];
-        console.debug("StrategyClass", StrategyClass);
-        if (!StrategyClass) {
-            throw new Error("Tasks.Tasks.run - TaskType not valid");
+        // const StrategyClass = strategies[task.exec];
+        // const normalizedExec = task.exec.toUpperCase();
+        // const StrategyClass = strategies[normalizedExec];
+        // const trimmedExec = task.exec.trim();
+        // const normalizedExec = trimmedExec.toUpperCase(); // Combine with uppercase normalization
+        // let StrategyClass = strategies[normalizedExec];
+        // console.debug("StrategyClass", StrategyClass);
+
+
+
+
+        // if (!StrategyClass) {
+        //     // throw new Error("Tasks.Tasks.run - TaskType not valid");
+        //     // throw new Error(`Tasks.Tasks.run - TaskType not valid: ${task.exec} (normalized: ${normalizedExec}), available strategies: ${Object.keys(strategies).join(", ")}`);
+        //     throw new Error(`Tasks.Tasks.run - TaskType not valid: ${task.exec}, available strategies: ${Object.keys(strategies).join(", ")}`);
+        // }
+
+
+        console.log("ProcessStrategy type:",ProcessStrategy)
+
+        // const strategy = new StrategyClass(this);
+        let strategy = undefined
+        if (task.exec == TaskType.PROCESS){
+            strategy = new ProcessStrategy(this)
+            return strategy.run(task, authHeader, this);
         }
 
 
-    
-        const strategy = new StrategyClass(this);
-        return strategy.execute(task, bearer);
+        // return strategy.execute(task, bearer);
+        // return strategy.run(task, authHeader, this);
+        throw new Error (`TaskType "${task.exec}" not managed.`)
     }
+    
 
 
     // async separate(data,bearer){
