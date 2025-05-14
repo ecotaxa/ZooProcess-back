@@ -130,7 +130,7 @@ async function getRole(req, res, next){
     const users = new Users();
     await users.get(id)
     .then( user => {
-      console.debug("user:", user)
+      console.debug("user:", user.name)
       console.debug("user.role: ", user.role)
 
       //req.jwt.role = user.role
