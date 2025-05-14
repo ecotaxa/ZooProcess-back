@@ -365,7 +365,7 @@ module.exports.Background = class {
 
 
 
-      const root = process.env.ROOT_PATH //|| "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+      const root = process.env.ROOT_PATH //|| ""
       if ( root == undefined){
         // throw ("ROOT_PATH is undefined")
         throw new MissingDataException("ROOT_PATH is undefined");
@@ -576,7 +576,7 @@ module.exports.Background = class {
       console.debug("drive: ", drive)
 
 
-      const root = process.env.ROOT_PATH //|| "/Users/sebastiengalvagno/Work/test/nextui/zooprocess_v10/public"
+      const root = process.env.ROOT_PATH //|| ""
       if ( root == undefined){
         return Promise.reject({
           NotFound:true,
@@ -735,7 +735,14 @@ async addurl3({ url , userId , subsampleId, type, move}) {
   console.log("drive: ", drive)
 
 
-  const root = process.env.ROOT_PATH || "/app/public"
+  // const root = process.env.ROOT_PATH || "/app/public"
+  const root = process.env.ROOT_PATH //|| ""
+      if ( root == undefined){
+        return Promise.reject({
+          NotFound:true,
+          message:"addurl2 ROOT_PATH is undefined",
+        })
+  }
 
   let newurl = url
   if ( move){
