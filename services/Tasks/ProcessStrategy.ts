@@ -7,12 +7,13 @@ import { Scan, Task } from "@prisma/client";
 
 // import { MissingDataException } from '../../exceptions/MissingDataException';
 
-import TaskStrategy, { ITaskStrategy } from "./TaskStrategy";
+// import TaskStrategy, { ITaskStrategy } from "./TaskStrategy";
+import TaskStrategy from "./TaskStrategy";
 // import { Tasks } from "./tasks";
 // import { Tasks } from "./Tasks";
 
 
-import { TaskStatus } from "./TaskStatus";
+// import { TaskStatus } from "./TaskStatus";
 import { ScanType } from "@prisma/client";
 
 // import { Background } from "../background";
@@ -25,7 +26,7 @@ const container = require('../container');
 import { TaskStatus as ETaskStatus } from "@prisma/client";
 import MissingDataException from "../../exceptions/MissingDataException";
 
-export class ProcessStrategy extends TaskStrategy {
+export default class ProcessStrategy extends TaskStrategy {
 // class ProcessStrategy implements ITaskStrategy {   
     
     // taskInstance: TaskStatus;
@@ -46,7 +47,7 @@ export class ProcessStrategy extends TaskStrategy {
     // }
 
 
-    a = ETaskStatus.ANALYSING.toString()
+    // a = ETaskStatus.ANALYSING.toString()
     
 async run(data: any, bearer: string) {
     console.log("tasks::processStrategy data:", data)
@@ -139,7 +140,10 @@ async run(data: any, bearer: string) {
     return new Promise((resolve) => {
         resolve(returndata)
     })
-}}
+}
+
+
+}
 
 
 // export default ProcessStrategy
