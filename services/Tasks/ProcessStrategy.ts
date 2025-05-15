@@ -68,6 +68,7 @@ async run(data: any, bearer: string) {
         this.taskInstance.setStatus(taskId, { status: ETaskStatus.FAILED, log: "scanInfo is null" })
     }
 
+    console.debug("-------------------->>>>>>>>>>")
     console.debug("scanInfo", scanInfo)
 
     if (scanInfo.type != "SCAN") {
@@ -75,13 +76,12 @@ async run(data: any, bearer: string) {
         this.taskInstance.setStatus(taskId, { status: ETaskStatus.FAILED, log: "scanInfo is not a scan" })
     }
 
-    console.debug("-------------------->>>>>>>>>>")
-    console.debug("*scanInfo:", scanInfo)
-    console.debug("*scanInfo.subsample:", scanInfo.subsample)
-    console.debug("*scanInfo.subsample.scan:", scanInfo.subsample.scan)
+    // console.debug("*scanInfo:", scanInfo)
+    console.debug("*-> scanInfo.subsample:", scanInfo.subsample)
+    console.debug("*-> scanInfo.subsample.scan:", scanInfo.subsample.scan)
 
 
-    const background: Scan = scanInfo.subsample.scan.find((scan:any) => scan.type == ScanType.BACKGROUND)
+    const background: Scan = scanInfo.subsample.scan.find((scan:any) => scan.type == ScanType.MEDIUM_BACKGROUND)
     if (background == null) {
         this.taskInstance.setStatus(taskId, { status: ETaskStatus.FAILED, log: "no background" })
         // return Promise.reject(`Cannot launch the task ${taskId} there is no background | Error: ${scanInfo}`)
