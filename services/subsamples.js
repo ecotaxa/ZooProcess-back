@@ -172,7 +172,7 @@ module.exports.SubSamples = class {
             }
             try {
                 const user = await userInst.add(userData)
-                console.log("user: ", user);
+                console.log("add user: ", user);
                 return user.id
             }
             catch (error) {

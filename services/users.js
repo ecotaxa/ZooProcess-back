@@ -21,7 +21,7 @@ module.exports.Users = class {
     
     async add(user) {
 
-      console.log("user: ", user);
+      console.log("sevice::add::user: ", user);
 
       const data = {
         name:user.name,
@@ -45,7 +45,7 @@ module.exports.Users = class {
           subSample: true
         }
       })
-      console.debug("user: ", user);
+      console.debug("service::get::user: ", user);
       return user
     }
 
