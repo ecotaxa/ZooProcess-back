@@ -24,11 +24,11 @@ const { TaskStatus, TaskType } = require('@prisma/client');
 // const  DetectiondStrategy  = require("./DetectiondStrategy");
 // const  VignetteStrategy  = require("./VignetteStrategy");
 
-const  SeparateStrategy  = require('./SeparateStrategy') //.default;
+const  SeparateStrategy  = require('./SeparateStrategy').default;
 const  ProcessStrategy  = require("./ProcessStrategy").default;
-const  BackgroundStrategy  = require("./BackgroundStrategy") //.default;
-const  DetectiondStrategy  = require("./DetectiondStrategy") //.default;
-const  VignetteStrategy  = require("./VignetteStrategy") //.default;
+const  BackgroundStrategy  = require("./BackgroundStrategy").default;
+const  DetectiondStrategy  = require("./DetectiondStrategy").default;
+const  VignetteStrategy  = require("./VignetteStrategy").default;
 
 // const TaskType = require("./type/tasktype")
 
@@ -290,21 +290,7 @@ class Tasks {
         // console.debug("TaskType.BACKGROUND", TaskType.BACKGROUND)
         // console.debug("TaskType.DETECTION", TaskType.DETECTION)
         // console.debug("TaskType.VIGNETTE", TaskType.VIGNETTE)
-        
-        if ("PROCESS" != TaskType.PROCESS){
-           throw new Error("funcking test")
-        }
-        task.exec
-        if (task.exec != TaskType.PROCESS){
-            throw new Error("funcking task.exec")
-         }
-         if ("PROCESS" !== TaskType.PROCESS){
-            throw new Error("funcking test")
-         }
-         task.exec
-         if (task.exec !== TaskType.PROCESS){
-             throw new Error("funcking task.exec")
-          }
+
 
         // const StrategyClass = strategies[task.exec];
         // console.debug("",StrategyClass);
@@ -336,10 +322,34 @@ class Tasks {
 
         // const strategy = new StrategyClass(this);
         let strategy = undefined
-        if (task.exec == TaskType.PROCESS){
-            strategy = new ProcessStrategy(this)
-            return strategy.run(task, authHeader, this);
+        // if (task.exec == TaskType.PROCESS){
+        //     strategy = new ProcessStrategy(this)
+        //     return strategy.run(task, authHeader, this);
+        // } else 
+        //     if(task.exec == TaskType.BACKGROUND){
+        //         strategy = new BackgroundStrategy(this)
+        //         return strategy.run(task, authHeader, this);
+        //     }
+
+        switch (task.exec)
+        {
+            case TaskType.PROCESS:
+                strategy = new ProcessStrategy(this)
+                return strategy.run(task, authHeader, this);
+            case TaskType.BACKGROUND:
+                strategy = new ProcessStrategy(this)
+                return strategy.run(task, authHeader, this);
+            case TaskType.SEPARATE:
+                strategy = new SeparateStrategy(this)
+                return strategy.run(task, authHeader, this);
+            case TaskType.DETECTION:
+                strategy = new DetectiondStrategy(this)
+                return strategy.run(task, authHeader, this);
+            case TaskType.VIGNETTE:
+                strategy = new VignetteStrategy(this)
+                return strategy.run(task, authHeader, this);
         }
+
 
 
         // return strategy.execute(task, bearer);
