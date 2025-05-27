@@ -45,7 +45,7 @@ module.exports.Users = class {
           subSample: true
         }
       })
-      console.debug("service::get::user: ", user);
+      console.debug("service::get::user: ", user.name);
       return user
     }
 
