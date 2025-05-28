@@ -72,16 +72,16 @@ paths:
             application/json:
               schema:
                 title: Response get the list of projects
-                type: array
+                type: object
                 items:
                   $ref: '#/components/schemas/Vignettes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-      tags:
-        - User
-        - Manager
-      security:
-        - BearerAuth: [ ]
+      # tags:
+      #   - User
+      #   - Manager
+      # security:
+      #   - BearerAuth: [ ]
 
 
   /projects:
