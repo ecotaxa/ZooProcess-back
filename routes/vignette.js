@@ -15,9 +15,9 @@ module.exports = {
             mask: undefined,
             vignettes: undefined,
         };
-        const folder = "/test/1"
+        const folder = "test/1"
 
-        const mockList = Array(2).fill(mockData);
+        const mockList = Array(2000).fill(mockData);
 
         console.log("list", mockList);
 
