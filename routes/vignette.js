@@ -1,6 +1,7 @@
 const { isRoleAllowed } = require("../routes/validate_tags");
 const path = require('path');
 const fs = require('fs');
+const { randomInt } = require("crypto");
 
 
 // Récupère le ROOT_PATH depuis l'environnement
@@ -49,7 +50,7 @@ module.exports = {
         scan: scanFilename,
         matrix,
         mask: maskExists ? mask : undefined,
-        vignettes: undefined,
+        vignettes: Array(randomInt(5)).fill(scanFilename),
       };
     });
 
