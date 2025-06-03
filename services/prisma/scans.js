@@ -307,9 +307,30 @@ module.exports.Scans = class {
             },
             include:{
                 instrument: true,
-                scanSubsamples:{
+                // scanSubsamples:{
+                //     include: {
+                //         subsample: true
+                //     }
+                // },
+                             scanSubsamples:{
                     include: {
-                        subsample: true
+                //         subsample: {
+                //             include: {
+                                scan: false,
+                                subsample : {
+                                    include: {
+                                        metadataModel:true,
+                                        metadata:true,
+                                        // scanSubsamples: true
+                                        scanSubsamples:{
+                                            include: {
+                                                scan: true,
+                                            }
+                                        }
+                                    }
+                                }
+                //             }
+                //         }
                     }
                 },
                 user: true
