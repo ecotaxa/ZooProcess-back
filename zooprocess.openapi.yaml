@@ -735,6 +735,12 @@ paths:
                   $ref: '#/components/schemas/SubSample'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '422':
+          description: Missing Data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorArrayModel'
       tags:
       - User
       security:
@@ -757,6 +763,12 @@ paths:
           description: Duplicate entry
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '422':
+          description: Missing Data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorArrayModel'
       tags:
       - User
       security:
@@ -2177,6 +2189,29 @@ components:
               type: string
             data:
               type: object
+
+    ErrorArrayModel:
+      type: object
+      required:
+        - message
+        - errors
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              loc:
+                type: array
+                items:
+                  type: string
+              msg:
+                type: string
+
 
     TaskModel:
       type: object

@@ -5,6 +5,8 @@ const { Scans } = require("./prisma/scans");
 // const { Scans } = require("./scans");
 
 const {Users} = require("./users");
+const DataNotValidException = require("../exceptions/DataNotValidException");
+const DriveAccessException = require("../exceptions/DriveAccessException");
 
 module.exports.SubSamples = class {
 
@@ -159,7 +161,53 @@ module.exports.SubSamples = class {
 
         console.log("add subsample: ", {projectId, sampleId, subsample});
 
-        const metadataArray = this.metadata2Array(subsample.data)
+        const metadataArray = this.metadata2Array(subsample) // (subsample.data)
+
+            // throw  new Exception("Value error, fraction_max_mesh must be larger than fraction_min_mesh")
+
+            // throw new DataNotValidException(`Value error, fraction_max_mesh must be larger than fraction_min_mesh`, {fraction_max_mesh: subsample.data.fraction_max_mesh, fraction_min_mesh: subsample.data.fraction_min_mesh})
+
+                    const mock_error = [
+            {
+                "type": "value_error",
+                "loc": ["body", "data", "spliting_ratio"],
+                "msg": "spliting_ratio must be greater than zero"
+            },
+            {
+                "type": "value_error",
+                "loc": ["body", "data", "extra_field"],
+                "msg": "unexpected extra field in data"
+            },
+            {
+                "type": "value_error",
+                "loc": ["body", "data", "observation"],
+                "msg": "observation cannot be empty"
+            },
+            {
+                "type": "value_error",
+                "loc": ["body", "data", "fraction_min_mesh"],
+                "msg": "fraction_min_mesh must be less than fraction_max_mesh"
+            },
+            {
+                "type": "value_error",
+                "loc": ["body", "data", "scan_id"],
+                "msg": "scan_id must be alphanumeric"
+            }
+            ]
+
+            const messages = [
+                    "One or more fields are invalid. Please review your input.",
+                    "Submission contains validation errors.",
+                    "Input data failed validation checks.",
+                    "The provided data is not valid. See details for more information.",
+                    "Oops! Some of your input didn't pass validation."
+                ];
+
+
+            // throw new DataNotValidException('Value error, fraction_max_mesh must be larger than fraction_min_mesh',{'type': 'value_error', 'loc': ('body', 'data', 'fraction_max_mesh')})
+            throw new DataNotValidException(messages[4],mock_error)
+
+    // throw new DriveAccessException(`Cannot launch the task {taskId} | Error: scanID {scanInfo.id} is not a scan : {scanInfo.type}`)
 
         // pass the class instance or put this code in the class ? that's the question
         const adduser = async (userInst,name) => { 
@@ -185,7 +233,7 @@ module.exports.SubSamples = class {
                 // }
             }
         }
-
+// throw ("Error: the data have no operator")
         let userId = undefined;
         if ( subsample.user_id != null){
             userId = subsample.user_id;

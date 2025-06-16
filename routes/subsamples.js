@@ -2,6 +2,7 @@ const { Prisma } = require("@prisma/client");
 const { SubSamples } = require("../services/subsamples");
 const { MetadataModel } = require("../services/metadataModel");
 const { isRoleAllowed } = require("../routes/validate_tags");
+const DataNotValidException = require("../exceptions/DataNotValidException");
 
 const subsamples = new SubSamples();
 
@@ -40,41 +41,113 @@ module.exports = {
         })
         .catch(async(e) => {
             console.error("Error:",e );
+
+
             return res.status(500).json({error:e});
         });
     },
 
-    create: async (req,res) => {
+    // create: async (req,res) => {
 
-        if ( !isRoleAllowed(req)){
-            return res.status(401).send("You are not authorized to access this resource")
-        }
+    //     if ( !isRoleAllowed(req)){
+    //         return res.status(401).send("You are not authorized to access this resource")
+    //     }
 
-        console.log("create", req.body);
-        console.log("Subsample create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
+    //     // const error = [{'type': 'value_error', 'loc': ('body', 'data', 'fraction_max_mesh'), 'msg': 'Value error, fraction_max_mesh must be larger than fraction_min_mesh'}]
 
-        return subsamples.add({projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body})
-        .then(result => {
-            // console.log("OK", res) 
-            console.log("OK", result);
-            return res.status(200).json(result);
-        })
-        .catch(async(e) => {
-            console.error("Error:",e );
+    // //     const err = {errors:[
+	// // 	{
+	// // 		"path": "/v1/projects/{project}/samples",
+	// // 		"message": "Authorization header required"
+	// // 	}
+	// // ]}
 
-            if (e.name == Prisma.PrismaClientKnownRequestError.name){
-                if (e.code == "P2002"){
-                    const txt = "SubSample with name '"+ req.body.name +"' already exist";
-                    const message = { error:txt };
-                    return res.status(500).json({error:message});
-                }
-                else {
-                    return res.status(500).json({error:e});
-                }
-            }
-            return res.status(500).json({error:e});
-        });
-    },
+    //     // return res.status(500).json({error:err});
+
+    //     console.log("create", req.body);
+    //     console.log("Subsample create", {projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body});
+
+    //     return subsamples.add({projectId:req.params.projectId, sampleId:req.params.sampleId, subsample:req.body})
+    //     .then(result => {
+    //         // console.log("OK", res) 
+    //         console.log("OK", result);
+    //         return res.status(200).json(result);
+    //     })
+    //     .catch(async(e) => {
+    //         console.error("Error:",e );
+
+    //         // if (e instanceof DataNotValidException) {
+    //         if (e.name === 'DataNotValidException') {
+
+    //                 console.log("✅ Caught DataNotValidException");
+
+    //                 console.error("DataNotValidException error:", e.message);
+    //                 console.error("error:", e)
+    //                 // You can handle the error specifically here
+    //                 return res.status(422).json({error:e});
+    //               }
+         
+    //     console.log("NNNNOOOOOONNN DataNotValidException");
+
+    //         if (e.name == Prisma.PrismaClientKnownRequestError.name){
+    //             if (e.code == "P2002"){
+    //                 const txt = "SubSample with name '"+ req.body.name +"' already exist";
+    //                 const message = { error:txt };
+    //                 return res.status(500).json({error:message});
+    //             }
+    //             else {
+    //                 return res.status(500).json({error:e});
+    //             }
+    //         }
+    //         return res.status(500).json({error:e});
+    //     });
+    // },
+
+    create: async (req, res) => {
+  if (!isRoleAllowed(req)) {
+    return res.status(401).send("You are not authorized to access this resource");
+  }
+
+  console.log("create", req.body);
+  console.log("Subsample create", {
+    projectId: req.params.projectId,
+    sampleId: req.params.sampleId,
+    subsample: req.body
+  });
+
+  try {
+    const result = await subsamples.add({
+      projectId: req.params.projectId,
+      sampleId: req.params.sampleId,
+      subsample: req.body
+    });
+
+    console.log("✅ Subsample created:", result);
+    return res.status(200).json(result);
+  } catch (e) {
+    console.error("❌ Error:", e);
+
+    if (e.name === 'DataNotValidException') {
+      console.log("✅ Caught DataNotValidException");
+      console.error("DataNotValidException error:", e.message);
+      console.error("Validation errors:", e.errors);
+      return res.status(422).json({
+        message: e.message,
+        errors: e.errors
+      });
+    }
+
+    if (e.name === Prisma.PrismaClientKnownRequestError.name) {
+      if (e.code === "P2002") {
+        const txt = `SubSample with name '${req.body.name}' already exists`;
+        return res.status(500).json({ error: txt });
+      }
+      return res.status(500).json({ error: e });
+    }
+
+    return res.status(500).json({ error: e });
+  }
+},
 
     delete: async (req,res) => {
 
