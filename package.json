@@ -12,7 +12,7 @@
     "filetrace": "DEBUG=app:services/background.js,app:routes/samples.js --trace-warnings app.js",
     "nodetrace": "NODE_DEBUG=*node --trace-warnings app.js",
     "db:deploy": "npx prisma migrate deploy && npx prisma generate",
-    "build": "tsc && cp app.js dist/ && copyfiles -u 1 \"services/**/*.js\" \"!services/**/*.test.js\" \"!services/**/tests/**\" dist/",
+    "build": "tsc && cp -r app.js routes services middleware exceptions tools zooprocess.openapi.yaml dist/",
     "start": "node dist/app.js"
   },
   "keywords": [],

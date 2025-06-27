@@ -24,9 +24,6 @@ module.exports.SubSamples = class {
     remap_subsample(subsample) {
         if (!subsample) return null;
 
-        // const sc = subsample.scanSubsamples?.map(ss => ss.scan)
-        // console.log("sc", sc)
-
         return {
             ...subsample,
             scan: subsample.scanSubsamples?.map(ss => ss.scan)
@@ -35,13 +32,10 @@ module.exports.SubSamples = class {
 
 
     async findAll({projectId, sampleId}) {
-        // SampleView
 
         console.log("SubSamples findAll projectId= ", projectId);
         console.log("SubSamples findAll sampleId= ", sampleId);
 
-        // const samples = await this.prisma.subSample.findMany({
-        // })
         const samples = await this.prisma.subSample.findMany({
             where:{
                 sampleId
@@ -60,37 +54,6 @@ module.exports.SubSamples = class {
             }
         })
 
-        // console.log("Sample:", samples)
-
-        // const nsamples = samples.map((sample) => {
-
-        //     // console.log("MAP sample: ", sample);
-
-        //     const nbFractions = sample.subsample.length;
-        //     let nbScans = 0
-        //     if ( nbFractions > 0 ) {
-        //         nbScans = sample.subsample
-        //         .flatmap((subsample) => subsample.scans.length )
-        //         .reduce((a, b)=> a + b, 0);
-        //     }
-
-        //     const ns = {
-        //         ...sample,
-        //         nbFractions,
-        //         nbScans
-        //     }
-        //     return ns;
-        // })
-
-        // const nsamples = {
-        //     ...samples,
-        //     count:3
-        // }
-
-        // console.log("nsamples: ", nsamples);
-
-        // return nsamples
-        // return samples
         console.debug("samples: ", samples)
 
         const remaped = samples.map(this.remap_subsample)
@@ -98,7 +61,6 @@ module.exports.SubSamples = class {
         return remaped
     }
 
-    // async get({/*projectId, sampleId,*/ subSampleId}) {
     async get({projectId, sampleId, subSampleId}) {
             console.debug("SubSamples get projectId= ", projectId);
             console.debug("SubSamples get sampleId= ", sampleId);
@@ -128,11 +90,9 @@ module.exports.SubSamples = class {
                 qc: true
             }
         })
-        // return sample
-        console.log("sample", JSON.stringify(sample,null,2))
-
+        // console.debug("sample", JSON.stringify(sample,null,2))
         const remaped = this.remap_subsample(sample)
-        console.log("remaped", JSON.stringify(remaped,null,2))
+        // console.debug("remaped", JSON.stringify(remaped,null,2))
         return remaped
     }
 
@@ -156,18 +116,9 @@ module.exports.SubSamples = class {
 
 
 
+    forceErrorOnAdd() {
 
-    async add({projectId, sampleId, subsample}) {
-
-        console.log("add subsample: ", {projectId, sampleId, subsample});
-
-        const metadataArray = this.metadata2Array(subsample) // (subsample.data)
-
-            // throw  new Exception("Value error, fraction_max_mesh must be larger than fraction_min_mesh")
-
-            // throw new DataNotValidException(`Value error, fraction_max_mesh must be larger than fraction_min_mesh`, {fraction_max_mesh: subsample.data.fraction_max_mesh, fraction_min_mesh: subsample.data.fraction_min_mesh})
-
-                    const mock_error = [
+     const mock_error = [
             {
                 "type": "value_error",
                 "loc": ["body", "data", "spliting_ratio"],
@@ -195,6 +146,7 @@ module.exports.SubSamples = class {
             }
             ]
 
+            /// Code to test the error handling
             const messages = [
                     "One or more fields are invalid. Please review your input.",
                     "Submission contains validation errors.",
@@ -202,15 +154,24 @@ module.exports.SubSamples = class {
                     "The provided data is not valid. See details for more information.",
                     "Oops! Some of your input didn't pass validation."
                 ];
-
-
-            // throw new DataNotValidException('Value error, fraction_max_mesh must be larger than fraction_min_mesh',{'type': 'value_error', 'loc': ('body', 'data', 'fraction_max_mesh')})
             throw new DataNotValidException(messages[4],mock_error)
+            /// Code to test the error handling
+    }
 
-    // throw new DriveAccessException(`Cannot launch the task {taskId} | Error: scanID {scanInfo.id} is not a scan : {scanInfo.type}`)
+
+    async add({projectId, sampleId, subsample}) {
+
+        console.log("add subsample: ", {projectId, sampleId, subsample});
+
+        const metadataArray = this.metadata2Array(subsample) // (subsample.data)
+
+            /// Code to test the error handling
+            // this.forceErrorOnAdd()
+
+   
 
         // pass the class instance or put this code in the class ? that's the question
-        const adduser = async (userInst,name) => { 
+        const adduser = async (userInst, name) => { 
             console.log("adduser: ", name);
             const userData = {
                 name,
@@ -233,7 +194,7 @@ module.exports.SubSamples = class {
                 // }
             }
         }
-// throw ("Error: the data have no operator")
+        // throw ("Error: the data have no operator")
         let userId = undefined;
         if ( subsample.user_id != null){
             userId = subsample.user_id;
@@ -262,7 +223,7 @@ module.exports.SubSamples = class {
             //     throw e
             // }    
 
-                console.error("Error search user on full name",subsample.data.scanning_operator,":",error);
+                console.error("Error search user on full name", subsample.data.scanning_operator, ":", error);
                 userFound = false
 
             const split = subsample.data.scanning_operator.split('_')
