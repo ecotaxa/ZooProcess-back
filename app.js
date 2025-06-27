@@ -5,6 +5,21 @@ const http = require('http');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
+// Ajoutez ce code au début, juste après les imports
+const disableDebugLog = () => {
+  // Save the original console.debug
+  const originalDebug = console.debug;
+
+  // Override console.debug based on environment variable
+  if (process.env.DEBUG !== 'true') {
+    console.debug = function() {};
+  } else {
+    console.debug = originalDebug;
+  }
+}
+
+disableDebugLog()
+
 const { Users } = require("./services/users");
 
 const {

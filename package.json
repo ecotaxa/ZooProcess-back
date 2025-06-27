@@ -13,7 +13,8 @@
     "nodetrace": "NODE_DEBUG=*node --trace-warnings app.js",
     "db:deploy": "npx prisma migrate deploy && npx prisma generate",
     "build": "tsc && cp -r app.js routes services middleware exceptions tools zooprocess.openapi.yaml dist/",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "start:debug": "DEBUG=true node app.js"
   },
   "keywords": [],
   "author": "",
