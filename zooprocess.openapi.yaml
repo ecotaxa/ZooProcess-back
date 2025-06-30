@@ -1460,24 +1460,52 @@ paths:
         - BearerAuth: [ ]
 
     get:
-      description: Get the list of task
+      description: Get the list of tasks
       operationId: Task.list
       parameters:
         - description: project Id
           in: query
           # style: deepObject
-          name: projecId
+          name: projectId
           required: false
           example: "42"
           schema:
             type: string
+        - description: Sample ID
+          in: query
+          name: sampleId
+          required: false
+          example: "67fde6ce7724babc8c40bf93"
+          schema:
+            type: string
+        - description: Subsample ID
+          in: query
+          name: subsampleId
+          required: false
+          example: "6822e3dde459bfbfdb8ed807"
+          schema:
+            type: string
+        - description: Scan ID
+          in: query
+          name: scanId
+          required: false
+          example: "6822e9a3e459bfbfdb8ed82e"
+          schema:
+            type: string
+        - description: Linit the number of tasks returned
+          in: query
+          name: limit
+          required: false
+          example: 42
+          schema:
+            type: number
       responses:
         '200':
-          description: Returned the list of task
+          description: Returned the list of tasks
           content:
             application/json:
               schema:
-                title: Response contain the list of task
+                title: Response contain the list of tasks
                 type: array
                 items:
                   $ref: '#/components/schemas/TaskModel'

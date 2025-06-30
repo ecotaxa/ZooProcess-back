@@ -55,11 +55,22 @@ class Tasks {
     constructor() {
         this.prisma = new Prisma().client;
     }
-    async findAll() {
-        return this.prisma.task.findMany({})
-    }
+    // async findAll() {
+
+
+
+
+    //     // return this.prisma.task.findMany({})
+    //     return this.prisma.task.findMany({
+    //     orderBy: {
+    //         updatedAt: 'desc'  // Sort by most recent first
+    //     },
+    //     take: 10  // Limit to 50 items
+    // });
+    // }
 
     async get({taskId}: {taskId: string}) {
+        console.trace("❌ GET taskId",taskId)
         return this.prisma.task.findUnique({
             where:{
                 id: taskId
@@ -73,6 +84,203 @@ class Tasks {
             }
         })
     }
+
+
+    // async findAll(filter: any = {}) {
+    //     const { project, sample, subsample, scanId, limit, ...otherFilters } = filter;
+        
+    //     // Build the where clause
+    //     //const where: any = { ...otherFilters };
+    //     let where : any = {};
+
+    //     // // Add filter for exec type if needed
+    //     // if (filter.exec) {
+    //     //     where.exec = filter.exec;
+    //     // } else {
+    //     //     // Default to PROCESS if not specified
+    //     //     where.exec = "PROCESS";
+    //     // }
+        
+    //     // For MongoDB, we can directly query the JSON fields
+    //     // if (project) {
+    //     //     where['params.project'] = project;
+    //     // }
+        
+    //     // if (sample) {
+    //     //     where['params.sample'] = sample;
+    //     // }
+        
+    //     // if (subsample) {
+    //     //     where['params.subsample'] = subsample;
+    //     // }
+        
+    //     if (scanId) {
+    //         where['params.scanId'] = scanId;
+    //     //     where['scanId'] = scanId;
+    //     }
+        
+    //     console.log("Task findAll where clause:", JSON.stringify(where, null, 2));
+        
+    //     let data : any = {
+    //         where,
+    //         orderBy: {
+    //             updatedAt: 'desc'  // Sort by most recent first
+    //         },
+    //     }
+
+    //     if (limit){
+    //         data.take=limit
+    //     }
+
+    //     // return this.prisma.task.findMany({
+    //     //     where,
+    //     //     orderBy: {
+    //     //         updatedAt: 'desc'  // Sort by most recent first
+    //     //     },
+    //     //     take: limit  // Limit to 10 items
+    //     // });
+
+    //     return this.prisma.task.findMany(  data   );
+    // }
+
+// async findAll(filter: any = {}) {
+//     const { projectId, sampleId, subsampleId, scanId, limit = 5, ...otherFilters } = filter;
+    
+//     // For MongoDB, we can use raw filtering
+//     const where: any = { ...otherFilters };
+    
+//     // Create a params filter if any of the JSON fields are specified
+//     if (projectId || sampleId || subsampleId || scanId) {
+//         where.params = {};
+        
+//         if (projectId) {
+//             where.params.project = projectId;
+//         }
+        
+//         if (sampleId) {
+//             where.params.sample = sampleId;
+//         }
+        
+//         if (subsampleId) {
+//             where.params.subsample = subsampleId;
+//         }
+        
+//         if (scanId) {
+//             where.params.scanId = scanId;
+//         }
+//     }
+    
+//     console.log("Task findAll where clause:", JSON.stringify(where, null, 2));
+    
+//     return this.prisma.task.findMany({
+//         where,
+//         orderBy: {
+//             updatedAt: "desc"
+//         },
+//         take: parseInt(limit) || 5
+//     });
+// }
+
+// 
+
+
+// //
+// // renvoit []
+// async findAll(filter: any = {}) {
+//     const { scanId, limit = 5 } = filter;
+    
+//     let where: any = {};
+    
+//     // Only filter by scanId if provided
+//     if (scanId) {
+//         // For MongoDB, we need to use a special syntax to query inside JSON
+//         where = {
+//             params: {
+//                 equals: {
+//                     scanId: scanId
+//                 }
+//             }
+//         };
+//     }
+    
+//     console.log("Task findAll where clause:", JSON.stringify(where, null, 2));
+    
+//     return this.prisma.task.findMany({
+//         // where,
+//         orderBy: {
+//             updatedAt: "desc"
+//         },
+//         take: parseInt(limit as string) || 5
+//     });
+// }
+
+// async findAll(filter: any = {}) {
+//     const { scanId, limit = 5 } = filter;
+    
+//     let where: any = {};
+    
+//     // Only filter by scanId if provided
+//     if (scanId) {
+//         // Use string contains to find the scanId in the params JSON
+//         where = {
+//             params: {
+//                 string_contains: `"scanId":"${scanId}"`
+//             }
+//         };
+//     }
+    
+//     console.log("Task findAll where clause:", JSON.stringify(where, null, 2));
+    
+//     return this.prisma.task.findMany({
+//         where,
+//         orderBy: {
+//             updatedAt: "desc"
+//         },
+//         take: parseInt(limit as string) || 5
+//     });
+// }
+
+
+async findAll(filter: any = {}) {
+    const { scanId, limit = 5 } = filter;
+    
+    // Get all tasks, sorted by most recent first
+    const allTasks = await this.prisma.task.findMany({
+        orderBy: {
+            updatedAt: "desc"
+        },
+        take: 100 // Limit to avoid loading too many
+    });
+    
+    // If no scanId provided, just return the tasks
+    if (!scanId) {
+        return allTasks.slice(0, parseInt(limit as string) || 5);
+    }
+    
+    // Filter tasks with the matching scanId in params
+    const filteredTasks = allTasks.filter((task:any) => {
+        try {
+            // Check if params exists and has the scanId we're looking for
+            return task.params && 
+                   typeof task.params === 'object' && 
+                   task.params.scanId === scanId;
+        } catch (e) {
+            console.error("Error filtering task:", e);
+            return false;
+        }
+    });
+    
+    console.log(`Found ${filteredTasks.length} tasks with scanId: ${scanId}`);
+    
+    // Return only the requested number of tasks
+    const filtered = filteredTasks.slice(0, parseInt(limit as string) || 5);
+    console.log("filtered:",filtered)
+    return filtered;
+}
+
+
+
+
 
 
     async add(data:any) {
@@ -103,7 +311,7 @@ class Tasks {
         }
 
         return this.prisma.task.create({data:formatdata}) // return the taskId
-    } 
+    }
 
 
     zooProcessApiUrl = "http://zooprocess.imev-mer.fr:8081/v1/"

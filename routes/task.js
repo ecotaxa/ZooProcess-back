@@ -21,6 +21,21 @@ const handlers = {
             return res.status(401).send("You are not authorized to access this resource")
         }
 
+        console.log("req.query:",req.query)
+
+        const projectId = req.query.projectId;
+        const sampleId = req.query.sampleId;
+        const subSampleId = req.query.subsampleID;
+        const scanId = req.query.scanId;
+        const limit = req.query.limit;
+
+        console.log("📋 Task list query parameters:", {
+            projectId,
+            sampleId,
+            subSampleId,
+            scanId
+        });
+
         return tasks.findAll(req.query)
         .then(payload => {
             return res.status(200).json(payload);
